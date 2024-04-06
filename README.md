@@ -37,7 +37,7 @@ Bienvenue dans notre guide de collaboration et d'intégration . Cet espace est d
 
 ## 🗣 Communication
 
-- ** La clé d'une collaboration réussie réside dans une communication ouverte et régulière. Discutez de l'avancement du projet, identifiez les éventuels blocages et clarifiez les interdépendances entre les équipes front-end et back-end. Une communication efficace mène à un travail d'équipe synchronisé et à la réussite du projet.
+- **La clé d'une collaboration réussie** réside dans une communication ouverte et régulière. Discutez de l'avancement du projet, identifiez les éventuels blocages et clarifiez les interdépendances entre les équipes front-end et back-end. Une communication efficace mène à un travail d'équipe synchronisé et à la réussite du projet.
 
 ## 📝 Exemple de Contrat entre DAVID (Back-End) et KODJO (Front-End)
 
