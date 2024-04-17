@@ -1,38 +1,46 @@
 import React, { useState } from 'react';
-import InputGroup1 from '../components/InputGroup1'; // Assurez-vous que le chemin d'importation est correct
+import { useRouter } from 'next/router'; // Importation du hook useRouter pour la redirection
+import InputGroup1 from '../components/InputGroup1'; 
 
-export default function Signup() {
+export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
+  const router = useRouter(); // Création d'une instance du useRouter
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     try {
-      const response = await fetch('https://votre-domaine.com/api/register', {
+      const response = await fetch('https://votre-domaine.com/api/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           email,
-          password,
-          first_name: firstName,
-          last_name: lastName
+          password
         }),
       });
 
       const data = await response.json();
-      if (response.status === 201) {
-        console.log('Success:', data);
-        // Redirect or handle success
+
+      if (response.status === 200) {
+        console.log('Login Successful', data);
+        // Stockez l'accessToken et redirigez l'utilisateur où vous le souhaitez
+        // par exemple : router.push('/dashboard');
+      } else if (response.status === 400) {
+        // Gérez le cas d'un mot de passe incorrect
+        alert(data.message);
+      } else if (response.status === 404) {
+        // Gérez le cas d'un utilisateur non trouvé
+        alert(data.message);
       } else {
-        throw new Error(data.message || 'Erreur lors de la création de l’utilisateur.');
+        // Gérez d'autres réponses inattendues
+        throw new Error('Une erreur s’est produite lors de la connexion.');
       }
     } catch (error) {
       console.error('Erreur:', error);
+      alert('Une erreur s’est produite lors de la connexion.');
     }
   };
 
@@ -54,27 +62,15 @@ export default function Signup() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          <InputGroup1
-            name="first_name"
-            label="Prénom"
-            value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
-          />
-          <InputGroup1
-            name="last_name"
-            label="Nom de Famille"
-            value={lastName}
-            onChange={(e) => setLastName(e.target.value)}
-          />
           <button
             className="w-full px-3 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
             type="submit"
           >
-            S'inscrire
+            Connexion
           </button>
           <p className="mt-4 text-center">
-            <a href="/login" className="text-blue-600 hover:underline">
-              Vous avez déjà un compte?
+            <a href="/signup.tsx" className="text-blue-600 hover:underline">
+              Pas encore inscrit? Créer un compte
             </a>
           </p>
         </form>
