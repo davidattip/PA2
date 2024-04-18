@@ -11,7 +11,7 @@ export default function Login() {
     event.preventDefault();
 
     try {
-      const response = await fetch('https://votre-domaine.com/api/login', {
+      const response = await fetch('${process.env.NEXT_PUBLIC_API_BASE_URL}/api/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
