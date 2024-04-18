@@ -1,0 +1,41 @@
+# Dépendances
+/node_modules
+
+# Fichiers de configuration d'environnement
+.env
+
+# Fichiers de journalisation
+*.log
+
+# Dossier de stockage local utilisé par Sequelize pour SQLite (si applicable)
+*.sqlite
+
+# Dossiers de l'éditeur
+/.idea
+/.vscode
+
+# Fichiers de build
+/dist
+
+# Fichiers temporaires
+/tmp
+
+# Fichiers de débogage
+*.pid
+*.pid.lock
+*.seed
+*.log
+*.csv
+*.dat
+*.out
+*.pid
+*.gz
+
+# Systèmes d'exploitation fichiers ignorés
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
