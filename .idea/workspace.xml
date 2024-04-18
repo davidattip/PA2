@@ -5,20 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="31d348cf-ab06-40aa-935e-8ff5b6ca50d4" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/backend/.env.example" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/middleware/authenticateToken.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/middleware/roleMiddleware.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/models/sequelize.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/models/user.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/routes/adminRoutes.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/routes/authRoutes.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/routes/renterRoutes.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dbnavigator.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dbnavigator.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/.env.example" beforeDir="false" afterPath="$PROJECT_DIR$/backend/.env.example" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/.package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/backend/node_modules/.package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/backend/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/backend/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/models/sequelize.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/models/sequelize.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -73,7 +64,7 @@
     "ASKED_MARK_IGNORED_FILES_AS_EXCLUDED": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "feature/backend__authentification",
+    "git-widget-placeholder": "main",
     "last_opened_file_path": "/Users/davidvucong/PhpstormProjects/PA-PCS-2024",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
