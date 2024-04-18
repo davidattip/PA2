@@ -1,4 +1,4 @@
-// /models/user.js
+//  /models/user.js
 const { DataTypes } = require('sequelize');
 const sequelize = require('./sequelize'); // Mise à jour du chemin pour le fichier sequelize.js dans le même dossier
 
