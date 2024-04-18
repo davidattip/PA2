@@ -11,7 +11,7 @@ const AdminBookings = () => {
 
   const fetchBookings = async () => {
     try {
-      const response = await fetch(`https://votre-domaine.com/backoffice/bookings?page=${page}&limit=10&search=${search}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/backoffice/bookings?page=${page}&limit=10&search=${search}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token_admin')}`
         }

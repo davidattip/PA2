@@ -11,7 +11,7 @@ const AdminContractors = () => {
 
   const fetchContractors = async () => {
     try {
-      const response = await fetch(`https://votre-domaine.com/backoffice/contractors?page=${page}&limit=10&search=${search}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/backoffice/contractors?page=${page}&limit=10&search=${search}`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token_admin')}`
         }
