@@ -21,6 +21,13 @@ const AdminUsers = () => {
   const fetchUsers = async () => {
     try {
       const token = Cookie.get('token'); // Récupération du token depuis les cookies
+      if (!token) {
+        console.error('Token is not available');
+        // Gérer l'absence de token, par exemple rediriger vers la page de connexion
+      } else {
+        console.log('Token available: ', token);
+        // Votre code fetch existant ici
+      }
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/admin/backoffice/users?page=${page}&limit=10&search=${search}`, {
         headers: {
           Authorization: `Bearer ${token}`, // Utilisation du token pour l'authentification
