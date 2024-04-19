@@ -1,3 +1,11 @@
+// Définissez un type pour vos utilisateurs
+type User = {
+  id: number; // ou string si l'identifiant est une chaîne de caractères
+  last_name: string;
+  first_name: string;
+  role: string;
+  email: string;
+};
 // admin_users.tsx
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
@@ -5,7 +13,7 @@ import Cookie from 'js-cookie';
 import { FaSearch, FaUserEdit, FaUserTimes, FaUsersCog } from 'react-icons/fa';
 
 const AdminUsers = () => {
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState<User[]>([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [search, setSearch] = useState("");

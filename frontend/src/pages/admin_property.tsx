@@ -1,10 +1,22 @@
 // admin_property.tsx
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Cookie from 'js-cookie';
 import { FaSearch, FaEdit, FaTimes, FaPlusSquare } from 'react-icons/fa';
 
+// Définition du type pour les propriétés
+type Property = {
+    id: number; // ou string si votre identifiant est une chaîne
+    title: string;
+    description: string;
+    location: string;
+    price_per_night: number;
+    subscribed: boolean;
+    image_validated: boolean;
+  };
+
 const AdminProperties = () => {
-  const [properties, setProperties] = useState([]);
+  const [properties, setProperties] = useState<Property[]>([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [search, setSearch] = useState("");
@@ -31,7 +43,7 @@ const AdminProperties = () => {
     fetchProperties();
   }, [page, search]);
 
-  const handleSearch = (event) => {
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(event.target.value);
   };
 
