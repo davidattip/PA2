@@ -69,7 +69,7 @@ export default function Login() {
             Connexion
           </button>
           <p className="mt-4 text-center">
-            <a href="/signup.tsx" className="text-blue-600 hover:underline">
+            <a href="/signup" className="text-blue-600 hover:underline">
               Pas encore inscrit? Créer un compte
             </a>
           </p>
