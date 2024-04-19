@@ -28,6 +28,12 @@ export default function Login() {
         console.log('Login Successful', data);
         // Stockez l'accessToken et redirigez l'utilisateur où vous le souhaitez
         // par exemple : router.push('/dashboard');
+        if (data.user_type === 'admin') {
+          router.push('/admin_users'); // Redirection vers la page admin_users.tsx
+        } else {
+          // Redirection vers une page par défaut pour les utilisateurs non-admin
+          router.push('/');
+        }
       } else if (response.status === 400) {
         // Gérez le cas d'un mot de passe incorrect
         alert(data.message);
