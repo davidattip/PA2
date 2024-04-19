@@ -21,7 +21,7 @@ const AdminUsers = () => {
   const fetchUsers = async () => {
     try {
       const token = Cookie.get('token'); // Récupération du token depuis les cookies
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/backoffice/users?page=${page}&limit=10&search=${search}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/admin/backoffice/users?page=${page}&limit=10&search=${search}`, {
         headers: {
           Authorization: `Bearer ${token}`, // Utilisation du token pour l'authentification
         },
