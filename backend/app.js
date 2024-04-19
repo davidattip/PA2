@@ -16,7 +16,8 @@ app.use(helmet());
 //CORS (Cross-Origin Resource Sharing) :
 // Si votre API doit être accessible par des clients situés sur des domaines différents,
 // pensez à utiliser le middleware cors pour gérer les requêtes cross-origin.
-app.use(cors());
+app.use(cors({ origin: 'http://localhost:3000' })); // Configurez selon vos besoins
+
 
 // Parse JSON bodies (comme envoyé par les requêtes API)
 app.use(express.json());
@@ -43,3 +44,7 @@ initDb().then(() => {
     console.error('Failed to initialize database:', err);
     process.exit(1); // Arrêtez l'application si la connexion à la base de données échoue
 });
+
+
+
+
