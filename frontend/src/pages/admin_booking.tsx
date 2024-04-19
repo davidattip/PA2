@@ -1,10 +1,21 @@
 // admin_booking.tsx
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Cookie from 'js-cookie';
 import { FaSearch, FaEdit, FaTimes, FaPlusSquare } from 'react-icons/fa';
 
+type Booking = {
+    id: number;
+    property_id: number;
+    host_id: number;
+    user_id: number;
+    start_date: string;
+    end_date: string;
+    total_price: number;
+  };
+
 const AdminBookings = () => {
-  const [bookings, setBookings] = useState([]);
+  const [bookings, setBookings] = useState<Booking[]>([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [search, setSearch] = useState("");
@@ -31,7 +42,7 @@ const AdminBookings = () => {
     fetchBookings();
   }, [page, search]);
 
-  const handleSearch = (event) => {
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(event.target.value);
   };
 

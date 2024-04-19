@@ -2,9 +2,20 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { FaSearch, FaEdit, FaTimes, FaPlusSquare } from 'react-icons/fa';
+import Cookie from 'js-cookie';
+
+// Définition du type pour les contracteurs
+type Contractor = {
+  id: number;
+  contact_first_name: string;
+  contact_last_name: string;
+  company_name: string;
+  email: string;
+
+};
 
 const AdminContractors = () => {
-  const [contractors, setContractors] = useState([]);
+  const [contractors, setContractors] = useState<Contractor[]>([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [search, setSearch] = useState("");
@@ -31,7 +42,7 @@ const AdminContractors = () => {
     fetchContractors();
   }, [page, search]);
 
-  const handleSearch = (event) => {
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(event.target.value);
   };
 

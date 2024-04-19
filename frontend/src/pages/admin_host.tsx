@@ -1,10 +1,18 @@
 // admin_hosts.tsx
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Cookie from 'js-cookie';
 import { FaSearch, FaEdit, FaTimes, FaPlusSquare } from 'react-icons/fa';
+// Définition du type pour les hôtes
+type Host = {
+  id: number;
+  first_name: string;
+  last_name: string;
+  
+};
 
 const AdminHosts = () => {
-  const [hosts, setHosts] = useState([]);
+  const [hosts, setHosts] = useState<Host[]>([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [search, setSearch] = useState("");
@@ -31,7 +39,7 @@ const AdminHosts = () => {
     fetchHosts();
   }, [page, search]);
 
-  const handleSearch = (event) => {
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(event.target.value);
   };
 
