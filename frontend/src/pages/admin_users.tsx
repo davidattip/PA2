@@ -1,6 +1,7 @@
 // admin_users.tsx
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Cookie from 'js-cookie';
 import { FaSearch, FaUserEdit, FaUserTimes, FaUsersCog } from 'react-icons/fa';
 
 const AdminUsers = () => {
@@ -11,10 +12,11 @@ const AdminUsers = () => {
 
   const fetchUsers = async () => {
     try {
+      const token = Cookie.get('token'); // Récupération du token depuis les cookies
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/backoffice/users?page=${page}&limit=10&search=${search}`, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem('token_admin')}`
-        }
+          Authorization: `Bearer ${token}`, // Utilisation du token pour l'authentification
+        },
       });
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
@@ -26,12 +28,13 @@ const AdminUsers = () => {
       console.error('Failed to fetch users:', error);
     }
   };
+  
 
   useEffect(() => {
     fetchUsers();
   }, [page, search]);
 
-  const handleSearch = (event) => {
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(event.target.value);
   };
 
@@ -42,7 +45,10 @@ const AdminUsers = () => {
           <h1 className="text-2xl font-semibold text-gray-700">Liste des Utilisateurs</h1>
           <Link href="/admin/add-user">
             <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded flex items-center">
-              <FaUsersCog className="mr-2" />Ajouter un administrateur
+              <span className="mr-2">
+                <FaUsersCog />
+              </span>
+              Ajouter un administrateur
             </button>
           </Link>
         </div>

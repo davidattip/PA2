@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/router'; // Importation du hook useRouter pour la redirection
 import InputGroup1 from '../components/InputGroup1'; 
+import Cookie from 'js-cookie';
+
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -26,7 +28,8 @@ export default function Login() {
 
       if (response.status === 200) {
         console.log('Login Successful', data);
-        // Stockez l'accessToken et redirigez l'utilisateur où vous le souhaitez
+        // Sauvegarde du token dans les cookies
+        Cookie.set('token', data.token, { expires: 1, secure: true, sameSite: 'lax' });
         // par exemple : router.push('/dashboard');
         if (data.user_type === 'admin') {
           router.push('/admin_users'); // Redirection vers la page admin_users.tsx
