@@ -47,6 +47,7 @@ router.post('/login', async (req, res) => {
                 );
                 // On peut même inclure `user_type` dans la réponse pour une gestion front-end immédiate
                 res.json({ accessToken: token, user_type: user.user_type });
+                console.log(token);
             } else {
                 res.status(400).send('Mot de passe incorrect.');
             }

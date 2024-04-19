@@ -7,7 +7,10 @@ const User = sequelize.define('User', {
     email: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true
+        unique: true,
+        validate: {
+            isEmail: true,
+        }
     },
     password_hash: {
         type: DataTypes.STRING,
@@ -18,6 +21,10 @@ const User = sequelize.define('User', {
     user_type: DataTypes.STRING // 'admin' ou 'renter'
 }, {
     // options de modèle ici
+    timestamps: true, // Ajoute les champs `createdAt` et `updatedAt` automatiquement
+    paranoid: true,  // Ajoute le champ `deletedAt` et n'efface pas réellement les données de la DB
+
 });
+// Synchronisation du modèle avec la base de données de fait dans initDb.js
 
 module.exports = User;

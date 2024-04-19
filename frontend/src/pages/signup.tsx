@@ -10,8 +10,12 @@ export default function Signup() {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
+    // Affichez l'URL complète dans la console avant de faire la requête
+    const apiUrl = `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/auth/register`;
+    console.log('API URL:', apiUrl);
+
     try {
-      const response = await fetch('${process.env.NEXT_PUBLIC_API_BASE_URL}/api/register', {
+      const response = await fetch(apiUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -70,7 +74,7 @@ export default function Signup() {
             className="w-full px-3 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
             type="submit"
           >
-            S'inscrire
+            S&apos;inscrire
           </button>
           <p className="mt-4 text-center">
             <a href="/login" className="text-blue-600 hover:underline">

@@ -5,9 +5,24 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="31d348cf-ab06-40aa-935e-8ff5b6ca50d4" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/backend/initDb.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/models/associations.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/models/availability.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/models/booking.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/models/contractor.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/models/host.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/models/property.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/models/service.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/6745520c-8791-4c1e-9e56-b5169ff72ab1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/6745520c-8791-4c1e-9e56-b5169ff72ab1.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/6745520c-8791-4c1e-9e56-b5169ff72ab1/storage_v2/_src_/schema/information_schema.FNRwLQ.zip" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/6745520c-8791-4c1e-9e56-b5169ff72ab1/storage_v2/_src_/schema/sys.zb4BAA.zip" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/6745520c-8791-4c1e-9e56-b5169ff72ab1/storage_v2/_src_/schema/sys.zb4BAA.zip" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/dbnavigator.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dbnavigator.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/models/sequelize.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/models/sequelize.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/models/user.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/models/user.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/routes/authRoutes.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/routes/authRoutes.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/login.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/login.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/signup.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/signup.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -69,7 +84,8 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "settings.editor.selected.configurable": "reference.settingsdialog.project.grazie",
+    "ts.external.directory.path": "/Users/davidvucong/PhpstormProjects/PA-PCS-2024/frontend/node_modules/typescript/lib",
     "vue.rearranger.settings.migration": "true"
   },
   "keyToStringList": {
@@ -90,6 +106,8 @@
       <workItem from="1712418705149" duration="2905000" />
       <workItem from="1712422377425" duration="6857000" />
       <workItem from="1712516831000" duration="8481000" />
+      <workItem from="1713480377864" duration="3591000" />
+      <workItem from="1713485646343" duration="4879000" />
     </task>
     <servers />
   </component>
