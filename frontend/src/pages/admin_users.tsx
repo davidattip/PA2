@@ -3,7 +3,7 @@ type User = {
   id: number; // ou string si l'identifiant est une chaîne de caractères
   last_name: string;
   first_name: string;
-  role: string;
+  user_type: string;
   email: string;
 };
 // admin_users.tsx
@@ -110,7 +110,7 @@ const AdminUsers = () => {
                 <tr className="hover:bg-grey-lighter" key={user.id}>
                   <td className="py-4 px-6 border-b border-grey-light">{user.last_name}</td>
                   <td className="py-4 px-6 border-b border-grey-light">{user.first_name}</td>
-                  <td className="py-4 px-6 border-b border-grey-light">{user.role}</td>
+                  <td className="py-4 px-6 border-b border-grey-light">{user.user_type}</td>
                   <td className="py-4 px-6 border-b border-grey-light">{user.email}</td>
                   <td className="py-4 px-6 border-b border-grey-light flex space-x-2">
                     <Link href={`/admin/edit-user/${user.id}`}><button className="text-blue-400 hover:text-blue-600"><FaUserEdit /></button></Link>

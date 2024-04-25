@@ -29,7 +29,9 @@ export default function Login() {
       if (response.status === 200) {
         console.log('Login Successful', data);
         // Sauvegarde du token dans les cookies
-        Cookie.set('token', data.token, { expires: 1, secure: true, sameSite: 'lax' });
+        Cookie.set('token', data.accessToken, { expires: 1, secure: true, sameSite: 'lax' });
+        console.log('Token stored:', Cookie.get('token')); // Afficher le token stocké
+
         // par exemple : router.push('/dashboard');
         if (data.user_type === 'admin') {
           router.push('/admin_users'); // Redirection vers la page admin_users.tsx
