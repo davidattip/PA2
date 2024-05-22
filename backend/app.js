@@ -16,7 +16,7 @@ app.use(helmet());
 //CORS (Cross-Origin Resource Sharing) :
 // Si votre API doit être accessible par des clients situés sur des domaines différents,
 // pensez à utiliser le middleware cors pour gérer les requêtes cross-origin.
-app.use(cors({ origin: 'http://localhost:3000' })); // Configurez selon vos besoins
+app.use(cors({ origin: ['http://localhost:3000', 'http://127.0.0.1:3000'] })); // Configurez selon vos besoins
 
 
 // Parse JSON bodies (comme envoyé par les requêtes API)
