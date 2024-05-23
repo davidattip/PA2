@@ -26,7 +26,7 @@ const EditUser = () => {
           if (!token) {
             throw new Error('No token found');
           }
-          const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/backoffice/users/${id}`, {
+          const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/admin/backoffice/users/${id}`, {
             headers: {
               Authorization: `Bearer ${token}`,
             },
@@ -70,7 +70,7 @@ const EditUser = () => {
         if (!token) {
           throw new Error('No token found');
         }
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/backoffice/users/${id}`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/admin/backoffice/users/${id}`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',

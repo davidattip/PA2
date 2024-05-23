@@ -45,6 +45,3 @@ initDb().then(() => {
     process.exit(1); // Arrêtez l'application si la connexion à la base de données échoue
 });
 
-
-
-

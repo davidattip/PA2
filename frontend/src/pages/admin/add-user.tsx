@@ -35,7 +35,7 @@ const AddUser = () => {
       if (!token) {
         throw new Error('No token found');
       }
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/backoffice/users`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/admin/backoffice/users`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -46,7 +46,7 @@ const AddUser = () => {
       if (!response.ok) {
         throw new Error(`Failed to add user: ${response.statusText}`);
       }
-      router.push('/admin/admin_users'); // Redirection vers la liste des utilisateurs
+      router.push('/admin_users'); // Redirection vers la liste des utilisateurs
     } catch (error) {
       console.error('Error adding user:', error);
       setError('Failed to add user.');

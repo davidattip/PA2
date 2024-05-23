@@ -103,4 +103,3 @@ router.put('/backoffice/users/:id', authenticateJWT, isAdmin, async (req, res) =
 });
 
 module.exports = router;
-
