@@ -65,6 +65,32 @@ const AdminUsers = () => {
     fetchUsers();
   };
 
+  const handleDelete = async (userId: number) => {
+    try {
+      const token = Cookie.get('token');
+      if (!token) {
+        console.error('Token is not available');
+        return;
+      }
+
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/admin/backoffice/users/${userId}`, {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`Failed to delete user: ${response.status}`);
+      }
+
+      // Supprime l'utilisateur de la liste locale après une suppression réussie
+      setUsers(users.filter(user => user.id !== userId));
+    } catch (error) {
+      console.error('Failed to delete user:', error);
+    }
+  };
+
   return (
     <div>
       <div className="container mx-auto p-6">
@@ -120,7 +146,7 @@ const AdminUsers = () => {
                   <td className="py-4 px-6 border-b border-grey-light">{user.email}</td>
                   <td className="py-4 px-6 border-b border-grey-light flex space-x-2">
                     <Link href={`/admin/edit-user/${user.id}`}><button className="text-blue-400 hover:text-blue-600"><FaUserEdit /></button></Link>
-                    <Link href={`/admin/delete-user/${user.id}`}><button className="text-red-400 hover:text-red-600"><FaUserTimes /></button></Link>
+                    <button onClick={() => handleDelete(user.id)} className="text-red-400 hover:text-red-600"><FaUserTimes /></button>
                   </td>
                 </tr>
               ))}

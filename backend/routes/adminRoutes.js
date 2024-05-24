@@ -135,4 +135,25 @@ router.post('/backoffice/add_admin', authenticateJWT, isAdmin, async (req, res) 
     }
 });
 
+// Route pour supprimer un utilisateur par ID
+router.delete('/backoffice/users/:id', authenticateJWT, isAdmin, async (req, res) => {
+    const userId = req.params.id;
+
+    try {
+        const user = await User.findOne({ where: { id: userId } });
+
+        if (!user) {
+            return res.status(404).json({ message: "Utilisateur non trouvé." });
+        }
+
+        await user.destroy();
+
+        res.status(200).json({ message: "Utilisateur supprimé avec succès." });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Erreur interne du serveur." });
+    }
+});
+
+
 module.exports = router;
