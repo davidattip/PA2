@@ -105,7 +105,7 @@ const Navbar = () => {
             </div>
           </div>
           <div className="hidden md:flex items-center space-x-3">
-            <Link href="/host">
+            <Link href="/host/register">
               <span className="py-2 px-2 font-medium text-gray-500 rounded hover:bg-red-500 hover:text-white transition duration-300 cursor-pointer">Mettre mon logement sur PCS</span>
             </Link>
             <div className="relative">
@@ -174,7 +174,7 @@ const Navbar = () => {
               </Link>
             </>
           )}
-          <Link href="/host">
+          <Link href="/host/register">
             <span className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer">Mettre mon logement sur PCS</span>
           </Link>
           <Link href="/signup">
