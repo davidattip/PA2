@@ -1,4 +1,5 @@
 const express = require('express');
+const bcrypt = require('bcrypt');
 const User = require('../models/user');
 const { authenticateJWT } = require('../middleware/authenticateToken');
 const { isAdmin } = require('../middleware/roleMiddleware');
@@ -102,44 +103,33 @@ router.put('/backoffice/users/:id', authenticateJWT, isAdmin, async (req, res) =
     }
 });
 
-// Route pour créer un nouvel administrateur
-router.post('/backoffice/users/admin', authenticateJWT, isAdmin, async (req, res) => {
-    const { first_name, last_name, email, user_type, password } = req.body;
-  
-    if (!first_name || !last_name || !email || !password) {
-      return res.status(400).json({ message: "Tous les champs obligatoires doivent être remplis." });
-    }
-  
+// Route pour enregistrer un administrateur (nécessite un token d'admin)
+router.post('/backoffice/add_admin', authenticateJWT, isAdmin, async (req, res) => {
     try {
-      const existingUser = await User.findOne({ where: { email } });
-      if (existingUser) {
-        return res.status(400).json({ message: "Un utilisateur avec cet email existe déjà." });
-      }
-  
-      const password_hash = await bcrypt.hash(password, 10);
-  
-      const newUser = await User.create({
-        first_name,
-        last_name,
-        email,
-        user_type,
-        password_hash,
-      });
-  
-      res.status(201).json({
-        message: "Nouvel utilisateur créé avec succès.",
-        user: {
-          id: newUser.id,
-          first_name: newUser.first_name,
-          last_name: newUser.last_name,
-          email: newUser.email,
-          user_type: newUser.user_type,
-        },
-      });
+        const { email, password, first_name, last_name } = req.body;
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const user_type = 'admin';
+        
+        // Vérifiez si l'utilisateur existe déjà
+        const existingUser = await User.findOne({ where: { email } });
+        if (existingUser) {
+            return res.status(400).json({ message: "Un utilisateur avec cet email existe déjà." });
+        }
+
+        const user = await User.create({
+            email,
+            password_hash: hashedPassword,
+            first_name,
+            last_name,
+            user_type // Utiliser la valeur fixe "admin"
+        });
+        // Peut-être omettre le retour de l'objet utilisateur complet pour des raisons de sécurité
+        res.status(201).send({ message: "Admin user created successfully", userId: user.id, email: user.email });
     } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: "Erreur interne du serveur." });
+        console.error(error);
+        res.status(500).send(error.message);
     }
-  });
+});
+
 
 module.exports = router;

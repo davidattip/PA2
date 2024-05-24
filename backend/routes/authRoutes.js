@@ -3,6 +3,7 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
+
 const router = express.Router();
 
 router.post('/register', async (req, res) => {
@@ -25,6 +26,7 @@ router.post('/register', async (req, res) => {
         res.status(500).send(error.message);
     }
 });
+
 
 router.post('/login', async (req, res) => {
     // Récupérer email et mot de passe depuis req.body
