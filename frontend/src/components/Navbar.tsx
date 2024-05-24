@@ -3,11 +3,13 @@ import Link from 'next/link';
 import { FaUserCircle, FaBars } from 'react-icons/fa';
 import { useState, useEffect } from 'react';
 import Cookie from 'js-cookie';
+import { useRouter } from 'next/router';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const [userType, setUserType] = useState<string | null>(null);
+  const router = useRouter();
 
   useEffect(() => {
     const userTypeFromCookie = Cookie.get('user_type');
@@ -25,6 +27,13 @@ const Navbar = () => {
 
   const toggleProfileMenu = () => {
     setIsProfileMenuOpen(!isProfileMenuOpen);
+  };
+
+  const handleLogout = () => {
+    // Efface le token et redirige vers la page de connexion
+    Cookie.remove('token');
+    Cookie.remove('user_type');
+    router.push('/login');
   };
 
   return (
@@ -92,6 +101,12 @@ const Navbar = () => {
                   <Link href="/login">
                     <span className="block px-4 py-2 text-gray-800 hover:bg-gray-100 cursor-pointer">Connexion</span>
                   </Link>
+                  <button
+                    onClick={handleLogout}
+                    className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-100 cursor-pointer"
+                  >
+                    Déconnexion
+                  </button>
                 </div>
               )}
             </div>
@@ -146,6 +161,12 @@ const Navbar = () => {
           <Link href="/login">
             <span className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer">Connexion</span>
           </Link>
+          <button
+            onClick={handleLogout}
+            className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
+          >
+            Déconnexion
+          </button>
         </div>
       )}
     </nav>
