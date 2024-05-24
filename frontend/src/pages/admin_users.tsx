@@ -1,17 +1,15 @@
-// Définissez un type pour vos utilisateurs
+import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
+import Cookie from 'js-cookie';
+import { FaSearch, FaUserEdit, FaUserTimes, FaUsersCog } from 'react-icons/fa';
+
 type User = {
-  id: number; // ou string si l'identifiant est une chaîne de caractères
+  id: number;
   last_name: string;
   first_name: string;
   user_type: string;
   email: string;
 };
-
-// admin_users.tsx
-import React, { useState, useEffect } from 'react';
-import Link from 'next/link';
-import Cookie from 'js-cookie';
-import { FaSearch, FaUserEdit, FaUserTimes, FaUsersCog } from 'react-icons/fa';
 
 const AdminUsers = () => {
   const [users, setUsers] = useState<User[]>([]);
@@ -21,17 +19,16 @@ const AdminUsers = () => {
 
   const fetchUsers = async () => {
     try {
-      const token = Cookie.get('token'); // Récupération du token depuis les cookies
+      const token = Cookie.get('token');
       if (!token) {
         console.error('Token is not available');
-        // Gérer l'absence de token, par exemple rediriger vers la page de connexion
         return;
-      } 
+      }
       console.log('Token available: ', token);
 
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/admin/backoffice/users?page=${page}&limit=10&search=${search}`, {
         headers: {
-          Authorization: `Bearer ${token}`, // Utilisation du token pour l'authentification
+          Authorization: `Bearer ${token}`,
         },
       });
       if (!response.ok) {
@@ -86,6 +83,7 @@ const AdminUsers = () => {
 
       // Supprime l'utilisateur de la liste locale après une suppression réussie
       setUsers(users.filter(user => user.id !== userId));
+      console.log(`User ${userId} deleted successfully`);
     } catch (error) {
       console.error('Failed to delete user:', error);
     }
