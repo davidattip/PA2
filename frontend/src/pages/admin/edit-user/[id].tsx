@@ -95,39 +95,77 @@ const EditUser = () => {
   };
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div className="flex justify-center items-center min-h-screen bg-gray-100">Loading...</div>;
   }
 
   if (error) {
-    return <div>Error: {error}</div>;
+    return <div className="flex justify-center items-center min-h-screen bg-gray-100 text-red-500">{error}</div>;
   }
 
   if (!user) {
-    return <div>User not found</div>;
+    return <div className="flex justify-center items-center min-h-screen bg-gray-100">User not found</div>;
   }
 
   return (
-    <div>
-      <h1>Edit User</h1>
-      <form onSubmit={handleUpdateUser}>
-        <label>
-          First Name:
-          <input type="text" name="first_name" value={user.first_name} onChange={handleChange} />
-        </label>
-        <label>
-          Last Name:
-          <input type="text" name="last_name" value={user.last_name} onChange={handleChange} />
-        </label>
-        <label>
-          Email:
-          <input type="email" name="email" value={user.email} onChange={handleChange} />
-        </label>
-        <label>
-          User Type:
-          <input type="text" name="user_type" value={user.user_type} onChange={handleChange} />
-        </label>
-        <button type="submit">Save</button>
-      </form>
+    <div className="flex justify-center items-center min-h-screen bg-gray-100">
+      <div className="bg-white p-8 rounded shadow-md w-full max-w-lg">
+        <h1 className="text-2xl font-bold mb-6 text-center">Edit User</h1>
+        <form onSubmit={handleUpdateUser} className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700">First Name:</label>
+            <input
+              type="text"
+              name="first_name"
+              value={user.first_name}
+              onChange={handleChange}
+              required
+              className="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Last Name:</label>
+            <input
+              type="text"
+              name="last_name"
+              value={user.last_name}
+              onChange={handleChange}
+              required
+              className="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Email:</label>
+            <input
+              type="email"
+              name="email"
+              value={user.email}
+              onChange={handleChange}
+              required
+              className="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">User Type:</label>
+            <input
+              type="text"
+              name="user_type"
+              value={user.user_type}
+              onChange={handleChange}
+              required
+              className="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+            />
+          </div>
+          <div className="flex justify-center">
+            <button
+              type="submit"
+              className="mt-4 px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            >
+              Save
+            </button>
+          </div>
+          {error && <div className="text-red-500 mt-4 text-center">{error}</div>}
+        </form>
+      </div>
     </div>
   );
 };
