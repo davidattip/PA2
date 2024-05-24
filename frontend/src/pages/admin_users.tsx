@@ -92,13 +92,11 @@ const AdminUsers = () => {
   return (
     <div>
       <div className="container mx-auto p-6">
-        <div className="mb-5">
+        <div className="mb-5 flex justify-between items-center">
           <h1 className="text-2xl font-semibold text-gray-700">Liste des Utilisateurs</h1>
-          <Link href="/admin/add-user">
+          <Link href="/admin/add-user" passHref>
             <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded flex items-center">
-              <span className="mr-2">
-                <FaUsersCog />
-              </span>
+              <FaUsersCog className="mr-2" />
               Ajouter un administrateur
             </button>
           </Link>
@@ -143,7 +141,9 @@ const AdminUsers = () => {
                   <td className="py-4 px-6 border-b border-grey-light">{user.user_type}</td>
                   <td className="py-4 px-6 border-b border-grey-light">{user.email}</td>
                   <td className="py-4 px-6 border-b border-grey-light flex space-x-2">
-                    <Link href={`/admin/edit-user/${user.id}`}><button className="text-blue-400 hover:text-blue-600"><FaUserEdit /></button></Link>
+                    <Link href={`/admin/edit-user/${user.id}`} passHref>
+                      <button className="text-blue-400 hover:text-blue-600"><FaUserEdit /></button>
+                    </Link>
                     <button onClick={() => handleDelete(user.id)} className="text-red-400 hover:text-red-600"><FaUserTimes /></button>
                   </td>
                 </tr>

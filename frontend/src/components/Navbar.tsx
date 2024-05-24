@@ -11,15 +11,31 @@ const Navbar = () => {
   const [userType, setUserType] = useState<string | null>(null);
   const router = useRouter();
 
-  useEffect(() => {
+  const updateUserTypeFromCookie = () => {
     const userTypeFromCookie = Cookie.get('user_type');
-    console.log('User type from cookie:', userTypeFromCookie); // Ajout d'un log
+    console.log('User type from cookie:', userTypeFromCookie);
     if (userTypeFromCookie) {
       setUserType(userTypeFromCookie);
     } else {
+      setUserType(null); // Reset user type if no user type is found in cookies
       console.log('No user type found in cookie.');
     }
-  }, []);
+  };
+
+  useEffect(() => {
+    updateUserTypeFromCookie();
+    // Listen for route changes to update the userType state
+    const handleRouteChange = () => {
+      updateUserTypeFromCookie();
+    };
+
+    router.events.on('routeChangeComplete', handleRouteChange);
+
+    // Clean up the event listener on component unmount
+    return () => {
+      router.events.off('routeChangeComplete', handleRouteChange);
+    };
+  }, [router.events]);
 
   const toggleMobileMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -29,11 +45,17 @@ const Navbar = () => {
     setIsProfileMenuOpen(!isProfileMenuOpen);
   };
 
+  const closeProfileMenu = () => {
+    setIsProfileMenuOpen(false);
+  };
+
   const handleLogout = () => {
     // Efface le token et redirige vers la page de connexion
     Cookie.remove('token');
     Cookie.remove('user_type');
-    router.push('/login');
+    setUserType(null); // Reset the userType state
+    closeProfileMenu();
+    router.push('/');
   };
 
   return (
@@ -95,10 +117,10 @@ const Navbar = () => {
               </button>
               {isProfileMenuOpen && (
                 <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-xl z-50">
-                  <Link href="/signup">
+                  <Link href="/signup" onClick={closeProfileMenu}>
                     <span className="block px-4 py-2 text-gray-800 hover:bg-gray-100 cursor-pointer">Inscription</span>
                   </Link>
-                  <Link href="/login">
+                  <Link href="/login" onClick={closeProfileMenu}>
                     <span className="block px-4 py-2 text-gray-800 hover:bg-gray-100 cursor-pointer">Connexion</span>
                   </Link>
                   <button
