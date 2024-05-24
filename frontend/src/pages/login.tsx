@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
-import { useRouter } from 'next/router'; // Importation du hook useRouter pour la redirection
-import InputGroup1 from '../components/InputGroup1'; 
+import { useRouter } from 'next/router';
+import InputGroup1 from '../components/InputGroup1';
 import Cookie from 'js-cookie';
-
 
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const router = useRouter(); // Création d'une instance du useRouter
+  const router = useRouter();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -18,36 +17,24 @@ export default function Login() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          email,
-          password
-        }),
+        body: JSON.stringify({ email, password }),
       });
 
       const data = await response.json();
 
       if (response.status === 200) {
         console.log('Login Successful', data);
-        // Sauvegarde du token dans les cookies
         Cookie.set('token', data.accessToken, { expires: 1, secure: true, sameSite: 'lax' });
-        console.log('Token stored:', Cookie.get('token')); // Afficher le token stocké
+        Cookie.set('user_type', data.user_type, { expires: 1, secure: true, sameSite: 'lax' });
+        console.log('Token stored:', Cookie.get('token')); 
 
-        // par exemple : router.push('/dashboard');
         if (data.user_type === 'admin') {
-          router.push('/admin_users'); // Redirection vers la page admin_users.tsx
+          router.push('/admin_users');
         } else {
-          // Redirection vers une page par défaut pour les utilisateurs non-admin
           router.push('/');
         }
-      } else if (response.status === 400) {
-        // Gérez le cas d'un mot de passe incorrect
-        alert(data.message);
-      } else if (response.status === 404) {
-        // Gérez le cas d'un utilisateur non trouvé
-        alert(data.message);
       } else {
-        // Gérez d'autres réponses inattendues
-        throw new Error('Une erreur s’est produite lors de la connexion.');
+        alert(data.message);
       }
     } catch (error) {
       console.error('Erreur:', error);

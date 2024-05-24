@@ -1,11 +1,23 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { FaUserCircle, FaBars } from 'react-icons/fa'; 
-import { useState } from 'react';
+import { FaUserCircle, FaBars } from 'react-icons/fa';
+import { useState, useEffect } from 'react';
+import Cookie from 'js-cookie';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
+  const [userType, setUserType] = useState<string | null>(null);
+
+  useEffect(() => {
+    const userTypeFromCookie = Cookie.get('user_type');
+    console.log('User type from cookie:', userTypeFromCookie); // Ajout d'un log
+    if (userTypeFromCookie) {
+      setUserType(userTypeFromCookie);
+    } else {
+      console.log('No user type found in cookie.');
+    }
+  }, []);
 
   const toggleMobileMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -28,16 +40,37 @@ const Navbar = () => {
               </Link>
             </div>
             <div className="hidden md:flex items-center space-x-1">
-              {/* Links for larger screens */}
-              <Link href="/logements">
-                <span className="py-4 px-2 text-gray-500 font-semibold hover:text-red-500 transition duration-300 cursor-pointer">Logements</span>
-              </Link>
-              <Link href="/experiences">
-                <span className="py-4 px-2 text-gray-500 font-semibold hover:text-red-500 transition duration-300 cursor-pointer">Expériences</span>
-              </Link>
-              <Link href="/online-experiences">
-                <span className="py-4 px-2 text-gray-500 font-semibold hover:text-red-500 transition duration-300 cursor-pointer">Expériences en ligne</span>
-              </Link>
+              {userType === 'admin' ? (
+                <>
+                  <Link href="/admin_users">
+                    <span className="py-4 px-2 text-gray-500 font-semibold hover:text-red-500 transition duration-300 cursor-pointer">Users</span>
+                  </Link>
+                  <Link href="/admin_contractor">
+                    <span className="py-4 px-2 text-gray-500 font-semibold hover:text-red-500 transition duration-300 cursor-pointer">Contractor</span>
+                  </Link>
+                  <Link href="/admin_booking">
+                    <span className="py-4 px-2 text-gray-500 font-semibold hover:text-red-500 transition duration-300 cursor-pointer">Booking</span>
+                  </Link>
+                  <Link href="/admin_host">
+                    <span className="py-4 px-2 text-gray-500 font-semibold hover:text-red-500 transition duration-300 cursor-pointer">Hosts</span>
+                  </Link>
+                  <Link href="/admin_property">
+                    <span className="py-4 px-2 text-gray-500 font-semibold hover:text-red-500 transition duration-300 cursor-pointer">Property</span>
+                  </Link>
+                </>
+              ) : (
+                <>
+                  <Link href="/logements">
+                    <span className="py-4 px-2 text-gray-500 font-semibold hover:text-red-500 transition duration-300 cursor-pointer">Logements</span>
+                  </Link>
+                  <Link href="/experiences">
+                    <span className="py-4 px-2 text-gray-500 font-semibold hover:text-red-500 transition duration-300 cursor-pointer">Expériences</span>
+                  </Link>
+                  <Link href="/online-experiences">
+                    <span className="py-4 px-2 text-gray-500 font-semibold hover:text-red-500 transition duration-300 cursor-pointer">Expériences en ligne</span>
+                  </Link>
+                </>
+              )}
             </div>
           </div>
           <div className="hidden md:flex items-center space-x-3">
@@ -73,16 +106,37 @@ const Navbar = () => {
       </div>
       {isMenuOpen && (
         <div className="md:hidden">
-          {/* Mobile menu */}
-          <Link href="/logements">
-            <span className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer">Logements</span>
-          </Link>
-          <Link href="/experiences">
-            <span className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer">Expériences</span>
-          </Link>
-          <Link href="/online-experiences">
-            <span className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer">Expériences en ligne</span>
-          </Link>
+          {userType === 'admin' ? (
+            <>
+              <Link href="/admin_users">
+                <span className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer">Users</span>
+              </Link>
+              <Link href="/admin_contractor">
+                <span className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer">Contractor</span>
+              </Link>
+              <Link href="/admin_booking">
+                <span className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer">Booking</span>
+              </Link>
+              <Link href="/admin_host">
+                <span className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer">Hosts</span>
+              </Link>
+              <Link href="/admin_property">
+                <span className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer">Property</span>
+              </Link>
+            </>
+          ) : (
+            <>
+              <Link href="/logements">
+                <span className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer">Logements</span>
+              </Link>
+              <Link href="/experiences">
+                <span className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer">Expériences</span>
+              </Link>
+              <Link href="/online-experiences">
+                <span className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer">Expériences en ligne</span>
+              </Link>
+            </>
+          )}
           <Link href="/host">
             <span className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer">Mettre mon logement sur PCS</span>
           </Link>
