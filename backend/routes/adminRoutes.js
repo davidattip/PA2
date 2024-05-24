@@ -102,4 +102,44 @@ router.put('/backoffice/users/:id', authenticateJWT, isAdmin, async (req, res) =
     }
 });
 
+// Route pour créer un nouvel administrateur
+router.post('/backoffice/users/admin', authenticateJWT, isAdmin, async (req, res) => {
+    const { first_name, last_name, email, user_type, password } = req.body;
+  
+    if (!first_name || !last_name || !email || !password) {
+      return res.status(400).json({ message: "Tous les champs obligatoires doivent être remplis." });
+    }
+  
+    try {
+      const existingUser = await User.findOne({ where: { email } });
+      if (existingUser) {
+        return res.status(400).json({ message: "Un utilisateur avec cet email existe déjà." });
+      }
+  
+      const password_hash = await bcrypt.hash(password, 10);
+  
+      const newUser = await User.create({
+        first_name,
+        last_name,
+        email,
+        user_type,
+        password_hash,
+      });
+  
+      res.status(201).json({
+        message: "Nouvel utilisateur créé avec succès.",
+        user: {
+          id: newUser.id,
+          first_name: newUser.first_name,
+          last_name: newUser.last_name,
+          email: newUser.email,
+          user_type: newUser.user_type,
+        },
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Erreur interne du serveur." });
+    }
+  });
+
 module.exports = router;

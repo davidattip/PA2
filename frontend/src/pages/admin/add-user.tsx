@@ -35,7 +35,7 @@ const AddUser = () => {
       if (!token) {
         throw new Error('No token found');
       }
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/admin/backoffice/users`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/admin/backoffice/users/admin`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
