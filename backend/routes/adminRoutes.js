@@ -1,5 +1,6 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
+const { Op } = require('sequelize'); // Importez Op pour les opérations de filtrage
 const User = require('../models/user');
 const { authenticateJWT } = require('../middleware/authenticateToken');
 const { isAdmin } = require('../middleware/roleMiddleware');
@@ -8,26 +9,31 @@ const router = express.Router();
 
 // S'assurer que la requête est d'abord passée par authenticateJWT puis par isAdmin.
 
-// 3 routes dans le fichier
-
-// Route pour afficher la liste des utilisateurs avec pagination
-
+// Route pour afficher la liste des utilisateurs avec pagination et recherche
 router.get('/backoffice/users', authenticateJWT, isAdmin, async (req, res) => {
-
-    // ajouter des paramètres de requête pour la page et la limite, avec des valeurs par défaut si elles ne sont pas fournies
     const page = parseInt(req.query.page) || 1;
     const limit = parseInt(req.query.limit) || 10;
     const offset = (page - 1) * limit;
+    const search = req.query.search || '';
 
     try {
+        // Ajoutez une condition de filtrage basée sur le paramètre de recherche
+        const whereCondition = search
+            ? {
+                  [Op.or]: [
+                      { first_name: { [Op.like]: `%${search}%` } },
+                      { last_name: { [Op.like]: `%${search}%` } },
+                      { email: { [Op.like]: `%${search}%` } },
+                  ],
+              }
+            : {};
+
         // On ne renvoit pas tous les utilisateurs, on pagine les résultats
         const users = await User.findAndCountAll({
             attributes: ['id', 'email', 'first_name', 'last_name', 'user_type'],
+            where: whereCondition,
             limit: limit,
-            offset: offset
-           // where: {
-                // On peut ajouter des conditions ici si nécessaire
-            //}
+            offset: offset,
         });
 
         const totalPages = Math.ceil(users.count / limit);
@@ -36,7 +42,7 @@ router.get('/backoffice/users', authenticateJWT, isAdmin, async (req, res) => {
         res.json({
             users: users.rows,
             totalPages: totalPages,
-            currentPage: page
+            currentPage: page,
         });
     } catch (error) {
         console.error(error);
@@ -66,8 +72,6 @@ router.get('/backoffice/users/:id', authenticateJWT, isAdmin, async (req, res) =
 });
 
 // Route pour modifier les informations d'un utilisateur par ID
-
-
 router.put('/backoffice/users/:id', authenticateJWT, isAdmin, async (req, res) => {
     const userId = req.params.id;
     const { first_name, last_name, email, user_type, password } = req.body;
@@ -130,6 +134,5 @@ router.post('/backoffice/add_admin', authenticateJWT, isAdmin, async (req, res) 
         res.status(500).send(error.message);
     }
 });
-
 
 module.exports = router;

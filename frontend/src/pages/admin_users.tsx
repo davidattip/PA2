@@ -6,6 +6,7 @@ type User = {
   user_type: string;
   email: string;
 };
+
 // admin_users.tsx
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
@@ -24,10 +25,10 @@ const AdminUsers = () => {
       if (!token) {
         console.error('Token is not available');
         // Gérer l'absence de token, par exemple rediriger vers la page de connexion
-      } else {
-        console.log('Token available: ', token);
-        // Votre code fetch existant ici
-      }
+        return;
+      } 
+      console.log('Token available: ', token);
+
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/admin/backoffice/users?page=${page}&limit=10&search=${search}`, {
         headers: {
           Authorization: `Bearer ${token}`, // Utilisation du token pour l'authentification
@@ -43,7 +44,6 @@ const AdminUsers = () => {
       console.error('Failed to fetch users:', error);
     }
   };
-  
 
   useEffect(() => {
     fetchUsers();
@@ -51,6 +51,18 @@ const AdminUsers = () => {
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(event.target.value);
+  };
+
+  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      setPage(1);
+      fetchUsers();
+    }
+  };
+
+  const handleSearchClick = () => {
+    setPage(1);
+    fetchUsers();
   };
 
   return (
@@ -76,19 +88,13 @@ const AdminUsers = () => {
               placeholder="Que recherchez-vous?"
               value={search}
               onChange={handleSearch}
-              onKeyPress={event => {
-                if (event.key === 'Enter') {
-                  setPage(1);
-                  fetchUsers();
-                }
-              }}
+              onKeyPress={handleKeyPress}
             />
             <div className="p-4">
-              <button className="bg-blue-500 text-white rounded-full p-2 hover:bg-blue-400 focus:outline-none w-12 h-12 flex items-center justify-center"
-                      onClick={() => {
-                        setPage(1);
-                        fetchUsers();
-                      }}>
+              <button 
+                className="bg-blue-500 text-white rounded-full p-2 hover:bg-blue-400 focus:outline-none w-12 h-12 flex items-center justify-center"
+                onClick={handleSearchClick}
+              >
                 <FaSearch />
               </button>
             </div>
