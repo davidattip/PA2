@@ -9,6 +9,7 @@ const Property = sequelize.define('Property', {
     location: DataTypes.STRING,
     price_per_night: DataTypes.DECIMAL,
     subscribed: DataTypes.BOOLEAN,
+    photos: DataTypes.TEXT, // Changez le type à TEXT
     image_validated: DataTypes.BOOLEAN,
     createdAt: DataTypes.DATE,
     updatedAt: DataTypes.DATE,

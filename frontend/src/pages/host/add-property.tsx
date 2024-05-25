@@ -9,7 +9,32 @@ const AddProperty = () => {
   const [description, setDescription] = useState('');
   const [location, setLocation] = useState('');
   const [pricePerNight, setPricePerNight] = useState('');
+  const [photos, setPhotos] = useState<FileList | null>(null);
   const router = useRouter();
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value, files } = e.target;
+    if (name === 'photos') {
+      setPhotos(files);
+    } else {
+      switch (name) {
+        case 'title':
+          setTitle(value);
+          break;
+        case 'description':
+          setDescription(value);
+          break;
+        case 'location':
+          setLocation(value);
+          break;
+        case 'pricePerNight':
+          setPricePerNight(value);
+          break;
+        default:
+          break;
+      }
+    }
+  };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -20,19 +45,24 @@ const AddProperty = () => {
       return;
     }
 
+    const formData = new FormData();
+    formData.append('title', title);
+    formData.append('description', description);
+    formData.append('location', location);
+    formData.append('price_per_night', pricePerNight);
+    if (photos) {
+      Array.from(photos).forEach(photo => {
+        formData.append('photos', photo);
+      });
+    }
+
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/host/properties`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/property/properties`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
+          'Authorization': `Bearer ${token}`,
         },
-        body: JSON.stringify({
-          title,
-          description,
-          location,
-          price_per_night: parseFloat(pricePerNight),
-        }),
+        body: formData,
       });
 
       if (response.ok) {
@@ -50,10 +80,20 @@ const AddProperty = () => {
     <div className="flex items-center justify-center min-h-screen">
       <div className="w-full max-w-md p-8 space-y-8 bg-white rounded shadow-lg">
         <form onSubmit={handleSubmit}>
-          <InputGroup name="title" label="Titre *" type="text" value={title} onChange={(e) => setTitle(e.target.value)} />
-          <InputGroup name="description" label="Description *" type="text" value={description} onChange={(e) => setDescription(e.target.value)} />
-          <InputGroup name="location" label="Lieu *" type="text" value={location} onChange={(e) => setLocation(e.target.value)} />
-          <InputGroup name="pricePerNight" label="Prix par nuit *" type="number" value={pricePerNight} onChange={(e) => setPricePerNight(e.target.value)} />
+          <InputGroup name="title" label="Titre *" type="text" value={title} onChange={handleChange} />
+          <InputGroup name="description" label="Description *" type="text" value={description} onChange={handleChange} />
+          <InputGroup name="location" label="Lieu *" type="text" value={location} onChange={handleChange} />
+          <InputGroup name="pricePerNight" label="Prix par nuit *" type="number" value={pricePerNight} onChange={handleChange} />
+          <div className="mb-4">
+            <label className="block text-gray-700">Photos *</label>
+            <input
+              type="file"
+              name="photos"
+              multiple
+              onChange={handleChange}
+              className="w-full px-3 py-2 border rounded"
+            />
+          </div>
           <button className="w-full px-3 py-2 bg-blue-600 text-white rounded hover:bg-blue-700" type="submit">Ajouter</button>
         </form>
       </div>

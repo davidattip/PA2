@@ -1,4 +1,3 @@
-// pages/host/properties.tsx
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Cookie from 'js-cookie';
@@ -14,13 +13,21 @@ const Properties = () => {
     } else {
       // Fetch properties using the token
       const fetchProperties = async () => {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/host/properties`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        const data = await response.json();
-        setProperties(data);
+        try {
+          const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/property/properties`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+          if (response.ok) {
+            const data = await response.json();
+            setProperties(data);
+          } else {
+            console.error('Failed to fetch properties');
+          }
+        } catch (error) {
+          console.error('Error fetching properties:', error);
+        }
       };
       fetchProperties();
     }
@@ -29,7 +36,10 @@ const Properties = () => {
   return (
     <div className="container mx-auto p-6">
       <h1 className="text-2xl font-semibold text-gray-700">Mes Propriétés</h1>
-      <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-5" onClick={() => router.push('/host/add-property')}>
+      <button
+        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-5"
+        onClick={() => router.push('/host/add-property')}
+      >
         Ajouter une propriété
       </button>
       <div className="mt-5">
@@ -41,6 +51,14 @@ const Properties = () => {
                 <p>{property.description}</p>
                 <p>Lieu: {property.location}</p>
                 <p>Prix par nuit: {property.price_per_night} €</p>
+                {property.photos && property.photos.split(',').map((photo, index) => (
+                  <img
+                    key={index}
+                    src={`${process.env.NEXT_PUBLIC_API_BASE_URL}/${photo}`}
+                    alt={`Photo de ${property.title}`}
+                    className="mt-2 w-full h-auto"
+                  />
+                ))}
               </li>
             ))}
           </ul>
