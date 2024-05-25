@@ -15,7 +15,8 @@ function MyApp({ Component, pageProps }: AppProps) {
     '/host/dashboard',
     '/host/properties',
     '/host/documents',
-    '/host/notifications'
+    '/host/notifications',
+    '/host/add-property'
   ];
 
   const isHostRoute = hostRoutes.includes(router.pathname);

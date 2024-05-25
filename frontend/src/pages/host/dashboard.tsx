@@ -1,10 +1,11 @@
-// pages/host/dashboard.tsx
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Cookie from 'js-cookie';
+import SimulationModal from '../../components/SimulationModal';
 
 const Dashboard = () => {
   const [user, setUser] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -26,6 +27,14 @@ const Dashboard = () => {
     }
   }, [router]);
 
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
   return (
     <div className="container mx-auto p-6">
       {user ? (
@@ -38,7 +47,11 @@ const Dashboard = () => {
             <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-4" onClick={() => router.push('/host/documents')}>
               Télécharger des documents
             </button>
+            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-4" onClick={openModal}>
+              Simuler un devis
+            </button>
           </div>
+          <SimulationModal isOpen={isModalOpen} onClose={closeModal} />
         </div>
       ) : (
         <p>Chargement...</p>
