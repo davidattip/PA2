@@ -16,6 +16,10 @@ function MyApp({ Component, pageProps }: AppProps) {
     '/host/properties',
     '/host/documents',
     '/host/notifications',
+    '/host/edit-property',
+    '/host/view-property',
+    '/host/add-availability',
+    '/host/edit-availability',
     '/host/add-property'
   ];
 
