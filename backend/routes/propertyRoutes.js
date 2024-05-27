@@ -1,4 +1,3 @@
-// routes/propertyRoutes.js
 const express = require('express');
 const { authenticateJWT } = require('../middleware/authenticateToken');
 const upload = require('../middleware/uploadMiddleware');
@@ -23,6 +22,16 @@ router.post('/properties', authenticateJWT, upload.array('photos', 4), async (re
     res.status(201).json(property);
   } catch (error) {
     res.status(500).json({ message: 'Erreur lors de la création du logement.' });
+  }
+});
+
+// Route pour récupérer toutes les propriétés sans authentification pour la page d'accueil
+router.get('/public/properties', async (req, res) => {
+  try {
+    const properties = await Property.findAll();
+    res.status(200).json(properties);
+  } catch (error) {
+    res.status(500).json({ message: 'Erreur lors de la récupération des logements.' });
   }
 });
 
@@ -147,9 +156,9 @@ router.put('/availabilities/:id', authenticateJWT, async (req, res) => {
       return res.status(404).json({ message: 'Disponibilité non trouvée.' });
     }
 
-    availability.start_date = start_date;
-    availability.end_date = end_date;
-    availability.total_price = total_price;
+    availability.start_date = new Date(start_date);
+    availability.end_date = new Date(end_date);
+    availability.total_price = parseFloat(total_price);
 
     await availability.save();
     res.status(200).json({ message: 'Disponibilité modifiée avec succès.' });
