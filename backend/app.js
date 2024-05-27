@@ -10,6 +10,7 @@ const adminRoutes = require('./routes/adminRoutes');
 const renterRoutes = require('./routes/renterRoutes');
 const hostRoutes = require('./routes/hostRoutes');
 const propertyRoutes = require('./routes/propertyRoutes');
+const bookingRoutes = require('./routes/bookingRoutes');
 
 app.use(helmet());
 app.use(cors({ 
@@ -35,6 +36,7 @@ app.use('/api/admin', adminRoutes);
 app.use('/api/renter', renterRoutes);
 app.use('/api/host', hostRoutes);
 app.use('/api/property', propertyRoutes);
+app.use('/api/bookings', bookingRoutes);
 
 app.use((err, req, res, next) => {
   console.error(err.stack);

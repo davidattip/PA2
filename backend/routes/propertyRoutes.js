@@ -4,12 +4,13 @@ const { authenticateJWT } = require('../middleware/authenticateToken');
 const upload = require('../middleware/uploadMiddleware');
 const Property = require('../models/property');
 const Availability = require('../models/availability');
+const Booking = require('../models/booking'); // Importez le modèle Booking
 
 const router = express.Router();
 
-router.post('/properties', authenticateJWT, upload.array('photos', 4), async (req, res) => { // Limite à 4 photos
+router.post('/properties', authenticateJWT, upload.array('photos', 4), async (req, res) => { 
   const { title, description, location, price_per_night } = req.body;
-  const photos = req.files.map(file => file.path).join(','); // Stocke les chemins des fichiers sous forme de chaîne de caractères
+  const photos = req.files.map(file => file.path).join(','); 
 
   try {
     const property = await Property.create({
@@ -89,7 +90,7 @@ router.get('/properties/:id', authenticateJWT, async (req, res) => {
   }
 });
 
-router.put('/properties/:id', authenticateJWT, upload.array('photos', 4), async (req, res) => { // Limite à 4 photos
+router.put('/properties/:id', authenticateJWT, upload.array('photos', 4), async (req, res) => { 
   const { id } = req.params;
   const { title, description, location, price_per_night } = req.body;
   const photos = req.files.map(file => file.path).join(',');
@@ -216,6 +217,25 @@ router.get('/availabilities/:id', authenticateJWT, async (req, res) => {
     res.status(200).json(availability);
   } catch (error) {
     res.status(500).json({ message: 'Erreur lors de la récupération de la disponibilité.' });
+  }
+});
+
+// Nouvelle route pour créer une réservation
+router.post('/booking', authenticateJWT, async (req, res) => {
+  const { property_id, start_date, end_date, total_price } = req.body;
+  const user_id = req.user.userId; // Récupérez l'ID de l'utilisateur à partir du token
+
+  try {
+    const booking = await Booking.create({
+      property_id,
+      user_id,
+      start_date: new Date(start_date),
+      end_date: new Date(end_date),
+      total_price: parseFloat(total_price),
+    });
+    res.status(201).json(booking);
+  } catch (error) {
+    res.status(500).json({ message: 'Erreur lors de la création de la réservation.' });
   }
 });
 

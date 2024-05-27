@@ -6,6 +6,9 @@ import Cookie from 'js-cookie';
 const PropertyDetail = () => {
   const [property, setProperty] = useState<any>(null);
   const [availabilities, setAvailabilities] = useState<any[]>([]);
+  const [startDate, setStartDate] = useState<string>('');
+  const [endDate, setEndDate] = useState<string>('');
+  const [totalPrice, setTotalPrice] = useState<number>(0);
   const router = useRouter();
   const { id } = router.query;
 
@@ -44,6 +47,50 @@ const PropertyDetail = () => {
     fetchAvailabilities();
   }, [id]);
 
+  const handleBooking = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    const token = Cookie.get('token');
+    if (!token) {
+      router.push('/login'); // Rediriger vers la page de connexion si l'utilisateur n'est pas connecté
+      return;
+    }
+
+    if (!startDate || !endDate) {
+      alert('Veuillez sélectionner des dates de début et de fin.');
+      return;
+    }
+
+    const formattedStartDate = new Date(startDate).toISOString();
+    const formattedEndDate = new Date(endDate).toISOString();
+    const calculatedTotalPrice = property.price_per_night * ((new Date(endDate).getTime() - new Date(startDate).getTime()) / (1000 * 3600 * 24));
+
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/property/booking`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          property_id: id,
+          start_date: formattedStartDate,
+          end_date: formattedEndDate,
+          total_price: calculatedTotalPrice,
+        }),
+      });
+
+      if (response.ok) {
+        alert('Réservation effectuée avec succès!');
+      } else {
+        alert('Erreur lors de la réservation.');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      alert('Une erreur s’est produite lors de la réservation.');
+    }
+  };
+
   if (!property) {
     return <p>Chargement...</p>;
   }
@@ -78,15 +125,25 @@ const PropertyDetail = () => {
           <div className="text-xl font-bold">
             <span className="line-through">414 €</span> 313 € par nuit
           </div>
-          <form>
+          <form onSubmit={handleBooking}>
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label>Arrivée</label>
-                <input type="date" className="w-full border px-3 py-2 rounded" />
+                <input
+                  type="date"
+                  className="w-full border px-3 py-2 rounded"
+                  value={startDate}
+                  onChange={(e) => setStartDate(e.target.value)}
+                />
               </div>
               <div>
                 <label>Départ</label>
-                <input type="date" className="w-full border px-3 py-2 rounded" />
+                <input
+                  type="date"
+                  className="w-full border px-3 py-2 rounded"
+                  value={endDate}
+                  onChange={(e) => setEndDate(e.target.value)}
+                />
               </div>
             </div>
             <div className="mt-4">
@@ -103,15 +160,15 @@ const PropertyDetail = () => {
           <div className="mt-4">
             <p className="text-gray-500">Aucun montant ne vous sera débité pour le moment</p>
             <div className="flex justify-between">
-              <span>313 € x 5 nuits</span>
-              <span>1567 €</span>
+              <span>{property.price_per_night} € x {Math.ceil((new Date(endDate).getTime() - new Date(startDate).getTime()) / (1000 * 3600 * 24))} nuits</span>
+              <span>{totalPrice} €</span>
             </div>
             <div className="flex justify-between">
               <span>Frais de ménage</span>
               <span>92 €</span>
             </div>
             <div className="flex justify-between">
-              <span>Frais de service Airbnb</span>
+              <span>Frais de service PCS</span>
               <span>304 €</span>
             </div>
             <div className="flex justify-between">
@@ -120,7 +177,7 @@ const PropertyDetail = () => {
             </div>
             <div className="flex justify-between font-bold">
               <span>Total</span>
-              <span>2328 €</span>
+              <span>{totalPrice + 92 + 304 + 365} €</span>
             </div>
           </div>
         </div>

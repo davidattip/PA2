@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import InputGroup1 from '../components/InputGroup1';
 import Cookie from 'js-cookie';
@@ -7,6 +7,14 @@ export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const router = useRouter();
+  const [redirectTo, setRedirectTo] = useState<string | null>(null);
+
+  useEffect(() => {
+    const { redirect } = router.query;
+    if (redirect) {
+      setRedirectTo(redirect as string);
+    }
+  }, [router.query]);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -26,9 +34,11 @@ export default function Login() {
         console.log('Login Successful', data);
         Cookie.set('token', data.accessToken, { expires: 1, secure: true, sameSite: 'lax' });
         Cookie.set('user_type', data.user_type, { expires: 1, secure: true, sameSite: 'lax' });
-        console.log('Token stored:', Cookie.get('token')); 
+        console.log('Token stored:', Cookie.get('token'));
 
-        if (data.user_type === 'admin') {
+        if (redirectTo) {
+          router.push(redirectTo);
+        } else if (data.user_type === 'admin') {
           router.push('/admin_users');
         } else {
           router.push('/');

@@ -17,21 +17,17 @@ const Navbar = () => {
     if (userTypeFromCookie) {
       setUserType(userTypeFromCookie);
     } else {
-      setUserType(null); // Reset user type if no user type is found in cookies
+      setUserType(null);
       console.log('No user type found in cookie.');
     }
   };
 
   useEffect(() => {
     updateUserTypeFromCookie();
-    // Listen for route changes to update the userType state
     const handleRouteChange = () => {
       updateUserTypeFromCookie();
     };
-
     router.events.on('routeChangeComplete', handleRouteChange);
-
-    // Clean up the event listener on component unmount
     return () => {
       router.events.off('routeChangeComplete', handleRouteChange);
     };
@@ -50,10 +46,9 @@ const Navbar = () => {
   };
 
   const handleLogout = () => {
-    // Efface le token et redirige vers la page de connexion
     Cookie.remove('token');
     Cookie.remove('user_type');
-    setUserType(null); // Reset the userType state
+    setUserType(null);
     closeProfileMenu();
     router.push('/');
   };
@@ -97,8 +92,8 @@ const Navbar = () => {
                   <Link href="/experiences">
                     <span className="py-4 px-2 text-gray-500 font-semibold hover:text-red-500 transition duration-300 cursor-pointer">Expériences</span>
                   </Link>
-                  <Link href="/online-experiences">
-                    <span className="py-4 px-2 text-gray-500 font-semibold hover:text-red-500 transition duration-300 cursor-pointer">Expériences en ligne</span>
+                  <Link href="/mon-espace">
+                    <span className="py-4 px-2 text-gray-500 font-semibold hover:text-red-500 transition duration-300 cursor-pointer">Mon espace</span>
                   </Link>
                 </>
               )}
@@ -169,8 +164,8 @@ const Navbar = () => {
               <Link href="/experiences">
                 <span className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer">Expériences</span>
               </Link>
-              <Link href="/online-experiences">
-                <span className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer">Expériences en ligne</span>
+              <Link href="/mon-espace">
+                <span className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer">Mon espace</span>
               </Link>
             </>
           )}
