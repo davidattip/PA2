@@ -12,7 +12,10 @@ const hostRoutes = require('./routes/hostRoutes');
 const propertyRoutes = require('./routes/propertyRoutes');
 
 app.use(helmet());
-app.use(cors({ origin: ['http://localhost:3000', 'http://127.0.0.1:3000'], credentials: true }));
+app.use(cors({ 
+  origin: ['http://localhost:3000', 'http://127.0.0.1:3000'], 
+  credentials: true 
+}));
 app.use(express.json());
 
 // Serve static files from the 'uploads' directory
@@ -34,17 +37,17 @@ app.use('/api/host', hostRoutes);
 app.use('/api/property', propertyRoutes);
 
 app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).send('Something broke!');
+  console.error(err.stack);
+  res.status(500).send('Something broke!');
 });
 
 const PORT = process.env.PORT || 3001;
 
 initDb().then(() => {
-    app.listen(PORT, () => {
-        console.log(`Server running on port ${PORT}`);
-    });
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
 }).catch(err => {
-    console.error('Failed to initialize database:', err);
-    process.exit(1);
+  console.error('Failed to initialize database:', err);
+  process.exit(1);
 });

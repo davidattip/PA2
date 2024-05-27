@@ -9,13 +9,13 @@ const AddProperty = () => {
   const [description, setDescription] = useState('');
   const [location, setLocation] = useState('');
   const [pricePerNight, setPricePerNight] = useState('');
-  const [photos, setPhotos] = useState<FileList | null>(null);
+  const [photos, setPhotos] = useState<File[]>([]);
   const router = useRouter();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, files } = e.target;
-    if (name === 'photos') {
-      setPhotos(files);
+    if (name === 'photos' && files) {
+      setPhotos([...photos, ...Array.from(files)].slice(0, 4)); // Limite à 4 photos
     } else {
       switch (name) {
         case 'title':
@@ -50,11 +50,9 @@ const AddProperty = () => {
     formData.append('description', description);
     formData.append('location', location);
     formData.append('price_per_night', pricePerNight);
-    if (photos) {
-      Array.from(photos).forEach(photo => {
-        formData.append('photos', photo);
-      });
-    }
+    photos.forEach(photo => {
+      formData.append('photos', photo);
+    });
 
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/property/properties`, {
@@ -85,11 +83,12 @@ const AddProperty = () => {
           <InputGroup name="location" label="Lieu *" type="text" value={location} onChange={handleChange} />
           <InputGroup name="pricePerNight" label="Prix par nuit *" type="number" value={pricePerNight} onChange={handleChange} />
           <div className="mb-4">
-            <label className="block text-gray-700">Photos *</label>
+            <label className="block text-gray-700">Photos (jusqu'à 4) *</label>
             <input
               type="file"
               name="photos"
               multiple
+              accept="image/*"
               onChange={handleChange}
               className="w-full px-3 py-2 border rounded"
             />

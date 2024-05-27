@@ -7,7 +7,7 @@ const Availability = require('../models/availability');
 
 const router = express.Router();
 
-router.post('/properties', authenticateJWT, upload.array('photos', 10), async (req, res) => {
+router.post('/properties', authenticateJWT, upload.array('photos', 4), async (req, res) => { // Limite à 4 photos
   const { title, description, location, price_per_night } = req.body;
   const photos = req.files.map(file => file.path).join(','); // Stocke les chemins des fichiers sous forme de chaîne de caractères
 
@@ -60,7 +60,7 @@ router.get('/properties/:id', authenticateJWT, async (req, res) => {
   }
 });
 
-router.put('/properties/:id', authenticateJWT, upload.array('photos', 10), async (req, res) => {
+router.put('/properties/:id', authenticateJWT, upload.array('photos', 4), async (req, res) => { // Limite à 4 photos
   const { id } = req.params;
   const { title, description, location, price_per_night } = req.body;
   const photos = req.files.map(file => file.path).join(',');
@@ -124,70 +124,70 @@ router.post('/availability', authenticateJWT, async (req, res) => {
 });
 
 router.get('/properties/:id/availabilities', authenticateJWT, async (req, res) => {
-    try {
-      const availabilities = await Availability.findAll({
-        where: {
-          property_id: req.params.id
-        }
-      });
-      res.status(200).json(availabilities);
-    } catch (error) {
-      res.status(500).json({ message: 'Erreur lors de la récupération des disponibilités.' });
-    }
-  });
-  
+  try {
+    const availabilities = await Availability.findAll({
+      where: {
+        property_id: req.params.id
+      }
+    });
+    res.status(200).json(availabilities);
+  } catch (error) {
+    res.status(500).json({ message: 'Erreur lors de la récupération des disponibilités.' });
+  }
+});
+
 // Modifier une disponibilité
 router.put('/availabilities/:id', authenticateJWT, async (req, res) => {
-    const { id } = req.params;
-    const { start_date, end_date, total_price } = req.body;
-  
-    try {
-      const availability = await Availability.findOne({ where: { id } });
-      if (!availability) {
-        return res.status(404).json({ message: 'Disponibilité non trouvée.' });
-      }
-  
-      availability.start_date = start_date;
-      availability.end_date = end_date;
-      availability.total_price = total_price;
-  
-      await availability.save();
-      res.status(200).json({ message: 'Disponibilité modifiée avec succès.' });
-    } catch (error) {
-      res.status(500).json({ message: 'Erreur lors de la modification de la disponibilité.' });
+  const { id } = req.params;
+  const { start_date, end_date, total_price } = req.body;
+
+  try {
+    const availability = await Availability.findOne({ where: { id } });
+    if (!availability) {
+      return res.status(404).json({ message: 'Disponibilité non trouvée.' });
     }
-  });
-  
-  // Supprimer une disponibilité
-  router.delete('/availabilities/:id', authenticateJWT, async (req, res) => {
-    const { id } = req.params;
-  
-    try {
-      const availability = await Availability.findOne({ where: { id } });
-      if (!availability) {
-        return res.status(404).json({ message: 'Disponibilité non trouvée.' });
-      }
-  
-      await availability.destroy();
-      res.status(200).json({ message: 'Disponibilité supprimée avec succès.' });
-    } catch (error) {
-      res.status(500).json({ message: 'Erreur lors de la suppression de la disponibilité.' });
+
+    availability.start_date = start_date;
+    availability.end_date = end_date;
+    availability.total_price = total_price;
+
+    await availability.save();
+    res.status(200).json({ message: 'Disponibilité modifiée avec succès.' });
+  } catch (error) {
+    res.status(500).json({ message: 'Erreur lors de la modification de la disponibilité.' });
+  }
+});
+
+// Supprimer une disponibilité
+router.delete('/availabilities/:id', authenticateJWT, async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const availability = await Availability.findOne({ where: { id } });
+    if (!availability) {
+      return res.status(404).json({ message: 'Disponibilité non trouvée.' });
     }
-  });
-  
+
+    await availability.destroy();
+    res.status(200).json({ message: 'Disponibilité supprimée avec succès.' });
+  } catch (error) {
+    res.status(500).json({ message: 'Erreur lors de la suppression de la disponibilité.' });
+  }
+});
+
 // Route pour récupérer une disponibilité spécifique
 router.get('/availabilities/:id', authenticateJWT, async (req, res) => {
-    const { id } = req.params;
-  
-    try {
-      const availability = await Availability.findOne({ where: { id } });
-      if (!availability) {
-        return res.status(404).json({ message: 'Disponibilité non trouvée.' });
-      }
-      res.status(200).json(availability);
-    } catch (error) {
-      res.status(500).json({ message: 'Erreur lors de la récupération de la disponibilité.' });
+  const { id } = req.params;
+
+  try {
+    const availability = await Availability.findOne({ where: { id } });
+    if (!availability) {
+      return res.status(404).json({ message: 'Disponibilité non trouvée.' });
     }
-  });
+    res.status(200).json(availability);
+  } catch (error) {
+    res.status(500).json({ message: 'Erreur lors de la récupération de la disponibilité.' });
+  }
+});
 
 module.exports = router;

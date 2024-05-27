@@ -90,6 +90,7 @@ const Properties = () => {
                 {property.photos && property.photos.split(',').map((photo, index) => (
                   <img
                     key={index}
+                    crossOrigin="anonymous"
                     src={`${process.env.NEXT_PUBLIC_API_BASE_URL}/${photo}`}
                     alt={`Photo de ${property.title}`}
                     className="mt-2 w-full h-auto"
