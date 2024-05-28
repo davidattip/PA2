@@ -11,16 +11,16 @@ const storage = multer.diskStorage({
   },
 });
 
-// Filtrage des fichiers pour accepter uniquement les images
+// Filtrage des fichiers pour accepter uniquement certains types
 const fileFilter = (req, file, cb) => {
-  const allowedFileTypes = /jpeg|jpg|png/;
+  const allowedFileTypes = /jpeg|jpg|png|pdf|doc|docx/;
   const extname = allowedFileTypes.test(path.extname(file.originalname).toLowerCase());
   const mimetype = allowedFileTypes.test(file.mimetype);
 
   if (extname && mimetype) {
     return cb(null, true);
   } else {
-    cb('Error: Images Only!');
+    cb('Error: Invalid file type!');
   }
 };
 
