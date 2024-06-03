@@ -2,6 +2,7 @@
 import '../styles/globals.css';
 import Navbar from '../components/Navbar';
 import HostNavbar from '../components/HostNavbar';
+import Footer from '../components/Footer';  // Importer le Footer
 import type { AppProps } from 'next/app';
 import { useRouter } from 'next/router';
 
@@ -26,10 +27,11 @@ function MyApp({ Component, pageProps }: AppProps) {
   const isHostRoute = hostRoutes.includes(router.pathname);
 
   return (
-    <>
-      {isHostRoute ? <HostNavbar /> : <Navbar />}
-      <Component {...pageProps} />
-    </>
+      <>
+        {isHostRoute ? <HostNavbar /> : <Navbar />}
+        <Component {...pageProps} />
+        <Footer />  {/* Ajouter le Footer ici */}
+      </>
   );
 }
 

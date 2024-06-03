@@ -21,6 +21,7 @@ const User = sequelize.define('User', {
     user_type: DataTypes.STRING // 'admin' ou 'renter'
 }, {
     // options de modèle ici
+
     timestamps: true, // Ajoute les champs `createdAt` et `updatedAt` automatiquement
     paranoid: true,  // Ajoute le champ `deletedAt` et n'efface pas réellement les données de la DB
 
