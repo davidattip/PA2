@@ -5,15 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="31d348cf-ab06-40aa-935e-8ff5b6ca50d4" name="Changes" comment="fixed URL in [id].tsx : /api/admin/backoffice/users">
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/Footer.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/pages/contractors.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/6745520c-8791-4c1e-9e56-b5169ff72ab1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/6745520c-8791-4c1e-9e56-b5169ff72ab1.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/models/user.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/models/user.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/node_modules/.package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/backend/node_modules/.package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/_app.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/_app.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/layout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/backend/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/package-lock.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/Footer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/Footer.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,7 +54,7 @@
   </component>
   <component name="PhpWorkspaceProjectConfiguration" interpreter_name="/opt/homebrew/Cellar/php/8.3.0/bin/php" />
   <component name="ProblemsViewState">
-    <option name="selectedTabId" value="CurrentFile" />
+    <option name="selectedTabId" value="ProjectErrors" />
   </component>
   <component name="ProjectId" id="2ehWHkaC02JMbziUzRJPNg9lobg" />
   <component name="ProjectLevelVcsManager">
@@ -75,11 +72,13 @@
     "git-widget-placeholder": "feature/prestataires",
     "last_opened_file_path": "/Users/davidvucong/PhpstormProjects/PA-PCS-2024",
     "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.standard": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.standard": "",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "reference.settingsdialog.project.grazie",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
     "ts.external.directory.path": "/Users/davidvucong/PhpstormProjects/PA-PCS-2024/frontend/node_modules/typescript/lib",
     "vue.rearranger.settings.migration": "true"
   },
@@ -110,7 +109,7 @@
       <workItem from="1713485646343" duration="20040000" />
       <workItem from="1713539825350" duration="700000" />
       <workItem from="1714044602520" duration="2870000" />
-      <workItem from="1716736968988" duration="11487000" />
+      <workItem from="1716736968988" duration="14861000" />
     </task>
     <servers />
   </component>
