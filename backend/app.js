@@ -11,6 +11,7 @@ const renterRoutes = require('./routes/renterRoutes');
 const hostRoutes = require('./routes/hostRoutes');
 const propertyRoutes = require('./routes/propertyRoutes');
 const bookingRoutes = require('./routes/bookingRoutes');
+const contractorRoutes = require('./routes/contractorRoutes');
 
 app.use(helmet());
 app.use(cors({ 

@@ -6,7 +6,7 @@ const { authenticateJWT } = require('../middleware/authenticateToken');
 
 const router = express.Router();
 
-const generateToken = (user) => {
+const generateUserToken = (user) => {
     return jwt.sign(
         { userId: user.id, email: user.email, user_type: user.user_type },
         process.env.ACCESS_TOKEN_SECRET,
@@ -43,7 +43,7 @@ router.post('/login', async (req, res) => {
             const validPassword = await bcrypt.compare(password, user.password_hash);
 
             if (validPassword) {
-                const token = generateToken(user);
+                const token = generateUserToken(user);
                 res.json({ accessToken: token, user_type: user.user_type });
                 console.log(token);
             } else {
