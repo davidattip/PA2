@@ -4,30 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="31d348cf-ab06-40aa-935e-8ff5b6ca50d4" name="Changes" comment="fixed URL in [id].tsx : /api/admin/backoffice/users">
-      <change afterPath="$PROJECT_DIR$/backend/routes/contractorRoutes.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/utils/generateContractorToken.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/utils/generateHostToken.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/NavbarContractor.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/pages/contractor/login.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/pages/contractor/register.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_26_05_2024,_17_07_[Changes]1/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_26_05_2024__17_07__Changes_1.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_26_05_2024,_16_53_[Changes]/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_26_05_2024__16_53__Changes_.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/middleware/authenticateToken.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/middleware/authenticateToken.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/middleware/roleMiddleware.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/middleware/roleMiddleware.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/models/host.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/models/host.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/routes/authRoutes.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/routes/authRoutes.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/routes/hostRoutes.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/routes/hostRoutes.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/Footer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/Footer.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/_app.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/_app.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/contractors.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/contractor/contractor_portal.tsx" afterDir="false" />
-    </list>
+    <list default="true" id="31d348cf-ab06-40aa-935e-8ff5b6ca50d4" name="Changes" comment="fixed URL in [id].tsx : /api/admin/backoffice/users" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -130,7 +107,7 @@
       <workItem from="1716736968988" duration="19031000" />
       <workItem from="1717973816393" duration="11841000" />
       <workItem from="1718635981461" duration="58000" />
-      <workItem from="1718636111543" duration="5354000" />
+      <workItem from="1718636111543" duration="6080000" />
     </task>
     <servers />
   </component>

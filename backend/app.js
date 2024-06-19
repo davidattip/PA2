@@ -12,8 +12,7 @@ const hostRoutes = require('./routes/hostRoutes');
 const propertyRoutes = require('./routes/propertyRoutes');
 const bookingRoutes = require('./routes/bookingRoutes');
 const contractorRoutes = require('./routes/contractorRoutes');
-
-//const documentRoutes = require('./routes/documentRoutes');>>>>>>> main
+const documentRoutes = require('./routes/documentRoutes');
 
 app.use(helmet());
 app.use(cors({ 
