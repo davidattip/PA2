@@ -3,16 +3,10 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { authenticateJWT } = require('../middleware/authenticateToken');
 const Host = require('../models/host');
+const { isHost } = require('../middleware/roleMiddleware');
+const generateHostToken = require('../utils/generateHostToken');
 
 const router = express.Router();
-
-const generateToken = (user) => {
-    return jwt.sign(
-        { userId: user.id, email: user.email, user_type: user.user_type },
-        process.env.ACCESS_TOKEN_SECRET,
-        { expiresIn: '24h' }
-    );
-};
 
 // Inscription
 router.post('/register', async (req, res) => {
@@ -20,7 +14,7 @@ router.post('/register', async (req, res) => {
     try {
         const hashedPassword = await bcrypt.hash(password, 10);
         const host = await Host.create({ email, password_hash: hashedPassword, first_name, last_name });
-        const token = generateToken(host); // Générer un token JWT
+        const token = generateHostToken(host); // Générer un token JWT
         res.status(201).json({ accessToken: token });
     } catch (error) {
         res.status(500).json({ message: 'Erreur interne du serveur.' });
@@ -35,7 +29,7 @@ router.post('/login', async (req, res) => {
         if (!host || !await bcrypt.compare(password, host.password_hash)) {
             return res.status(401).json({ message: 'Email ou mot de passe incorrect.' });
         }
-        const token = generateToken(host); // Générer un token JWT
+        const token = generateHostToken(host); // Générer un token JWT
         res.status(200).json({ accessToken: token });
     } catch (error) {
         res.status(500).json({ message: 'Erreur interne du serveur.' });
@@ -43,7 +37,7 @@ router.post('/login', async (req, res) => {
 });
 
 // Récupérer les infos du bailleur connecté
-router.get('/me', authenticateJWT, async (req, res) => {
+router.get('/me', authenticateJWT, isHost, async (req, res) => {
     try {
         const host = await Host.findByPk(req.user.userId, {
             attributes: ['id', 'email', 'first_name', 'last_name']
@@ -55,7 +49,7 @@ router.get('/me', authenticateJWT, async (req, res) => {
 });
 
 // Simulation de devis
-router.post('/simulation', authenticateJWT, async (req, res) => {
+router.post('/simulation', authenticateJWT, isHost, async (req, res) => {
     const { conciergeService, propertyAddress, propertyCountry, propertyType, rentalType, numBedrooms, guestCapacity, surfaceArea } = req.body;
     try {
         // Logique de simulation de devis ici

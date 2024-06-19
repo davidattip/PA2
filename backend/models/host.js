@@ -10,6 +10,9 @@ const Host = sequelize.define('Host', {
     password_hash: DataTypes.STRING,
     first_name: DataTypes.STRING,
     last_name: DataTypes.STRING,
+
+    user_type: DataTypes.STRING, // 'host'
+
     createdAt: DataTypes.DATE,
     updatedAt: DataTypes.DATE,
     deletedAt: DataTypes.DATE

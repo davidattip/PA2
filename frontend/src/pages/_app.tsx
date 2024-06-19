@@ -29,6 +29,8 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
       <>
         {isHostRoute ? <HostNavbar /> : <Navbar />}
+
+
         <Component {...pageProps} />
         <Footer />  {/* Ajouter le Footer ici */}
       </>
