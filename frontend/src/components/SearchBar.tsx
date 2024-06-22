@@ -1,7 +1,19 @@
-// components/SearchBar.tsx
-import React from 'react';
+import React, { useState } from 'react';
 
-const SearchBar = () => {
+interface SearchBarProps {
+  onSearch: (criteria: { destination: string; arrival: string; departure: string; guests: string }) => void;
+}
+
+const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
+  const [destination, setDestination] = useState('');
+  const [arrival, setArrival] = useState('');
+  const [departure, setDeparture] = useState('');
+  const [guests, setGuests] = useState('');
+
+  const handleSearch = () => {
+    onSearch({ destination, arrival, departure, guests });
+  };
+
   return (
     <div className="flex items-center justify-center">
       <div className="bg-white shadow-md rounded-full p-2 flex items-center">
@@ -11,6 +23,8 @@ const SearchBar = () => {
             type="text" 
             placeholder="Rechercher une destination" 
             className="w-full outline-none text-gray-700" 
+            value={destination}
+            onChange={(e) => setDestination(e.target.value)}
           />
         </div>
         <div className="border-l h-8"></div>
@@ -20,6 +34,8 @@ const SearchBar = () => {
             type="text" 
             placeholder="Quand ?" 
             className="w-full outline-none text-gray-700" 
+            value={arrival}
+            onChange={(e) => setArrival(e.target.value)}
           />
         </div>
         <div className="border-l h-8"></div>
@@ -29,6 +45,8 @@ const SearchBar = () => {
             type="text" 
             placeholder="Quand ?" 
             className="w-full outline-none text-gray-700" 
+            value={departure}
+            onChange={(e) => setDeparture(e.target.value)}
           />
         </div>
         <div className="border-l h-8"></div>
@@ -38,9 +56,11 @@ const SearchBar = () => {
             type="text" 
             placeholder="Ajouter des voyageurs" 
             className="w-full outline-none text-gray-700" 
+            value={guests}
+            onChange={(e) => setGuests(e.target.value)}
           />
         </div>
-        <button className="bg-pink-500 text-white p-2 rounded-full">
+        <button className="bg-pink-500 text-white p-2 rounded-full" onClick={handleSearch}>
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
           </svg>

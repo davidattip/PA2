@@ -1,8 +1,13 @@
+// pages/host/properties.tsx
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Cookie from 'js-cookie';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+import { Navigation, Pagination } from 'swiper/modules';
 
-// Définir une interface pour le type Property
 interface Property {
   id: number;
   title: string;
@@ -21,7 +26,6 @@ const Properties = () => {
     if (!token) {
       router.push('/host/login');
     } else {
-      // Fetch properties using the token
       const fetchProperties = async () => {
         try {
           const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/property/properties`, {
@@ -71,54 +75,64 @@ const Properties = () => {
 
   return (
     <div className="container mx-auto p-6">
-      <h1 className="text-2xl font-semibold text-gray-700">Mes Propriétés</h1>
+      <h1 className="text-3xl font-bold text-gray-700 mb-6">Mes Propriétés</h1>
       <button
-        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-5"
+        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-6"
         onClick={() => router.push('/host/add-property')}
       >
         Ajouter une propriété
       </button>
-      <div className="mt-5">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {properties.length > 0 ? (
-          <ul>
-            {properties.map((property) => (
-              <li key={property.id} className="border p-4 rounded mt-2">
-                <h2 className="text-xl font-semibold">{property.title}</h2>
-                <p>{property.description}</p>
-                <p>Lieu: {property.location}</p>
-                <p>Prix par nuit: {property.price_per_night} €</p>
+          properties.map((property) => (
+            <div key={property.id} className="bg-white rounded-lg shadow-lg overflow-hidden">
+              <Swiper
+                modules={[Navigation, Pagination]}
+                navigation
+                pagination={{ clickable: true }}
+                className="h-64"
+              >
                 {property.photos && property.photos.split(',').map((photo, index) => (
-                  <img
-                    key={index}
-                    crossOrigin="anonymous"
-                    src={`${process.env.NEXT_PUBLIC_API_BASE_URL}/${photo}`}
-                    alt={`Photo de ${property.title}`}
-                    className="mt-2 w-full h-auto"
-                  />
+                  <SwiperSlide key={index}>
+                    <img
+                      crossOrigin="anonymous"
+                      src={`${process.env.NEXT_PUBLIC_API_BASE_URL}/${photo}`}
+                      alt={`Photo de ${property.title}`}
+                      className="w-full h-full object-cover"
+                    />
+                  </SwiperSlide>
                 ))}
-                <button
-                  className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mt-2"
-                  onClick={() => router.push(`/host/edit-property?id=${property.id}`)}
-                >
-                  Modifier
-                </button>
-                <button
-                  className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mt-2"
-                  onClick={() => handleDelete(property.id)}
-                >
-                  Supprimer
-                </button>
-                <button
-                  className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded mt-2"
-                  onClick={() => router.push(`/host/view-property?id=${property.id}`)}
-                >
-                  Consulter
-                </button>
-              </li>
-            ))}
-          </ul>
+              </Swiper>
+              <div className="p-4">
+                <h2 className="text-2xl font-bold text-gray-800">{property.title}</h2>
+                <p className="text-gray-600 mt-2">{property.description}</p>
+                <p className="text-gray-600 mt-2">Lieu: {property.location}</p>
+                <p className="text-gray-600 mt-2">Prix par nuit: {property.price_per_night} €</p>
+                <div className="flex mt-4 space-x-2">
+                  <button
+                    className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+                    onClick={() => router.push(`/host/edit-property?id=${property.id}`)}
+                  >
+                    Modifier
+                  </button>
+                  <button
+                    className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+                    onClick={() => handleDelete(property.id)}
+                  >
+                    Supprimer
+                  </button>
+                  <button
+                    className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded"
+                    onClick={() => router.push(`/host/view-property?id=${property.id}`)}
+                  >
+                    Consulter
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))
         ) : (
-          <p>Vous n'avez pas encore ajouté de propriétés.</p>
+          <p className="text-gray-600">Vous n'avez pas encore ajouté de propriétés.</p>
         )}
       </div>
     </div>

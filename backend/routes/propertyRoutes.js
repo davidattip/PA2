@@ -157,7 +157,8 @@ router.get('/properties/:id/availabilities', authenticateJWT, async (req, res) =
   try {
     const availabilities = await Availability.findAll({
       where: {
-        property_id: req.params.id
+        property_id: req.params.id,
+        deletedAt: null // Ajouter cette condition pour exclure les disponibilités supprimées
       }
     });
     res.status(200).json(availabilities);
@@ -165,6 +166,7 @@ router.get('/properties/:id/availabilities', authenticateJWT, async (req, res) =
     res.status(500).json({ message: 'Erreur lors de la récupération des disponibilités.' });
   }
 });
+
 
 // Modifier une disponibilité
 router.put('/availabilities/:id', authenticateJWT, async (req, res) => {
@@ -210,7 +212,12 @@ router.get('/availabilities/:id', authenticateJWT, async (req, res) => {
   const { id } = req.params;
 
   try {
-    const availability = await Availability.findOne({ where: { id } });
+    const availability = await Availability.findOne({
+      where: {
+        id,
+        deletedAt: null // Ajouter cette condition pour exclure les disponibilités supprimées
+      }
+    });
     if (!availability) {
       return res.status(404).json({ message: 'Disponibilité non trouvée.' });
     }
@@ -219,6 +226,7 @@ router.get('/availabilities/:id', authenticateJWT, async (req, res) => {
     res.status(500).json({ message: 'Erreur lors de la récupération de la disponibilité.' });
   }
 });
+
 
 // Nouvelle route pour créer une réservation
 router.post('/booking', authenticateJWT, async (req, res) => {
