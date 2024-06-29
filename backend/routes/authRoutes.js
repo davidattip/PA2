@@ -40,6 +40,11 @@ router.post('/login', async (req, res) => {
         const user = await User.findOne({ where: { email } });
 
         if (user) {
+            // Vérifiez si l'utilisateur est banni
+            if (user.banned) {
+                return res.status(403).json({ message: 'Votre compte a été banni.' });
+            }
+
             const validPassword = await bcrypt.compare(password, user.password_hash);
 
             if (validPassword) {

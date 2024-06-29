@@ -18,14 +18,15 @@ const User = sequelize.define('User', {
     },
     first_name: DataTypes.STRING,
     last_name: DataTypes.STRING,
-    user_type: DataTypes.STRING // 'admin' ou 'renter'
+    user_type: DataTypes.STRING, // 'admin' ou 'renter'
+    banned: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false
+    }
 }, {
     // options de modèle ici
-
     timestamps: true, // Ajoute les champs `createdAt` et `updatedAt` automatiquement
     paranoid: true,  // Ajoute le champ `deletedAt` et n'efface pas réellement les données de la DB
-
 });
-// Synchronisation du modèle avec la base de données de fait dans initDb.js
 
 module.exports = User;

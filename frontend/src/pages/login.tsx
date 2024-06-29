@@ -6,6 +6,7 @@ import Cookie from 'js-cookie';
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
   const router = useRouter();
   const [redirectTo, setRedirectTo] = useState<string | null>(null);
 
@@ -44,11 +45,11 @@ export default function Login() {
           router.push('/');
         }
       } else {
-        alert(data.message);
+        setErrorMessage(data.message || 'Une erreur s’est produite lors de la connexion.');
       }
     } catch (error) {
       console.error('Erreur:', error);
-      alert('Une erreur s’est produite lors de la connexion.');
+      setErrorMessage('Une erreur s’est produite lors de la connexion.');
     }
   };
 
@@ -70,6 +71,9 @@ export default function Login() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
+          {errorMessage && (
+            <div className="text-red-500 text-sm mt-2">{errorMessage}</div>
+          )}
           <button
             className="w-full px-3 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
             type="submit"

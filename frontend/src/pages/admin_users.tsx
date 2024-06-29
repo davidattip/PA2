@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Cookie from 'js-cookie';
-import { FaSearch, FaUserEdit, FaUserTimes, FaUsersCog } from 'react-icons/fa';
+import { FaSearch, FaUserEdit, FaUserTimes, FaUsersCog, FaBan, FaUndo } from 'react-icons/fa';
 
 type User = {
   id: number;
@@ -9,6 +9,7 @@ type User = {
   first_name: string;
   user_type: string;
   email: string;
+  banned: boolean;
 };
 
 const AdminUsers = () => {
@@ -89,6 +90,60 @@ const AdminUsers = () => {
     }
   };
 
+  const handleBan = async (userId: number) => {
+    try {
+      const token = Cookie.get('token');
+      if (!token) {
+        console.error('Token is not available');
+        return;
+      }
+
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/admin/backoffice/users/${userId}/ban`, {
+        method: 'PATCH',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`Failed to ban user: ${response.status}`);
+      }
+
+      // Met à jour l'utilisateur localement après un bannissement réussi
+      setUsers(users.map(user => user.id === userId ? { ...user, banned: true } : user));
+      console.log(`User ${userId} banned successfully`);
+    } catch (error) {
+      console.error('Failed to ban user:', error);
+    }
+  };
+
+  const handleUnban = async (userId: number) => {
+    try {
+      const token = Cookie.get('token');
+      if (!token) {
+        console.error('Token is not available');
+        return;
+      }
+
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/admin/backoffice/users/${userId}/unban`, {
+        method: 'PATCH',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`Failed to unban user: ${response.status}`);
+      }
+
+      // Met à jour l'utilisateur localement après un débannissement réussi
+      setUsers(users.map(user => user.id === userId ? { ...user, banned: false } : user));
+      console.log(`User ${userId} unbanned successfully`);
+    } catch (error) {
+      console.error('Failed to unban user:', error);
+    }
+  };
+
   return (
     <div>
       <div className="container mx-auto p-6">
@@ -145,6 +200,11 @@ const AdminUsers = () => {
                       <button className="text-blue-400 hover:text-blue-600"><FaUserEdit /></button>
                     </Link>
                     <button onClick={() => handleDelete(user.id)} className="text-red-400 hover:text-red-600"><FaUserTimes /></button>
+                    {!user.banned ? (
+                      <button onClick={() => handleBan(user.id)} className="text-yellow-400 hover:text-yellow-600"><FaBan /></button>
+                    ) : (
+                      <button onClick={() => handleUnban(user.id)} className="text-green-400 hover:text-green-600"><FaUndo /></button>
+                    )}
                   </td>
                 </tr>
               ))}

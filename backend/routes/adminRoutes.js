@@ -30,7 +30,7 @@ router.get('/backoffice/users', authenticateJWT, isAdmin, async (req, res) => {
 
         // On ne renvoit pas tous les utilisateurs, on pagine les résultats
         const users = await User.findAndCountAll({
-            attributes: ['id', 'email', 'first_name', 'last_name', 'user_type'],
+            attributes: ['id', 'email', 'first_name', 'last_name', 'user_type', 'banned'],
             where: whereCondition,
             limit: limit,
             offset: offset,
@@ -56,7 +56,7 @@ router.get('/backoffice/users/:id', authenticateJWT, isAdmin, async (req, res) =
 
     try {
         const user = await User.findOne({
-            attributes: ['id', 'email', 'first_name', 'last_name', 'user_type'],
+            attributes: ['id', 'email', 'first_name', 'last_name', 'user_type', 'banned'],
             where: { id: userId }
         });
 
@@ -98,7 +98,8 @@ router.put('/backoffice/users/:id', authenticateJWT, isAdmin, async (req, res) =
                 first_name: user.first_name,
                 last_name: user.last_name,
                 email: user.email,
-                user_type: user.user_type
+                user_type: user.user_type,
+                banned: user.banned
             }
         });
     } catch (error) {
@@ -155,5 +156,46 @@ router.delete('/backoffice/users/:id', authenticateJWT, isAdmin, async (req, res
     }
 });
 
+// Route pour bannir un utilisateur par ID
+router.patch('/backoffice/users/:id/ban', authenticateJWT, isAdmin, async (req, res) => {
+    const userId = req.params.id;
+
+    try {
+        const user = await User.findOne({ where: { id: userId } });
+
+        if (!user) {
+            return res.status(404).json({ message: "Utilisateur non trouvé." });
+        }
+
+        user.banned = true;
+        await user.save();
+
+        res.status(200).json({ message: "Utilisateur banni avec succès." });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Erreur interne du serveur." });
+    }
+});
+
+// Route pour débannir un utilisateur par ID
+router.patch('/backoffice/users/:id/unban', authenticateJWT, isAdmin, async (req, res) => {
+    const userId = req.params.id;
+
+    try {
+        const user = await User.findOne({ where: { id: userId } });
+
+        if (!user) {
+            return res.status(404).json({ message: "Utilisateur non trouvé." });
+        }
+
+        user.banned = false;
+        await user.save();
+
+        res.status(200).json({ message: "Utilisateur débanni avec succès." });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Erreur interne du serveur." });
+    }
+});
 
 module.exports = router;
