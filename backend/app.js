@@ -13,15 +13,15 @@ const propertyRoutes = require('./routes/propertyRoutes');
 const bookingRoutes = require('./routes/bookingRoutes');
 const contractorRoutes = require('./routes/contractorRoutes');
 const documentRoutes = require('./routes/documentRoutes');
+const adminHostRoutes = require('./routes/adminHostRoutes');
 
 app.use(helmet());
-app.use(cors({ 
-  origin: ['http://localhost:3000', 'http://127.0.0.1:3000'], 
-  credentials: true 
+app.use(cors({
+  origin: ['http://localhost:3000', 'http://127.0.0.1:3000'],
+  credentials: true
 }));
 app.use(express.json());
 
-// Serve static files from the 'uploads' directory
 app.use('/uploads', express.static('uploads'));
 
 // Middleware pour ajouter des en-têtes CORS pour les fichiers statiques
@@ -40,6 +40,7 @@ app.use('/api/host', hostRoutes);
 app.use('/api/property', propertyRoutes);
 app.use('/api/bookings', bookingRoutes);
 app.use('/api/document', documentRoutes);
+app.use('/api/admin/hosts', adminHostRoutes);
 
 app.use((err, req, res, next) => {
   console.error(err.stack);

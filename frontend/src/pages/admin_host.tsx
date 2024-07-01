@@ -1,14 +1,14 @@
-// admin_hosts.tsx
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Cookie from 'js-cookie';
-import { FaSearch, FaEdit, FaTimes, FaPlusSquare } from 'react-icons/fa';
-// Définition du type pour les hôtes
+import { FaSearch, FaEdit, FaTimes, FaPlusSquare, FaBan, FaUndo } from 'react-icons/fa';
+
 type Host = {
   id: number;
   first_name: string;
   last_name: string;
-  
+  email: string;
+  banned: boolean;
 };
 
 const AdminHosts = () => {
@@ -19,9 +19,15 @@ const AdminHosts = () => {
 
   const fetchHosts = async () => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/backoffice/hosts?page=${page}&limit=10&search=${search}`, {
+      const token = Cookie.get('token');
+      if (!token) {
+        console.error('Token is not available');
+        return;
+      }
+
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/admin/hosts/backoffice/hosts?page=${page}&limit=10&search=${search}`, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem('token_admin')}`
+          Authorization: `Bearer ${token}`
         }
       });
       if (!response.ok) {
@@ -43,14 +49,105 @@ const AdminHosts = () => {
     setSearch(event.target.value);
   };
 
+  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      setPage(1);
+      fetchHosts();
+    }
+  };
+
+  const handleSearchClick = () => {
+    setPage(1);
+    fetchHosts();
+  };
+
+  const handleDelete = async (hostId: number) => {
+    try {
+      const token = Cookie.get('token');
+      if (!token) {
+        console.error('Token is not available');
+        return;
+      }
+
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/admin/hosts/backoffice/hosts/${hostId}`, {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error(`Failed to delete host: ${response.status}`);
+      }
+
+      setHosts(hosts.filter(host => host.id !== hostId));
+      console.log(`Host ${hostId} deleted successfully`);
+    } catch (error) {
+      console.error('Failed to delete host:', error);
+    }
+  };
+
+  const handleBan = async (hostId: number) => {
+    try {
+      const token = Cookie.get('token');
+      if (!token) {
+        console.error('Token is not available');
+        return;
+      }
+
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/admin/hosts/backoffice/hosts/${hostId}/ban`, {
+        method: 'PATCH',
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error(`Failed to ban host: ${response.status}`);
+      }
+
+      setHosts(hosts.map(host => host.id === hostId ? { ...host, banned: true } : host));
+      console.log(`Host ${hostId} banned successfully`);
+    } catch (error) {
+      console.error('Failed to ban host:', error);
+    }
+  };
+
+  const handleUnban = async (hostId: number) => {
+    try {
+      const token = Cookie.get('token');
+      if (!token) {
+        console.error('Token is not available');
+        return;
+      }
+
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/admin/hosts/backoffice/hosts/${hostId}/unban`, {
+        method: 'PATCH',
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error(`Failed to unban host: ${response.status}`);
+      }
+
+      setHosts(hosts.map(host => host.id === hostId ? { ...host, banned: false } : host));
+      console.log(`Host ${hostId} unbanned successfully`);
+    } catch (error) {
+      console.error('Failed to unban host:', error);
+    }
+  };
+
   return (
     <div>
       <div className="container mx-auto p-6">
-        <div className="mb-5">
+        <div className="mb-5 flex justify-between items-center">
           <h1 className="text-2xl font-semibold text-gray-700">Liste des Hosts</h1>
-          <Link href="/admin/add-host">
+          <Link href="/admin/add-host" passHref>
             <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded flex items-center">
-              <FaPlusSquare className="mr-2" />Ajouter Host
+              <FaPlusSquare className="mr-2" />
+              Ajouter Host
             </button>
           </Link>
         </div>
@@ -63,19 +160,13 @@ const AdminHosts = () => {
               placeholder="Recherche..."
               value={search}
               onChange={handleSearch}
-              onKeyPress={event => {
-                if (event.key === 'Enter') {
-                  setPage(1);
-                  fetchHosts();
-                }
-              }}
+              onKeyPress={handleKeyPress}
             />
             <div className="p-4">
-              <button className="bg-blue-500 text-white rounded-full p-2 hover:bg-blue-400 focus:outline-none w-12 h-12 flex items-center justify-center"
-                      onClick={() => {
-                        setPage(1);
-                        fetchHosts();
-                      }}>
+              <button
+                className="bg-blue-500 text-white rounded-full p-2 hover:bg-blue-400 focus:outline-none w-12 h-12 flex items-center justify-center"
+                onClick={handleSearchClick}
+              >
                 <FaSearch />
               </button>
             </div>
@@ -87,6 +178,7 @@ const AdminHosts = () => {
               <tr>
                 <th className="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Prénom</th>
                 <th className="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Nom</th>
+                <th className="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Email</th>
                 <th className="py-4 px-6 bg-grey-lightest font-bold uppercase text-sm text-grey-dark border-b border-grey-light">Actions</th>
               </tr>
             </thead>
@@ -95,13 +187,17 @@ const AdminHosts = () => {
                 <tr className="hover:bg-grey-lighter" key={host.id}>
                   <td className="py-4 px-6 border-b border-grey-light">{host.first_name}</td>
                   <td className="py-4 px-6 border-b border-grey-light">{host.last_name}</td>
+                  <td className="py-4 px-6 border-b border-grey-light">{host.email}</td>
                   <td className="py-4 px-6 border-b border-grey-light flex space-x-2">
-                    <Link href={`/admin/edit-host/${host.id}`}>
+                    <Link href={`/admin/edit-host/${host.id}`} passHref>
                       <button className="text-blue-400 hover:text-blue-600"><FaEdit /></button>
                     </Link>
-                    <Link href={`/admin/delete-host/${host.id}`}>
-                      <button className="text-red-400 hover:text-red-600"><FaTimes /></button>
-                    </Link>
+                    <button onClick={() => handleDelete(host.id)} className="text-red-400 hover:text-red-600"><FaTimes /></button>
+                    {!host.banned ? (
+                      <button onClick={() => handleBan(host.id)} className="text-yellow-400 hover:text-yellow-600"><FaBan /></button>
+                    ) : (
+                      <button onClick={() => handleUnban(host.id)} className="text-green-400 hover:text-green-600"><FaUndo /></button>
+                    )}
                   </td>
                 </tr>
               ))}
@@ -125,4 +221,3 @@ const AdminHosts = () => {
 };
 
 export default AdminHosts;
-
