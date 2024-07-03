@@ -2,6 +2,9 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 const { Op } = require('sequelize');
 const Host = require('../models/host');
+const PersonalDocument = require('../models/PersonalDocument');
+const Property = require('../models/property');
+const PropertyDocument = require('../models/PropertyDocument');
 const { authenticateJWT } = require('../middleware/authenticateToken');
 const { isAdmin } = require('../middleware/roleMiddleware');
 
@@ -60,6 +63,38 @@ router.get('/backoffice/hosts/:id', authenticateJWT, isAdmin, async (req, res) =
     }
 
     res.status(200).json(host);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Erreur interne du serveur.' });
+  }
+});
+
+// Route pour obtenir les documents personnels d'un hôte par ID
+router.get('/backoffice/hosts/:id/documents', authenticateJWT, isAdmin, async (req, res) => {
+  const hostId = req.params.id;
+
+  try {
+    const documents = await PersonalDocument.findAll({
+      where: { user_id: hostId },
+    });
+
+    res.status(200).json(documents);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Erreur interne du serveur.' });
+  }
+});
+
+// Route pour obtenir les propriétés d'un hôte par ID
+router.get('/backoffice/hosts/:id/properties', authenticateJWT, isAdmin, async (req, res) => {
+  const hostId = req.params.id;
+
+  try {
+    const properties = await Property.findAll({
+      where: { host_id: hostId },
+    });
+
+    res.status(200).json(properties);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Erreur interne du serveur.' });

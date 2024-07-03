@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Cookie from 'js-cookie';
-import { FaSearch, FaEdit, FaTimes, FaPlusSquare, FaBan, FaUndo } from 'react-icons/fa';
+import { FaSearch, FaEdit, FaTimes, FaPlusSquare, FaBan, FaUndo, FaEye } from 'react-icons/fa';
 
 type Host = {
   id: number;
@@ -189,8 +189,11 @@ const AdminHosts = () => {
                   <td className="py-4 px-6 border-b border-grey-light">{host.last_name}</td>
                   <td className="py-4 px-6 border-b border-grey-light">{host.email}</td>
                   <td className="py-4 px-6 border-b border-grey-light flex space-x-2">
-                    <Link href={`/admin/edit-host/${host.id}`} passHref>
+                    <Link href={`/adminHost/edit-host/${host.id}`} passHref>
                       <button className="text-blue-400 hover:text-blue-600"><FaEdit /></button>
+                    </Link>
+                    <Link href={`/adminHost/view-host/${host.id}`} passHref>
+                      <button className="text-green-400 hover:text-green-600"><FaEye /></button>
                     </Link>
                     <button onClick={() => handleDelete(host.id)} className="text-red-400 hover:text-red-600"><FaTimes /></button>
                     {!host.banned ? (

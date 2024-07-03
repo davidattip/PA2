@@ -1,4 +1,3 @@
-// routes/documentRoutes.js
 const express = require('express');
 const { authenticateJWT } = require('../middleware/authenticateToken');
 const upload = require('../middleware/uploadMiddleware');
@@ -74,6 +73,26 @@ router.get('/property-documents/:property_id', authenticateJWT, async (req, res)
         res.status(200).json(documents);
     } catch (error) {
         res.status(500).json({ message: 'Erreur lors de la récupération des documents de la propriété.', error });
+    }
+});
+
+router.patch('/personal-documents/:document_id/validate', authenticateJWT, async (req, res) => {
+    const { document_id } = req.params;
+    const { is_valid } = req.body;
+
+    try {
+        const document = await PersonalDocument.findByPk(document_id);
+
+        if (!document) {
+            return res.status(404).json({ message: 'Document non trouvé.' });
+        }
+
+        document.is_valid = is_valid;
+        await document.save();
+
+        res.status(200).json({ message: 'Document validé avec succès.', document });
+    } catch (error) {
+        res.status(500).json({ message: 'Erreur lors de la validation du document.', error });
     }
 });
 

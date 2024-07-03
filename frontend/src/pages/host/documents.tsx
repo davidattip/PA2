@@ -1,4 +1,3 @@
-// pages/host/documents.tsx
 import React, { useState, useEffect, ChangeEvent, FormEvent } from 'react';
 import { useRouter } from 'next/router';
 import Cookie from 'js-cookie';
@@ -12,6 +11,7 @@ interface Document {
   id: string;
   document_type: string;
   file_path: string;
+  is_valid: boolean | null;
 }
 
 const Documents: React.FC = () => {
@@ -210,6 +210,9 @@ const Documents: React.FC = () => {
               <a href={`${process.env.NEXT_PUBLIC_API_BASE_URL}/${doc.file_path}`} target="_blank" rel="noopener noreferrer">
                 {doc.document_type}
               </a>
+              <span className="ml-2">
+                {doc.is_valid === null ? 'En attente de validation' : doc.is_valid ? 'Validé' : 'Non validé'}
+              </span>
             </li>
           ))}
         </ul>
@@ -256,7 +259,6 @@ const Documents: React.FC = () => {
               className="w-full px-3 py-2 border rounded"
             />
           </div>
-          {/* Ajoutez d'autres champs de documents ici */}
           <button className="w-full px-3 py-2 bg-blue-600 text-white rounded hover:bg-blue-700" type="submit">Télécharger</button>
         </form>
         <h3 className="text-xl font-semibold mt-8">Documents de Propriété Transmis</h3>
@@ -266,6 +268,9 @@ const Documents: React.FC = () => {
               <a href={`${process.env.NEXT_PUBLIC_API_BASE_URL}/${doc.file_path}`} target="_blank" rel="noopener noreferrer">
                 {doc.document_type}
               </a>
+              <span className="ml-2">
+                {doc.is_valid === null ? 'En attente de validation' : doc.is_valid ? 'Validé' : 'Non validé'}
+              </span>
             </li>
           ))}
         </ul>

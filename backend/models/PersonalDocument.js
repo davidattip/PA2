@@ -1,4 +1,3 @@
-// models/PersonalDocument.js
 const { DataTypes } = require('sequelize');
 const sequelize = require('./sequelize');
 
@@ -14,6 +13,10 @@ const PersonalDocument = sequelize.define('PersonalDocument', {
     file_path: {
         type: DataTypes.STRING,
         allowNull: false,
+    },
+    is_valid: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: null,
     },
     createdAt: {
         type: DataTypes.DATE,

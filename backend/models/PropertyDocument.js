@@ -1,4 +1,3 @@
-// models/PropertyDocument.js
 const { DataTypes } = require('sequelize');
 const sequelize = require('./sequelize');
 
@@ -14,6 +13,10 @@ const PropertyDocument = sequelize.define('PropertyDocument', {
     file_path: {
         type: DataTypes.STRING,
         allowNull: false,
+    },
+    is_valid: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: null,
     },
     createdAt: {
         type: DataTypes.DATE,
