@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 const { authenticateJWT } = require('../middleware/authenticateToken');
+const { sendEmail } = require('../utils/emailService');
 
 const router = express.Router();
 
@@ -14,6 +15,7 @@ const generateUserToken = (user) => {
     );
 };
 
+// Enregistrement de l'utilisateur avec vérification par e-mail
 router.post('/register', async (req, res) => {
     try {
         const { email, password, first_name, last_name } = req.body;
@@ -26,13 +28,20 @@ router.post('/register', async (req, res) => {
             last_name,
             user_type
         });
-        res.status(201).send({ message: "User created successfully", userId: user.id, email: user.email });
+
+        const token = generateUserToken(user);
+        const verificationUrl = `${process.env.FRONTEND_URL}/verify-email?token=${token}`;
+
+        await sendEmail(email, 'Vérification de votre compte', `Veuillez vérifier votre compte en cliquant sur le lien suivant: ${verificationUrl}`);
+
+        res.status(201).send({ message: "Utilisateur créé avec succès, veuillez vérifier votre e-mail.", userId: user.id, email: user.email });
     } catch (error) {
         console.error(error);
         res.status(500).send(error.message);
     }
 });
 
+// Connexion de l'utilisateur
 router.post('/login', async (req, res) => {
     const { email, password } = req.body;
 
@@ -43,6 +52,11 @@ router.post('/login', async (req, res) => {
             // Vérifiez si l'utilisateur est banni
             if (user.banned) {
                 return res.status(403).json({ message: 'Votre compte a été banni.' });
+            }
+
+            // Vérifiez si l'utilisateur a vérifié son e-mail
+            if (!user.email_verified) {
+                return res.status(403).json({ message: 'Veuillez vérifier votre e-mail avant de vous connecter.' });
             }
 
             const validPassword = await bcrypt.compare(password, user.password_hash);
@@ -63,6 +77,7 @@ router.post('/login', async (req, res) => {
     }
 });
 
+// Endpoint pour récupérer les informations de l'utilisateur authentifié
 router.get('/me', authenticateJWT, async (req, res) => {
     try {
         const user = await User.findByPk(req.user.userId, {
@@ -71,6 +86,75 @@ router.get('/me', authenticateJWT, async (req, res) => {
         res.json(user);
     } catch (error) {
         res.status(500).json({ message: 'Erreur interne du serveur.' });
+    }
+});
+
+// Endpoint pour vérifier l'e-mail
+router.get('/verify-email', async (req, res) => {
+    const token = req.query.token;
+
+    try {
+        const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+        const user = await User.findByPk(decoded.userId);
+
+        if (!user) {
+            return res.status(404).send("Utilisateur non trouvé.");
+        }
+
+        user.email_verified = true;
+        await user.save();
+
+        res.status(200).send("Email vérifié avec succès.");
+    } catch (error) {
+        console.error("Erreur de vérification de l'e-mail:", error);
+        res.status(400).send("Lien de vérification invalide ou expiré.");
+    }
+});
+
+// Endpoint pour la réinitialisation du mot de passe
+router.post('/forgot-password', async (req, res) => {
+    const { email } = req.body;
+
+    try {
+        const user = await User.findOne({ where: { email } });
+
+        if (!user) {
+            return res.status(404).send("Utilisateur non trouvé.");
+        }
+
+        const token = generateUserToken(user);
+        const resetUrl = `${process.env.FRONTEND_URL}/reset-password?token=${token}`;
+
+        await sendEmail(email, 'Réinitialisation de votre mot de passe', `Réinitialisez votre mot de passe en cliquant sur le lien suivant: ${resetUrl}`);
+
+        res.status(200).send({ message: "E-mail de réinitialisation de mot de passe envoyé avec succès." });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Erreur lors de l'envoi de l'e-mail de réinitialisation de mot de passe.");
+    }
+});
+
+// Endpoint pour le changement de mot de passe
+router.post('/reset-password', async (req, res) => {
+    const { token, newPassword } = req.body;
+
+    try {
+        const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+
+        const user = await User.findOne({ where: { id: decoded.userId, email: decoded.email } });
+
+        if (!user) {
+            return res.status(404).send("Utilisateur non trouvé.");
+        }
+
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
+        user.password_hash = hashedPassword;
+        await user.save();
+
+        res.status(200).send({ message: "Mot de passe réinitialisé avec succès." });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Erreur lors de la réinitialisation du mot de passe.");
     }
 });
 

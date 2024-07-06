@@ -1,9 +1,7 @@
-//  /models/user.js
 const { DataTypes } = require('sequelize');
-const sequelize = require('./sequelize'); // Mise à jour du chemin pour le fichier sequelize.js dans le même dossier
+const sequelize = require('./sequelize');
 
 const User = sequelize.define('User', {
-    // Attributs de modèle ici
     email: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -22,11 +20,15 @@ const User = sequelize.define('User', {
     banned: {
         type: DataTypes.BOOLEAN,
         defaultValue: false
-    }
+    },
+    email_verified: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+    },
+    email_verification_token: DataTypes.STRING,
 }, {
-    // options de modèle ici
-    timestamps: true, // Ajoute les champs `createdAt` et `updatedAt` automatiquement
-    paranoid: true,  // Ajoute le champ `deletedAt` et n'efface pas réellement les données de la DB
+    timestamps: true,
+    paranoid: true,
 });
 
 module.exports = User;

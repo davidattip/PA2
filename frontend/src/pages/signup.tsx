@@ -1,21 +1,18 @@
 import React, { useState } from 'react';
-import InputGroup1 from '../components/InputGroup1'; // Assurez-vous que le chemin d'importation est correct
+import InputGroup1 from '../components/InputGroup1';
 
 export default function Signup() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
+  const [message, setMessage] = useState('');
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    // Affichez l'URL complète dans la console avant de faire la requête
-    const apiUrl = `${process.env.NEXT_PUBLIC_API_BASE_URL}/api/auth/register`;
-    console.log('API URL:', apiUrl);
-
     try {
-      const response = await fetch(apiUrl, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/auth/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -30,13 +27,13 @@ export default function Signup() {
 
       const data = await response.json();
       if (response.status === 201) {
-        console.log('Success:', data);
-        // Redirect or handle success
+        setMessage('Inscription réussie. Veuillez vérifier votre e-mail pour activer votre compte.');
       } else {
         throw new Error(data.message || 'Erreur lors de la création de l’utilisateur.');
       }
     } catch (error) {
       console.error('Erreur:', error);
+      setMessage('Erreur lors de l\'inscription. Veuillez réessayer.');
     }
   };
 
@@ -74,13 +71,18 @@ export default function Signup() {
             className="w-full px-3 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
             type="submit"
           >
-            S&apos;inscrire
+            S'inscrire
           </button>
           <p className="mt-4 text-center">
             <a href="/login" className="text-blue-600 hover:underline">
-              Vous avez déjà un compte?
+              Vous avez déjà un compte? Connexion
             </a>
           </p>
+          {message && (
+            <div className="mt-4 text-center text-green-500">
+              {message}
+            </div>
+          )}
         </form>
       </div>
     </div>

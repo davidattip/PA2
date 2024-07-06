@@ -32,10 +32,10 @@ export default function Login() {
       const data = await response.json();
 
       if (response.status === 200) {
-        console.log('Login Successful', data);
+        console.log('Connexion réussie', data);
         Cookie.set('token', data.accessToken, { expires: 1, secure: true, sameSite: 'lax' });
         Cookie.set('user_type', data.user_type, { expires: 1, secure: true, sameSite: 'lax' });
-        console.log('Token stored:', Cookie.get('token'));
+        console.log('Token stocké:', Cookie.get('token'));
 
         if (redirectTo) {
           router.push(redirectTo);
@@ -83,6 +83,11 @@ export default function Login() {
           <p className="mt-4 text-center">
             <a href="/signup" className="text-blue-600 hover:underline">
               Pas encore inscrit? Créer un compte
+            </a>
+          </p>
+          <p className="mt-4 text-center">
+            <a href="/forgot-password" className="text-blue-600 hover:underline">
+              Mot de passe oublié?
             </a>
           </p>
         </form>
