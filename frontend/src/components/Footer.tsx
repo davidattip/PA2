@@ -9,6 +9,9 @@ const Footer: React.FC = () => {
                     <Link href="/contractor/contractor_portal" className="text-gray-600 hover:text-red-500 transition duration-300">
                         Portal for Contractors
                     </Link>
+                    <Link href="/ticketing/choose_role" className="text-gray-600 hover:text-red-500 transition duration-300">
+                        Portal for Ticketing
+                    </Link>
                 </div>
             </div>
         </footer>

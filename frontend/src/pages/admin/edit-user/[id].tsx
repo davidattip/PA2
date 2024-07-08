@@ -55,7 +55,7 @@ const EditUser = () => {
       (Object.keys(user) as (keyof User)[]).forEach(key => {
         if (user[key] !== initialUser[key]) {
           if (user[key] !== undefined) {
-            updatedFields[key] = user[key]!;
+            updatedFields[key] = user[key] as any;
           }
         }
       });

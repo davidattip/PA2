@@ -1,3 +1,4 @@
+// app.js
 require('dotenv').config();
 const express = require('express');
 const initDb = require('./initDb');
@@ -14,6 +15,7 @@ const bookingRoutes = require('./routes/bookingRoutes');
 const contractorRoutes = require('./routes/contractorRoutes');
 const documentRoutes = require('./routes/documentRoutes');
 const adminHostRoutes = require('./routes/adminHostRoutes');
+const ticketRoutes = require('./routes/ticketRoutes');
 
 app.use(helmet());
 app.use(cors({
@@ -41,6 +43,7 @@ app.use('/api/property', propertyRoutes);
 app.use('/api/bookings', bookingRoutes);
 app.use('/api/document', documentRoutes);
 app.use('/api/admin/hosts', adminHostRoutes);
+app.use('/api/ticket', ticketRoutes);
 
 app.use((err, req, res, next) => {
   console.error(err.stack);

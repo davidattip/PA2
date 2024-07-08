@@ -1,13 +1,51 @@
-// pages/host/view-property.tsx
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/router';
 import Cookie from 'js-cookie';
+import { Calendar, momentLocalizer } from 'react-big-calendar';
+import moment from 'moment';
+import 'react-big-calendar/lib/css/react-big-calendar.css';
+import Modal from 'react-modal';
+import flatpickr from 'flatpickr';
+import { French } from 'flatpickr/dist/l10n/fr.js';
+import 'flatpickr/dist/flatpickr.min.css';
 
-const ViewProperty = () => {
-  const [property, setProperty] = useState<any>(null);
-  const [availabilities, setAvailabilities] = useState<any[]>([]);
+const localizer = momentLocalizer(moment);
+
+interface Property {
+  id: number;
+  title: string;
+  description: string;
+  location: string;
+  price_per_night: number;
+  photos: string;
+}
+
+interface Availability {
+  id: number;
+  start_date: string;
+  end_date: string;
+  total_price: number;
+}
+
+interface CustomEvent {
+  id: number;
+  title: string;
+  start: Date;
+  end: Date;
+  allDay: boolean;
+}
+
+const ViewProperty: React.FC = () => {
+  const [property, setProperty] = useState<Property | null>(null);
+  const [availabilities, setAvailabilities] = useState<Availability[]>([]);
+  const [selectedEvent, setSelectedEvent] = useState<CustomEvent | null>(null);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const startDateRef = useRef<HTMLInputElement>(null);
+  const endDateRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
   const { id } = router.query;
+
+  Modal.setAppElement('#__next');
 
   useEffect(() => {
     const token = Cookie.get('token');
@@ -55,39 +93,152 @@ const ViewProperty = () => {
     }
   }, [id, router]);
 
-  const handleDelete = async (availabilityId: number) => {
-    const token = Cookie.get('token');
-    if (!token) {
-      router.push('/host/login');
-      return;
-    }
+  const handleDelete = async () => {
+    if (selectedEvent) {
+      const token = Cookie.get('token');
+      if (!token) {
+        router.push('/host/login');
+        return;
+      }
 
-    try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/property/availabilities/${availabilityId}`, {
-        method: 'DELETE',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+      try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/property/availabilities/${selectedEvent.id}`, {
+          method: 'DELETE',
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (response.ok) {
+          setAvailabilities(availabilities.filter(a => a.id !== selectedEvent.id));
+          closeModal();
+        } else {
+          alert('Erreur lors de la suppression de la disponibilité.');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        alert('Une erreur s’est produite lors de la suppression de la disponibilité.');
+      }
+    }
+  };
+
+  const openModal = (event: CustomEvent) => {
+    setSelectedEvent(event);
+    setModalIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalIsOpen(false);
+    setSelectedEvent(null);
+  };
+
+  const handleSave = async () => {
+    if (selectedEvent) {
+      const token = Cookie.get('token');
+      if (!token) {
+        router.push('/host/login');
+        return;
+      }
+
+      const startDate = startDateRef.current?.value;
+      const endDate = endDateRef.current?.value;
+
+      if (!startDate || !endDate) {
+        alert('Veuillez sélectionner des dates de début et de fin.');
+        return;
+      }
+
+      const parsedStartDate = new Date(startDate);
+      const parsedEndDate = new Date(endDate);
+
+      if (isNaN(parsedStartDate.getTime()) || isNaN(parsedEndDate.getTime())) {
+        alert('Veuillez sélectionner des dates valides.');
+        return;
+      }
+
+      const today = new Date();
+      if (parsedStartDate < today) {
+        alert('La date de début ne peut pas être antérieure à la date du jour.');
+        return;
+      }
+
+      if (parsedEndDate < parsedStartDate) {
+        alert('La date de fin ne peut pas être antérieure à la date de début.');
+        return;
+      }
+
+      const isConflict = availabilities.some(availability => {
+        if (availability.id === selectedEvent.id) return false;
+        const existingStartDate = new Date(availability.start_date);
+        const existingEndDate = new Date(availability.end_date);
+        return (parsedStartDate <= existingEndDate && parsedEndDate >= existingStartDate);
       });
 
-      if (response.ok) {
-        setAvailabilities(availabilities.filter(a => a.id !== availabilityId));
-      } else {
-        alert('Erreur lors de la suppression de la disponibilité.');
+      if (isConflict) {
+        alert('Les dates sélectionnées se chevauchent avec des disponibilités existantes.');
+        return;
       }
-    } catch (error) {
-      console.error('Error:', error);
-      alert('Une erreur s’est produite lors de la suppression de la disponibilité.');
+
+      try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/property/availabilities/${selectedEvent.id}`, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ start_date: startDate, end_date: endDate }),
+        });
+
+        if (response.ok) {
+          setAvailabilities(availabilities.map(a => a.id === selectedEvent.id ? { ...a, start_date: startDate, end_date: endDate } : a));
+          closeModal();
+        } else {
+          alert('Erreur lors de la mise à jour de la disponibilité.');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        alert('Une erreur s’est produite lors de la mise à jour de la disponibilité.');
+      }
     }
   };
 
-  const handleEdit = (availabilityId: number) => {
-    router.push(`/host/edit-availability?id=${availabilityId}&propertyId=${id}`);
-  };
+  useEffect(() => {
+    if (modalIsOpen) {
+      setTimeout(() => {
+        flatpickr(startDateRef.current!, {
+          locale: French,
+          dateFormat: "Y-m-d",
+          minDate: "today",
+          defaultDate: selectedEvent?.start,
+          onChange: (selectedDates) => {
+            const selectedStartDate = selectedDates[0];
+            if (selectedStartDate) {
+              (endDateRef.current as any)._flatpickr.set('minDate', selectedStartDate);
+            }
+          }
+        });
+
+        flatpickr(endDateRef.current!, {
+          locale: French,
+          dateFormat: "Y-m-d",
+          minDate: "today",
+          defaultDate: selectedEvent?.end
+        });
+      }, 0);
+    }
+  }, [modalIsOpen, selectedEvent]);
 
   if (!property) {
     return <p>Chargement...</p>;
   }
+
+  const events: CustomEvent[] = availabilities.map(availability => ({
+    id: availability.id,
+    title: '',  // Empty title to hide the text
+    start: new Date(availability.start_date),
+    end: new Date(availability.end_date),
+    allDay: true,
+  }));
 
   return (
     <div className="container mx-auto p-6">
@@ -114,37 +265,83 @@ const ViewProperty = () => {
       </button>
       <div className="mt-8">
         <h2 className="text-2xl font-semibold text-gray-800 mb-4">Disponibilités</h2>
-        {availabilities.length > 0 ? (
-          <div className="space-y-4">
-            {availabilities.map((availability) => (
-              <div key={availability.id} className="border p-4 rounded-lg shadow-sm bg-white">
-                <div className="flex justify-between items-center">
-                  <div>
-                    <p className="text-gray-700"><span className="font-semibold">Début:</span> {new Date(availability.start_date).toLocaleDateString()}</p>
-                    <p className="text-gray-700"><span className="font-semibold">Fin:</span> {new Date(availability.end_date).toLocaleDateString()}</p>
-                    <p className="text-gray-700"><span className="font-semibold">Prix total:</span> {availability.total_price} €</p>
-                  </div>
-                  <div className="flex space-x-2">
-                    <button
-                      className="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded"
-                      onClick={() => handleEdit(availability.id)}
-                    >
-                      Modifier
-                    </button>
-                    <button
-                      className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-                      onClick={() => handleDelete(availability.id)}
-                    >
-                      Supprimer
-                    </button>
-                  </div>
-                </div>
-              </div>
-            ))}
+        <Calendar
+          localizer={localizer}
+          events={events}
+          startAccessor={(event: CustomEvent) => new Date(event.start)}
+          endAccessor={(event: CustomEvent) => new Date(event.end)}
+          style={{ height: 500 }}
+          onSelectEvent={openModal}
+          eventPropGetter={() => ({
+            style: {
+              backgroundColor: 'green',
+              color: 'white',
+              border: 'none',
+              display: 'block',
+              width: '100%',
+              height: '100%',
+              position: 'relative',
+            },
+          })}
+        />
+        <Modal
+          isOpen={modalIsOpen}
+          onRequestClose={closeModal}
+          contentLabel="Modifier la disponibilité"
+          style={{
+            overlay: {
+              backgroundColor: 'rgba(0, 0, 0, 0.75)',
+              zIndex: 1000,
+            },
+            content: {
+              maxWidth: '500px',
+              margin: 'auto',
+              padding: '20px',
+              borderRadius: '8px',
+              zIndex: 1001,
+            },
+          }}
+        >
+          <h2>Modifier la disponibilité</h2>
+          <label>
+            Date de début:
+            <input
+              type="text"
+              ref={startDateRef}
+              className="block w-full mt-1 border-gray-300 rounded-md shadow-sm"
+            />
+          </label>
+          <label className="mt-4">
+            Date de fin:
+            <input
+              type="text"
+              ref={endDateRef}
+              className="block w-full mt-1 border-gray-300 rounded-md shadow-sm"
+            />
+          </label>
+          <div className="mt-6 flex justify-between">
+            <button
+              onClick={handleDelete}
+              className="bg-red-600 hover:bg-red-800 text-white font-semibold py-2 px-4 rounded"
+            >
+              Supprimer
+            </button>
+            <div>
+              <button
+                onClick={closeModal}
+                className="bg-gray-500 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded mr-2"
+              >
+                Annuler
+              </button>
+              <button
+                onClick={handleSave}
+                className="bg-blue-600 hover:bg-blue-800 text-white font-semibold py-2 px-4 rounded"
+              >
+                Enregistrer
+              </button>
+            </div>
           </div>
-        ) : (
-          <p className="text-gray-700">Aucune disponibilité ajoutée.</p>
-        )}
+        </Modal>
       </div>
     </div>
   );

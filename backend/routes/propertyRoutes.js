@@ -1,4 +1,3 @@
-// routes/propertyRoutes.js
 const express = require('express');
 const { authenticateJWT } = require('../middleware/authenticateToken');
 const upload = require('../middleware/uploadMiddleware');
@@ -167,9 +166,8 @@ router.get('/properties/:id/availabilities', authenticateJWT, async (req, res) =
   }
 });
 
-
 // Modifier une disponibilité
-router.put('/availabilities/:id', authenticateJWT, async (req, res) => {
+router.patch('/availabilities/:id', authenticateJWT, async (req, res) => {
   const { id } = req.params;
   const { start_date, end_date, total_price } = req.body;
 
@@ -226,7 +224,6 @@ router.get('/availabilities/:id', authenticateJWT, async (req, res) => {
     res.status(500).json({ message: 'Erreur lors de la récupération de la disponibilité.' });
   }
 });
-
 
 // Nouvelle route pour créer une réservation
 router.post('/booking', authenticateJWT, async (req, res) => {
