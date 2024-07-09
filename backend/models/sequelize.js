@@ -1,3 +1,4 @@
+// models/sequelize.js
 require('dotenv').config();
 const { Sequelize } = require('sequelize');
 
@@ -12,4 +13,4 @@ const sequelize = new Sequelize(
         dialect: 'mysql'          // Dialecte
     }
 );
-module.exports = sequelize; 
+module.exports = sequelize;

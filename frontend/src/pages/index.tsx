@@ -14,6 +14,12 @@ interface Property {
   location: string;
   price_per_night: number;
   photos: string;
+  availabilities?: Availability[];
+}
+
+interface Availability {
+  start_date: string;
+  end_date: string;
 }
 
 const Home: React.FC = () => {
@@ -49,7 +55,18 @@ const Home: React.FC = () => {
       );
     }
 
-    // Add additional filtering logic for arrival, departure, and guests if needed
+    if (criteria.arrival && criteria.departure) {
+      const arrivalDate = new Date(criteria.arrival);
+      const departureDate = new Date(criteria.departure);
+
+      filtered = filtered.filter(property => 
+        property.availabilities && property.availabilities.some(availability => {
+          const availabilityStart = new Date(availability.start_date);
+          const availabilityEnd = new Date(availability.end_date);
+          return arrivalDate >= availabilityStart && departureDate <= availabilityEnd;
+        })
+      );
+    }
 
     setFilteredProperties(filtered);
   };

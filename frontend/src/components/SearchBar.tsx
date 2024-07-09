@@ -1,4 +1,8 @@
-import React, { useState } from 'react';
+// components/SearchBar.tsx
+import React, { useState, useRef, useEffect } from 'react';
+import flatpickr from 'flatpickr';
+import 'flatpickr/dist/flatpickr.min.css';
+import { French } from 'flatpickr/dist/l10n/fr.js';
 
 interface SearchBarProps {
   onSearch: (criteria: { destination: string; arrival: string; departure: string; guests: string }) => void;
@@ -6,11 +10,37 @@ interface SearchBarProps {
 
 const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
   const [destination, setDestination] = useState('');
-  const [arrival, setArrival] = useState('');
-  const [departure, setDeparture] = useState('');
   const [guests, setGuests] = useState('');
+  const arrivalRef = useRef<HTMLInputElement>(null);
+  const departureRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (arrivalRef.current && departureRef.current) {
+      flatpickr(arrivalRef.current, {
+        locale: French,
+        dateFormat: "Y-m-d",
+        minDate: "today",
+        onChange: (selectedDates, dateStr) => {
+          if (selectedDates.length > 0) {
+            flatpickr(departureRef.current!, {
+              locale: French,
+              dateFormat: "Y-m-d",
+              minDate: dateStr,
+            });
+          }
+        },
+      });
+      flatpickr(departureRef.current, {
+        locale: French,
+        dateFormat: "Y-m-d",
+        minDate: "today",
+      });
+    }
+  }, []);
 
   const handleSearch = () => {
+    const arrival = arrivalRef.current ? arrivalRef.current.value : '';
+    const departure = departureRef.current ? departureRef.current.value : '';
     onSearch({ destination, arrival, departure, guests });
   };
 
@@ -34,8 +64,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
             type="text" 
             placeholder="Quand ?" 
             className="w-full outline-none text-gray-700" 
-            value={arrival}
-            onChange={(e) => setArrival(e.target.value)}
+            ref={arrivalRef}
           />
         </div>
         <div className="border-l h-8"></div>
@@ -45,8 +74,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
             type="text" 
             placeholder="Quand ?" 
             className="w-full outline-none text-gray-700" 
-            value={departure}
-            onChange={(e) => setDeparture(e.target.value)}
+            ref={departureRef}
           />
         </div>
         <div className="border-l h-8"></div>

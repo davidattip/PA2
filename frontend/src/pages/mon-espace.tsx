@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Cookie from 'js-cookie';
+import MainLayout from '../components/MainLayout';
 
 const MonEspace = () => {
   const [userInfo, setUserInfo] = useState<any>(null);
@@ -60,7 +61,7 @@ const MonEspace = () => {
   }
 
   return (
-    <div className="container mx-auto p-6">
+    <MainLayout>
       <h1 className="text-2xl font-semibold text-gray-700">Mon Espace</h1>
       <div className="mt-4">
         <h2 className="text-xl font-semibold">Informations Personnelles</h2>
@@ -71,7 +72,7 @@ const MonEspace = () => {
         <h2 className="text-xl font-semibold">Mes Réservations</h2>
         <ul>
           {bookings.map((booking) => (
-            <li key={booking.id} className="border p-4 rounded mt-2">
+            <li key={booking.id} className="border p-4 rounded mt-2 bg-white">
               <p>Propriété ID: {booking.property_id}</p>
               <p>Date de début: {new Date(booking.start_date).toLocaleDateString()}</p>
               <p>Date de fin: {new Date(booking.end_date).toLocaleDateString()}</p>
@@ -80,7 +81,7 @@ const MonEspace = () => {
           ))}
         </ul>
       </div>
-    </div>
+    </MainLayout>
   );
 };
 
