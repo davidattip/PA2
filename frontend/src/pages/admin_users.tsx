@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Cookie from 'js-cookie';
-import { FaSearch, FaUserEdit, FaUserTimes, FaUsersCog, FaBan, FaUndo } from 'react-icons/fa';
+import { FaSearch, FaUserEdit, FaUserTimes, FaUsersCog, FaBan, FaUndo, FaEye } from 'react-icons/fa'; // Ajoutez FaEye
 
 type User = {
   id: number;
@@ -82,7 +82,6 @@ const AdminUsers = () => {
         throw new Error(`Failed to delete user: ${response.status}`);
       }
 
-      // Supprime l'utilisateur de la liste locale après une suppression réussie
       setUsers(users.filter(user => user.id !== userId));
       console.log(`User ${userId} deleted successfully`);
     } catch (error) {
@@ -109,7 +108,6 @@ const AdminUsers = () => {
         throw new Error(`Failed to ban user: ${response.status}`);
       }
 
-      // Met à jour l'utilisateur localement après un bannissement réussi
       setUsers(users.map(user => user.id === userId ? { ...user, banned: true } : user));
       console.log(`User ${userId} banned successfully`);
     } catch (error) {
@@ -136,7 +134,6 @@ const AdminUsers = () => {
         throw new Error(`Failed to unban user: ${response.status}`);
       }
 
-      // Met à jour l'utilisateur localement après un débannissement réussi
       setUsers(users.map(user => user.id === userId ? { ...user, banned: false } : user));
       console.log(`User ${userId} unbanned successfully`);
     } catch (error) {
@@ -198,6 +195,9 @@ const AdminUsers = () => {
                   <td className="py-4 px-6 border-b border-grey-light flex space-x-2">
                     <Link href={`/admin/edit-user/${user.id}`} passHref>
                       <button className="text-blue-400 hover:text-blue-600"><FaUserEdit /></button>
+                    </Link>
+                    <Link href={`/admin/view-user/${user.id}`} passHref>
+                      <button className="text-green-400 hover:text-green-600"><FaEye /></button>
                     </Link>
                     <button onClick={() => handleDelete(user.id)} className="text-red-400 hover:text-red-600"><FaUserTimes /></button>
                     {!user.banned ? (
