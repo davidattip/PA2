@@ -61,4 +61,19 @@ router.get('/me', authenticateJWT, isContractor, async (req, res) => {
     }
 });
 
+router.post('/setCompany', authenticateJWT, isContractor, async (req, res) => {
+    const { company_siret } = req.body;
+    try {
+        const contractor = await Contractor.findByPk(req.user.userId);
+        if (!contractor) {
+            return res.status(404).json({ message: 'Contractor not found.' });
+        }
+        contractor.siret = company_siret;
+        await contractor.save();
+        res.status(200).json({ message: 'Company set successfully.' });
+    } catch (error) {
+        res.status(500).json({ message: 'Erreur interne du serveur.' });
+    }
+});
+
 module.exports = router;

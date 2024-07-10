@@ -9,25 +9,34 @@ const authRoutes = require('./routes/authRoutes');
 const adminRoutes = require('./routes/adminRoutes');
 const renterRoutes = require('./routes/renterRoutes');
 const hostRoutes = require('./routes/hostRoutes');
+const documentRoutes = require('./routes/documentRoutes');
 const propertyRoutes = require('./routes/propertyRoutes');
 const bookingRoutes = require('./routes/bookingRoutes');
 const contractorRoutes = require('./routes/contractorRoutes');
-const documentRoutes = require('./routes/documentRoutes');
+const companyRoutes = require('./routes/companyRoutes');
 const adminHostRoutes = require('./routes/adminHostRoutes');
 const ticketRoutes = require('./routes/ticketRoutes');
 
 app.use(helmet());
+
+
+//Configurer le serveur backend pour accepter les requêtes de l'émulateur Android :
+// également autoriser les requêtes provenant de
+// l'émulateur Android (qui utilise 10.0.2.2 pour accéder à l'hôte)
+
 app.use(cors({
-  origin: ['http://localhost:3000', 'http://127.0.0.1:3000'],
+  origin: ['http://localhost:3000', 'http://127.0.0.1:3000', 'http://10.0.2.2:3000'],
   credentials: true
 }));
+
 app.use(express.json());
 
+// Serve static files from the 'uploads' directory
 app.use('/uploads', express.static('uploads'));
 
 // Middleware pour ajouter des en-têtes CORS pour les fichiers statiques
 app.use('/uploads', (req, res, next) => {
-  res.header('Access-Control-Allow-Origin', 'http://localhost:3000, http://127.0.0.1:3000');
+  res.header('Access-Control-Allow-Origin', 'http://localhost:3000, http://127.0.0.1:3000, http://10.0.2.2:3000');
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
   res.header('Access-Control-Allow-Credentials', 'true');
@@ -41,6 +50,8 @@ app.use('/api/host', hostRoutes);
 app.use('/api/property', propertyRoutes);
 app.use('/api/bookings', bookingRoutes);
 app.use('/api/document', documentRoutes);
+app.use('/api/contractor', contractorRoutes);
+app.use('/api/companies', companyRoutes);
 app.use('/api/admin/hosts', adminHostRoutes);
 app.use('/api/ticket', ticketRoutes);
 
@@ -52,7 +63,7 @@ app.use((err, req, res, next) => {
 const PORT = process.env.PORT || 3001;
 
 initDb().then(() => {
-  app.listen(PORT, () => {
+  app.listen(PORT, '0.0.0.0', () => {  // Écoutez sur toutes les interfaces réseau
     console.log(`Server running on port ${PORT}`);
   });
 }).catch(err => {
