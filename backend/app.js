@@ -7,6 +7,7 @@ const helmet = require('helmet');
 
 const authRoutes = require('./routes/authRoutes');
 const adminRoutes = require('./routes/adminRoutes');
+const adminUserRoutes = require('./routes/adminUserRoutes'); // Ajoutez cette ligne
 const renterRoutes = require('./routes/renterRoutes');
 const hostRoutes = require('./routes/hostRoutes');
 const documentRoutes = require('./routes/documentRoutes');
@@ -45,6 +46,7 @@ app.use('/uploads', (req, res, next) => {
 
 app.use('/api/auth', authRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/admin', adminUserRoutes); // Ajoutez cette ligne
 app.use('/api/renter', renterRoutes);
 app.use('/api/host', hostRoutes);
 app.use('/api/property', propertyRoutes);
