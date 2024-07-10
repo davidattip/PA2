@@ -11,7 +11,7 @@ interface Availability {
   end_date: string;
 }
 
-const AddAvailability = () => {
+const AddAvailability: React.FC = () => {
   const [totalPrice, setTotalPrice] = useState('');
   const [availabilities, setAvailabilities] = useState<Availability[]>([]);
   const router = useRouter();
@@ -25,7 +25,7 @@ const AddAvailability = () => {
         locale: French,
         dateFormat: "d/m/Y",
         minDate: "today",
-        plugins: [rangePlugin({ input: endDateRef.current as HTMLElement })]
+        plugins: [rangePlugin({ input: endDateRef.current as HTMLInputElement })]
       });
     }
   }, []);
@@ -127,45 +127,45 @@ const AddAvailability = () => {
   };
 
   return (
-      <div className="flex items-center justify-center min-h-screen bg-gray-100">
-        <div className="w-full max-w-md p-8 space-y-8 bg-white rounded shadow-lg">
-          <form onSubmit={handleSubmit}>
-            <div className="mb-4">
-              <label className="block text-gray-700">Date de début *</label>
-              <input
-                  type="text"
-                  id="startDate"
-                  ref={startDateRef}
-                  className="w-full px-3 py-2 border rounded"
-                  placeholder="Sélectionner la date de début"
-              />
-            </div>
-            <div className="mb-4">
-              <label className="block text-gray-700">Date de fin *</label>
-              <input
-                  type="text"
-                  id="endDate"
-                  ref={endDateRef}
-                  className="w-full px-3 py-2 border rounded"
-                  placeholder="Sélectionner la date de fin"
-              />
-            </div>
-            <div className="mb-4">
-              <label className="block text-gray-700">Prix total *</label>
-              <input
-                  type="number"
-                  name="totalPrice"
-                  value={totalPrice}
-                  onChange={(e) => setTotalPrice(e.target.value)}
-                  className="w-full px-3 py-2 border rounded"
-              />
-            </div>
-            <button className="w-full px-3 py-2 bg-blue-600 text-white rounded hover:bg-blue-700" type="submit">
-              Ajouter Disponibilité
-            </button>
-          </form>
-        </div>
+    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+      <div className="w-full max-w-md p-8 space-y-8 bg-white rounded shadow-lg">
+        <form onSubmit={handleSubmit}>
+          <div className="mb-4">
+            <label className="block text-gray-700">Date de début *</label>
+            <input
+              type="text"
+              id="startDate"
+              ref={startDateRef}
+              className="w-full px-3 py-2 border rounded"
+              placeholder="Sélectionner la date de début"
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block text-gray-700">Date de fin *</label>
+            <input
+              type="text"
+              id="endDate"
+              ref={endDateRef}
+              className="w-full px-3 py-2 border rounded"
+              placeholder="Sélectionner la date de fin"
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block text-gray-700">Prix total *</label>
+            <input
+              type="number"
+              name="totalPrice"
+              value={totalPrice}
+              onChange={(e) => setTotalPrice(e.target.value)}
+              className="w-full px-3 py-2 border rounded"
+            />
+          </div>
+          <button className="w-full px-3 py-2 bg-blue-600 text-white rounded hover:bg-blue-700" type="submit">
+            Ajouter Disponibilité
+          </button>
+        </form>
       </div>
+    </div>
   );
 };
 

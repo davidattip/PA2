@@ -2,12 +2,36 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import Cookie from 'js-cookie';
-import { FaEdit, FaBan, FaUndo, FaTimes } from 'react-icons/fa';
+import { FaEdit, FaBan, FaUndo } from 'react-icons/fa';
 
-const ViewUser = () => {
-  const [user, setUser] = useState(null);
-  const [bookings, setBookings] = useState([]);
-  const [properties, setProperties] = useState([]);
+interface User {
+  id: number;
+  first_name: string;
+  last_name: string;
+  email: string;
+  user_type: string;
+  banned: boolean;
+}
+
+interface Booking {
+  id: number;
+  property_id: number;
+  start_date: string;
+  end_date: string;
+  total_price: number;
+}
+
+interface Property {
+  id: number;
+  name: string;
+  address: string;
+  price_per_night: number;
+}
+
+const ViewUser: React.FC = () => {
+  const [user, setUser] = useState<User | null>(null);
+  const [bookings, setBookings] = useState<Booking[]>([]);
+  const [properties, setProperties] = useState<Property[]>([]);
   const router = useRouter();
   const { id } = router.query;
 
@@ -103,7 +127,7 @@ const ViewUser = () => {
         throw new Error(`Failed to ban user: ${response.status}`);
       }
 
-      setUser({ ...user, banned: true });
+      setUser(prevUser => (prevUser ? { ...prevUser, banned: true } : null));
     } catch (error) {
       console.error('Failed to ban user:', error);
     }
@@ -128,7 +152,7 @@ const ViewUser = () => {
         throw new Error(`Failed to unban user: ${response.status}`);
       }
 
-      setUser({ ...user, banned: false });
+      setUser(prevUser => (prevUser ? { ...prevUser, banned: false } : null));
     } catch (error) {
       console.error('Failed to unban user:', error);
     }

@@ -3,8 +3,14 @@ import { useRouter } from 'next/router';
 import Cookie from 'js-cookie';
 import SimulationModal from '../../components/SimulationModal';
 
-const Dashboard = () => {
-  const [user, setUser] = useState(null);
+interface User {
+  first_name: string;
+  last_name: string;
+  // Ajoutez d'autres propriétés utilisateur si nécessaire
+}
+
+const Dashboard: React.FC = () => {
+  const [user, setUser] = useState<User | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const router = useRouter();
 
@@ -20,8 +26,12 @@ const Dashboard = () => {
             Authorization: `Bearer ${token}`,
           },
         });
-        const data = await response.json();
-        setUser(data);
+        if (response.ok) {
+          const data: User = await response.json();
+          setUser(data);
+        } else {
+          console.error('Failed to fetch user data');
+        }
       };
       fetchUserData();
     }
