@@ -26,8 +26,8 @@ const Documents: React.FC = () => {
   useEffect(() => {
     const token = Cookie.get('token');
     if (token) {
-      fetchProperties(token);
-      fetchPersonalDocuments(token);
+      fetchProperties(token).catch(error => console.error('Error fetching properties:', error)); // Handle the promise
+      fetchPersonalDocuments(token).catch(error => console.error('Error fetching personal documents:', error)); // Handle the promise
     } else {
       router.push('/host/login');
     }
@@ -79,7 +79,7 @@ const Documents: React.FC = () => {
     if (event.target.files && event.target.files.length > 0) {
       setSelectedPersonalFiles((prevFiles) => ({
         ...prevFiles,
-        [documentType]: event.target.files[0],
+        [documentType]: event.target.files![0],
       }));
     }
   };
@@ -88,7 +88,7 @@ const Documents: React.FC = () => {
     if (event.target.files && event.target.files.length > 0) {
       setSelectedPropertyFiles((prevFiles) => ({
         ...prevFiles,
-        [documentType]: event.target.files[0],
+        [documentType]: event.target.files![0],
       }));
     }
   };
@@ -120,7 +120,7 @@ const Documents: React.FC = () => {
 
       if (response.ok) {
         alert('Documents personnels téléchargés avec succès.');
-        fetchPersonalDocuments(token);
+        fetchPersonalDocuments(token).catch(error => console.error('Error fetching personal documents:', error)); // Handle the promise
       } else {
         alert('Erreur lors du téléchargement des documents personnels.');
       }
@@ -164,7 +164,7 @@ const Documents: React.FC = () => {
 
       if (response.ok) {
         alert('Documents de la propriété téléchargés avec succès.');
-        fetchPropertyDocuments(token, selectedProperty);
+        fetchPropertyDocuments(token, selectedProperty).catch(error => console.error('Error fetching property documents:', error)); // Handle the promise
       } else {
         alert('Erreur lors du téléchargement des documents de la propriété.');
       }
@@ -175,107 +175,107 @@ const Documents: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen space-y-12">
-      <div className="w-full max-w-md p-8 space-y-8 bg-white rounded shadow-lg">
-        <h2 className="text-2xl font-semibold">Documents Personnels</h2>
-        <form onSubmit={handlePersonalSubmit}>
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="identity_document">
-              Pièce d'identité *
-            </label>
-            <input
-              type="file"
-              id="identity_document"
-              onChange={(e) => handlePersonalFileChange(e, 'identity_document')}
-              className="w-full px-3 py-2 border rounded"
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="residence_proof">
-              Justificatif de domicile *
-            </label>
-            <input
-              type="file"
-              id="residence_proof"
-              onChange={(e) => handlePersonalFileChange(e, 'residence_proof')}
-              className="w-full px-3 py-2 border rounded"
-            />
-          </div>
-          <button className="w-full px-3 py-2 bg-blue-600 text-white rounded hover:bg-blue-700" type="submit">Télécharger</button>
-        </form>
-        <h3 className="text-xl font-semibold mt-8">Documents Personnels Transmis</h3>
-        <ul>
-          {Array.isArray(personalDocuments) && personalDocuments.map((doc) => (
-            <li key={doc.id} className="mb-2">
-              <a href={`${process.env.NEXT_PUBLIC_API_BASE_URL}/${doc.file_path}`} target="_blank" rel="noopener noreferrer">
-                {doc.document_type}
-              </a>
-              <span className="ml-2">
+      <div className="flex flex-col items-center justify-center min-h-screen space-y-12">
+        <div className="w-full max-w-md p-8 space-y-8 bg-white rounded shadow-lg">
+          <h2 className="text-2xl font-semibold">Documents Personnels</h2>
+          <form onSubmit={handlePersonalSubmit}>
+            <div className="mb-4">
+              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="identity_document">
+                Pièce d&apos;identité *
+              </label>
+              <input
+                  type="file"
+                  id="identity_document"
+                  onChange={(e) => handlePersonalFileChange(e, 'identity_document')}
+                  className="w-full px-3 py-2 border rounded"
+              />
+            </div>
+            <div className="mb-4">
+              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="residence_proof">
+                Justificatif de domicile *
+              </label>
+              <input
+                  type="file"
+                  id="residence_proof"
+                  onChange={(e) => handlePersonalFileChange(e, 'residence_proof')}
+                  className="w-full px-3 py-2 border rounded"
+              />
+            </div>
+            <button className="w-full px-3 py-2 bg-blue-600 text-white rounded hover:bg-blue-700" type="submit">Télécharger</button>
+          </form>
+          <h3 className="text-xl font-semibold mt-8">Documents Personnels Transmis</h3>
+          <ul>
+            {Array.isArray(personalDocuments) && personalDocuments.map((doc) => (
+                <li key={doc.id} className="mb-2">
+                  <a href={`${process.env.NEXT_PUBLIC_API_BASE_URL}/${doc.file_path}`} target="_blank" rel="noopener noreferrer">
+                    {doc.document_type}
+                  </a>
+                  <span className="ml-2">
                 {doc.is_valid === null ? 'En attente de validation' : doc.is_valid ? 'Validé' : 'Non validé'}
               </span>
-            </li>
-          ))}
-        </ul>
-      </div>
+                </li>
+            ))}
+          </ul>
+        </div>
 
-      <div className="w-full max-w-md p-8 space-y-8 bg-white rounded shadow-lg">
-        <h2 className="text-2xl font-semibold">Documents de Propriété</h2>
-        <form onSubmit={handlePropertySubmit}>
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="propertySelect">
-              Sélectionner une propriété *
-            </label>
-            <select
-              id="propertySelect"
-              value={selectedProperty}
-              onChange={(e) => setSelectedProperty(e.target.value)}
-              className="w-full px-3 py-2 border rounded"
-            >
-              <option value="">Sélectionner une propriété</option>
-              {properties.map((property) => (
-                <option key={property.id} value={property.id}>{property.title}</option>
-              ))}
-            </select>
-          </div>
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="property_title">
-              Titre de propriété *
-            </label>
-            <input
-              type="file"
-              id="property_title"
-              onChange={(e) => handlePropertyFileChange(e, 'property_title')}
-              className="w-full px-3 py-2 border rounded"
-            />
-          </div>
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="dpe">
-              Diagnostic de performance énergétique (DPE) *
-            </label>
-            <input
-              type="file"
-              id="dpe"
-              onChange={(e) => handlePropertyFileChange(e, 'dpe')}
-              className="w-full px-3 py-2 border rounded"
-            />
-          </div>
-          <button className="w-full px-3 py-2 bg-blue-600 text-white rounded hover:bg-blue-700" type="submit">Télécharger</button>
-        </form>
-        <h3 className="text-xl font-semibold mt-8">Documents de Propriété Transmis</h3>
-        <ul>
-          {Array.isArray(propertyDocuments) && propertyDocuments.map((doc) => (
-            <li key={doc.id} className="mb-2">
-              <a href={`${process.env.NEXT_PUBLIC_API_BASE_URL}/${doc.file_path}`} target="_blank" rel="noopener noreferrer">
-                {doc.document_type}
-              </a>
-              <span className="ml-2">
+        <div className="w-full max-w-md p-8 space-y-8 bg-white rounded shadow-lg">
+          <h2 className="text-2xl font-semibold">Documents de Propriété</h2>
+          <form onSubmit={handlePropertySubmit}>
+            <div className="mb-4">
+              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="propertySelect">
+                Sélectionner une propriété *
+              </label>
+              <select
+                  id="propertySelect"
+                  value={selectedProperty}
+                  onChange={(e) => setSelectedProperty(e.target.value)}
+                  className="w-full px-3 py-2 border rounded"
+              >
+                <option value="">Sélectionner une propriété</option>
+                {properties.map((property) => (
+                    <option key={property.id} value={property.id}>{property.title}</option>
+                ))}
+              </select>
+            </div>
+            <div className="mb-4">
+              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="property_title">
+                Titre de propriété *
+              </label>
+              <input
+                  type="file"
+                  id="property_title"
+                  onChange={(e) => handlePropertyFileChange(e, 'property_title')}
+                  className="w-full px-3 py-2 border rounded"
+              />
+            </div>
+            <div className="mb-4">
+              <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="dpe">
+                Diagnostic de performance énergétique (DPE) *
+              </label>
+              <input
+                  type="file"
+                  id="dpe"
+                  onChange={(e) => handlePropertyFileChange(e, 'dpe')}
+                  className="w-full px-3 py-2 border rounded"
+              />
+            </div>
+            <button className="w-full px-3 py-2 bg-blue-600 text-white rounded hover:bg-blue-700" type="submit">Télécharger</button>
+          </form>
+          <h3 className="text-xl font-semibold mt-8">Documents de Propriété Transmis</h3>
+          <ul>
+            {Array.isArray(propertyDocuments) && propertyDocuments.map((doc) => (
+                <li key={doc.id} className="mb-2">
+                  <a href={`${process.env.NEXT_PUBLIC_API_BASE_URL}/${doc.file_path}`} target="_blank" rel="noopener noreferrer">
+                    {doc.document_type}
+                  </a>
+                  <span className="ml-2">
                 {doc.is_valid === null ? 'En attente de validation' : doc.is_valid ? 'Validé' : 'Non validé'}
               </span>
-            </li>
-          ))}
-        </ul>
+                </li>
+            ))}
+          </ul>
+        </div>
       </div>
-    </div>
   );
 };
 

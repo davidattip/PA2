@@ -6,15 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="31d348cf-ab06-40aa-935e-8ff5b6ca50d4" name="Changes" comment="fixed URL in [id].tsx : /api/admin/backoffice/users">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/backend/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/.package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/backend/node_modules/.package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/backend/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/backend/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/routes/contractorRoutes.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/routes/contractorRoutes.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/SimulationModal.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/SimulationModal.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/contractor/register.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/contractor/register.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/host/add-availability.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/host/add-availability.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/host/documents.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/host/documents.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/host/edit-availability.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/host/edit-availability.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -59,7 +54,7 @@
   </component>
   <component name="PhpWorkspaceProjectConfiguration" interpreter_name="/opt/homebrew/Cellar/php/8.3.0/bin/php" />
   <component name="ProblemsViewState">
-    <option name="selectedTabId" value="CurrentFile" />
+    <option name="selectedTabId" value="ProjectErrors" />
   </component>
   <component name="ProjectId" id="2ehWHkaC02JMbziUzRJPNg9lobg" />
   <component name="ProjectLevelVcsManager">
@@ -83,7 +78,7 @@
     "node.js.selected.package.standard": "",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "consents",
+    "settings.editor.selected.configurable": "editing.templates",
     "ts.external.directory.path": "/Users/davidvucong/PhpstormProjects/PA-PCS-2024/frontend/node_modules/typescript/lib",
     "vue.rearranger.settings.migration": "true"
   },
@@ -119,7 +114,7 @@
       <workItem from="1717973816393" duration="11841000" />
       <workItem from="1718635981461" duration="58000" />
       <workItem from="1718636111543" duration="6080000" />
-      <workItem from="1720645535796" duration="1297000" />
+      <workItem from="1720645535796" duration="3455000" />
     </task>
     <servers />
   </component>
@@ -142,7 +137,7 @@
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="origin/main" />
+                        <option value="main" />
                       </list>
                     </value>
                   </entry>

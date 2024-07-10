@@ -21,7 +21,7 @@ const EditAvailability = () => {
         locale: French,
         dateFormat: "d/m/Y",
         minDate: "today", // Restrict selection to today or later
-        plugins: [new rangePlugin({ input: endDateRef.current })]
+        plugins: [rangePlugin({ input: endDateRef.current as HTMLInputElement })]
       });
     }
   }, []);
