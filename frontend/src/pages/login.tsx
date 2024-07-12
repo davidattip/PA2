@@ -35,6 +35,7 @@ export default function Login() {
         console.log('Connexion réussie', data);
         Cookie.set('token', data.accessToken, { expires: 1, secure: true, sameSite: 'lax' });
         Cookie.set('user_type', data.user_type, { expires: 1, secure: true, sameSite: 'lax' });
+        Cookie.set('user_name', data.first_name, { expires: 1, secure: true, sameSite: 'lax' });
         console.log('Token stocké:', Cookie.get('token'));
 
         if (redirectTo) {

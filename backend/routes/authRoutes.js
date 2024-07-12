@@ -63,8 +63,7 @@ router.post('/login', async (req, res) => {
 
             if (validPassword) {
                 const token = generateUserToken(user);
-                res.json({ accessToken: token, user_type: user.user_type });
-                console.log(token);
+                res.json({ accessToken: token, user_type: user.user_type, first_name: user.first_name });
             } else {
                 res.status(400).send('Mot de passe incorrect.');
             }

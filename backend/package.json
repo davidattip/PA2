@@ -24,7 +24,6 @@
     "react-datepicker": "^6.9.0",
     "sequelize": "^6.37.2",
     "simple-oauth2": "^5.1.0",
-    "sequelize": "^6.37.2",
     "swiper": "^11.1.4"
   },
   "devDependencies": {
