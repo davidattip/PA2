@@ -30,11 +30,12 @@ router.post('/login', async (req, res) => {
             return res.status(401).json({ message: 'Email ou mot de passe incorrect.' });
         }
         const token = generateHostToken(host); // Générer un token JWT
-        res.status(200).json({ accessToken: token });
+        res.status(200).json({ accessToken: token, user_type: host.user_type, first_name: host.first_name });
     } catch (error) {
         res.status(500).json({ message: 'Erreur interne du serveur.' });
     }
 });
+
 
 // Récupérer les infos du bailleur connecté
 router.get('/me', authenticateJWT, isHost, async (req, res) => {

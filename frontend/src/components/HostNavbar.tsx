@@ -9,10 +9,12 @@ const HostNavbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const [userType, setUserType] = useState<string | null>(null);
+  const [userName, setUserName] = useState<string | null>(null);
   const router = useRouter();
 
-  const updateUserTypeFromCookie = () => {
+  const updateUserFromCookie = () => {
     const userTypeFromCookie = Cookie.get('user_type');
+    const userNameFromCookie = Cookie.get('user_name');
     console.log('User type from cookie:', userTypeFromCookie);
     if (userTypeFromCookie) {
       setUserType(userTypeFromCookie);
@@ -20,13 +22,19 @@ const HostNavbar = () => {
       setUserType(null); // Reset user type if no user type is found in cookies
       console.log('No user type found in cookie.');
     }
+    if (userNameFromCookie) {
+      setUserName(userNameFromCookie);
+    } else {
+      setUserName(null);
+      console.log('No user name found in cookie.');
+    }
   };
 
   useEffect(() => {
-    updateUserTypeFromCookie();
+    updateUserFromCookie();
     // Listen for route changes to update the userType state
     const handleRouteChange = () => {
-      updateUserTypeFromCookie();
+      updateUserFromCookie();
     };
 
     router.events.on('routeChangeComplete', handleRouteChange);
@@ -53,7 +61,9 @@ const HostNavbar = () => {
     // Efface le token et redirige vers la page de connexion
     Cookie.remove('token');
     Cookie.remove('user_type');
+    Cookie.remove('user_name');
     setUserType(null); // Reset the userType state
+    setUserName(null);
     closeProfileMenu();
     router.push('/');
   };
@@ -86,6 +96,11 @@ const HostNavbar = () => {
             </div>
           </div>
           <div className="hidden md:flex items-center space-x-3">
+            {userName && (
+              <span className="py-2 px-2 font-medium text-gray-500">
+                Bonjour, {userName}
+              </span>
+            )}
             <Link href="/host/register">
               <span className="py-2 px-2 font-medium text-gray-500 rounded hover:bg-red-500 hover:text-white transition duration-300 cursor-pointer">Register Property</span>
             </Link>
@@ -98,18 +113,23 @@ const HostNavbar = () => {
               </button>
               {isProfileMenuOpen && (
                 <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-xl z-50">
-                  <Link href="/host/register" onClick={closeProfileMenu}>
-                    <span className="block px-4 py-2 text-gray-800 hover:bg-gray-100 cursor-pointer">Signup</span>
-                  </Link>
-                  <Link href="/host/login" onClick={closeProfileMenu}>
-                    <span className="block px-4 py-2 text-gray-800 hover:bg-gray-100 cursor-pointer">Login</span>
-                  </Link>
-                  <button
-                    onClick={handleLogout}
-                    className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-100 cursor-pointer"
-                  >
-                    Logout
-                  </button>
+                  {!userName ? (
+                    <>
+                      <Link href="/host/register" onClick={closeProfileMenu}>
+                        <span className="block px-4 py-2 text-gray-800 hover:bg-gray-100 cursor-pointer">Signup</span>
+                      </Link>
+                      <Link href="/host/login" onClick={closeProfileMenu}>
+                        <span className="block px-4 py-2 text-gray-800 hover:bg-gray-100 cursor-pointer">Login</span>
+                      </Link>
+                    </>
+                  ) : (
+                    <button
+                      onClick={handleLogout}
+                      className="block w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-100 cursor-pointer"
+                    >
+                      Logout
+                    </button>
+                  )}
                 </div>
               )}
             </div>
@@ -139,18 +159,23 @@ const HostNavbar = () => {
           <Link href="/host/register">
             <span className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer">Register Property</span>
           </Link>
-          <Link href="/host/register">
-            <span className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer">Signup</span>
-          </Link>
-          <Link href="/host/login">
-            <span className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer">Login</span>
-          </Link>
-          <button
-            onClick={handleLogout}
-            className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
-          >
-            Logout
-          </button>
+          {!userName ? (
+            <>
+              <Link href="/host/register">
+                <span className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer">Signup</span>
+              </Link>
+              <Link href="/host/login">
+                <span className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer">Login</span>
+              </Link>
+            </>
+          ) : (
+            <button
+              onClick={handleLogout}
+              className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer"
+            >
+              Logout
+            </button>
+          )}
         </div>
       )}
     </nav>

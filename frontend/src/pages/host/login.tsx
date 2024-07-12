@@ -1,4 +1,3 @@
-// pages/host/login.tsx
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import InputGroup from '../../components/InputGroup';
@@ -29,6 +28,8 @@ const Login = () => {
       if (response.ok) {
         console.log('Login Successful', data);
         Cookie.set('token', data.accessToken, { expires: 1, secure: true, sameSite: 'lax' });
+        Cookie.set('user_type', data.user_type, { expires: 1, secure: true, sameSite: 'lax' });
+        Cookie.set('user_name', data.first_name, { expires: 1, secure: true, sameSite: 'lax' });
         router.push('/host/dashboard');
       } else {
         alert(data.message);
