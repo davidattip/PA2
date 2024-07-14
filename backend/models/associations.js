@@ -10,7 +10,7 @@ const User = require('./user');
 Contractor.hasMany(Service, { foreignKey: 'contractor_id' });
 Service.belongsTo(Contractor, { foreignKey: 'contractor_id' });
 
-// Hosts owns many Properties
+// Hosts own many Properties
 Host.hasMany(Property, { foreignKey: 'host_id' });
 Property.belongsTo(Host, { foreignKey: 'host_id' });
 
@@ -25,6 +25,10 @@ Availability.belongsTo(Property, { foreignKey: 'property_id' });
 // Users make many Bookings
 User.hasMany(Booking, { foreignKey: 'user_id' });
 Booking.belongsTo(User, { foreignKey: 'user_id' });
+
+// Services and Bookings have a many-to-many relationship
+Service.belongsToMany(Booking, { through: 'ServiceBookings', foreignKey: 'service_id' });
+Booking.belongsToMany(Service, { through: 'ServiceBookings', foreignKey: 'booking_id' });
 
 module.exports = {
     Host,

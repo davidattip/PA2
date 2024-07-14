@@ -2,23 +2,50 @@ const { DataTypes } = require('sequelize');
 const sequelize = require('./sequelize');
 
 const Service = sequelize.define('Service', {
-    name: DataTypes.STRING,
-    description: DataTypes.TEXT,
-    tarif: DataTypes.DECIMAL,
+    id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
+    },
     contractor_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
-            model: 'Contractors',  // Assurez-vous que ceci corresponde au nom de table défini dans Sequelize pour les contractants
+            model: 'Contractors', // This needs to match the table name if case sensitive
             key: 'id'
         }
     },
-    createdAt: DataTypes.DATE,
-    updatedAt: DataTypes.DATE,
-    deletedAt: DataTypes.DATE
+    name: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    price: {
+        type: DataTypes.DECIMAL,
+        allowNull: false
+    },
+    remunPrest: {
+        type: DataTypes.DECIMAL,
+        allowNull: false
+    },
+    deletedAt: {
+        type: DataTypes.DATE,
+        allowNull: true
+    },
+    updatedAt: {
+        type: DataTypes.DATE,
+        allowNull: true
+    },
+    createdAt: {
+        type: DataTypes.DATE,
+        allowNull: true
+    },
+    description: {
+        type: DataTypes.TEXT,
+        allowNull: true
+    }
 }, {
-    paranoid: true,
-    timestamps: true
+    timestamps: true,
+    paranoid: true
 });
 
 module.exports = Service;

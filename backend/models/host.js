@@ -5,7 +5,7 @@ const Host = sequelize.define('Host', {
     email: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true
+
     },
     password_hash: DataTypes.STRING,
     first_name: DataTypes.STRING,
