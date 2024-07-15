@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import InputGroup from '../../components/InputGroup';
-import Cookie from 'js-cookie';
 
 interface Company {
     siret: string;
@@ -16,26 +15,26 @@ const Register: React.FC = () => {
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [company, setCompany] = useState('');
+    const [companyName, setCompanyName] = useState('');
+    const [address, setAddress] = useState('');
     const [companies, setCompanies] = useState<Company[]>([]);
     const [searchTerm, setSearchTerm] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     const router = useRouter();
 
-    // Fonction pour charger les entreprises depuis le backend
     const fetchCompanies = async () => {
         if (!searchTerm) return;
         setLoading(true);
         setError('');
         console.log(`Fetching companies with searchTerm: ${searchTerm}`);
         try {
-            const response = await fetch(`/api/companies/search?term=${encodeURIComponent(searchTerm)}`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/companies/search?term=${encodeURIComponent(searchTerm)}`, {
                 headers: {
                     'Content-Type': 'application/json'
                 }
             });
             console.log(`Response status: ${response.status}`);
-            if (!response.ok) throw new Error('Failed to fetch companies');
             const data = await response.json();
             console.log('Companies data received:', data);
             setCompanies(data);
@@ -52,22 +51,47 @@ const Register: React.FC = () => {
         setStep(1);
     };
 
+    const handleCompanyChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        const selectedSiret = e.target.value;
+        setCompany(selectedSiret);
+        const selectedCompany = companies.find(comp => comp.siret === selectedSiret);
+        if (selectedCompany) {
+            setCompanyName(selectedCompany.name);
+            setAddress(selectedCompany.address);
+        }
+    };
+
     const handleSubmitStep2 = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        const token = Cookie.get('token');
-        const response = await fetch('/api/contractor/setCompany', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`,
-            },
-            body: JSON.stringify({ company_siret: company }),
-        });
 
-        if (response.ok) {
-            router.push('/contractor/dashboard');
-        } else {
-            alert('Failed to set company.');
+        try {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/contractor/register`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    email,
+                    password,
+                    contact_first_name: firstName,
+                    contact_last_name: lastName,
+                    siret: company,
+                    company_name: companyName,
+                    address
+                }),
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                console.log('Registration Successful', data);
+                router.push('/contractor/dashboard');
+            } else {
+                alert(data.message);
+            }
+        } catch (error) {
+            console.error('Registration Error:', error);
+            alert('Une erreur s’est produite lors de l’inscription.');
         }
     };
 
@@ -94,7 +118,7 @@ const Register: React.FC = () => {
                             id="company"
                             name="company"
                             value={company}
-                            onChange={(e) => setCompany(e.target.value)}
+                            onChange={handleCompanyChange}
                             className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                         >
                             <option value="">Select a company</option>
@@ -112,6 +136,9 @@ const Register: React.FC = () => {
                         </button>
                     </form>
                 )}
+                <p className="mt-4 text-center">
+                    <a href="/contractor/login" className="text-blue-600 hover:underline">Vous avez déjà un compte, cliquez ici ?</a>
+                </p>
             </div>
         </div>
     );

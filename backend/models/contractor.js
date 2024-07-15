@@ -31,19 +31,19 @@ const Contractor = sequelize.define('Contractor', {
             notEmpty: true // Assure que le champ n'est pas vide
         }
     },
+    company_name: {
+        type: DataTypes.STRING,
+        allowNull: false, // Le nom de l'entreprise doit être présent
+        validate: {
+            notEmpty: true // Assure que le champ n'est pas vide
+        }
+    },
     siret: {
         type: DataTypes.STRING,
         allowNull: false, // Le numéro SIRET doit être présent
         validate: {
             notEmpty: true, // Assure que le champ n'est pas vide
             len: [14, 14] // Validation de la longueur du numéro SIRET (14 chiffres en France)
-        }
-    },
-    company_name: {
-        type: DataTypes.STRING,
-        allowNull: false, // Le nom de l'entreprise doit être présent
-        validate: {
-            notEmpty: true // Assure que le champ n'est pas vide
         }
     },
     address: DataTypes.STRING, // Pas de validation spécifique pour l'adresse
