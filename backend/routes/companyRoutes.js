@@ -21,7 +21,8 @@ router.get('/search', async (req, res) => {
         const companies = await searchCompanies(term);  // Appel de la fonction pour rechercher des entreprises
         res.json(companies.map(company => ({  // Formatage de la réponse
             siret: company.siret,
-            name: company.uniteLegale.denominationUniteLegale  // Assurez-vous que le chemin d'accès est correct selon la structure de votre réponse API
+            name: company.uniteLegale.denominationUniteLegale,  // Assurez-vous que le chemin d'accès est correct selon la structure de votre réponse API
+            address: `${company.adresseEtablissement.numeroVoieEtablissement || ''} ${company.adresseEtablissement.typeVoieEtablissement || ''} ${company.adresseEtablissement.libelleVoieEtablissement || ''}, ${company.adresseEtablissement.codePostalEtablissement || ''} ${company.adresseEtablissement.libelleCommuneEtablissement || ''}`.trim()
         })));
     } catch (error) {
         console.error('Error fetching companies:', error);

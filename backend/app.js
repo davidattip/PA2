@@ -13,10 +13,16 @@ const hostRoutes = require('./routes/hostRoutes');
 const documentRoutes = require('./routes/documentRoutes');
 const propertyRoutes = require('./routes/propertyRoutes');
 const bookingRoutes = require('./routes/bookingRoutes');
+
 const contractorRoutes = require('./routes/contractorRoutes');
+const contractorTestRoutes = require('./routes/contractorTestRoutes');
 const companyRoutes = require('./routes/companyRoutes');
+
+
 const adminHostRoutes = require('./routes/adminHostRoutes');
 const ticketRoutes = require('./routes/ticketRoutes');
+
+
 
 app.use(helmet());
 
@@ -52,10 +58,17 @@ app.use('/api/host', hostRoutes);
 app.use('/api/property', propertyRoutes);
 app.use('/api/bookings', bookingRoutes);
 app.use('/api/document', documentRoutes);
+
+//contractor
 app.use('/api/contractor', contractorRoutes);
 app.use('/api/companies', companyRoutes);
+app.use('/api/contractor-test', contractorTestRoutes);
+
 app.use('/api/admin/hosts', adminHostRoutes);
 app.use('/api/ticket', ticketRoutes);
+
+
+
 
 app.use((err, req, res, next) => {
   console.error(err.stack);

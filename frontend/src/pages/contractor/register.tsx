@@ -1,14 +1,3 @@
-// pages/contractor/register.tsx
-
-//URL de la requête modifiée :
-// Pointe désormais vers votre route backend /api/companies/search pour profiter du traitement côté serveur, notamment la gestion des jetons.
-// Gestion de l'état de chargement et des erreurs :
-// Améliore l'expérience utilisateur en fournissant des retours sur l'état de la requête.
-// Sécurisation des appels API :
-// Les appels API côté client ne contiennent plus de jetons sensibles ou d'autres détails d'authentification.
-
-
-
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import InputGroup from '../../components/InputGroup';
@@ -17,6 +6,7 @@ import Cookie from 'js-cookie';
 interface Company {
     siret: string;
     name: string;
+    address: string;
 }
 
 const Register: React.FC = () => {
@@ -37,14 +27,17 @@ const Register: React.FC = () => {
         if (!searchTerm) return;
         setLoading(true);
         setError('');
+        console.log(`Fetching companies with searchTerm: ${searchTerm}`);
         try {
             const response = await fetch(`/api/companies/search?term=${encodeURIComponent(searchTerm)}`, {
                 headers: {
                     'Content-Type': 'application/json'
                 }
             });
+            console.log(`Response status: ${response.status}`);
             if (!response.ok) throw new Error('Failed to fetch companies');
             const data = await response.json();
+            console.log('Companies data received:', data);
             setCompanies(data);
         } catch (error) {
             console.error('Error fetching companies:', error);
@@ -57,7 +50,6 @@ const Register: React.FC = () => {
     const handleSubmitStep1 = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         setStep(1);
-        await fetchCompanies();
     };
 
     const handleSubmitStep2 = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -108,7 +100,7 @@ const Register: React.FC = () => {
                             <option value="">Select a company</option>
                             {companies.map((comp) => (
                                 <option key={comp.siret} value={comp.siret}>
-                                    {comp.name} - {comp.siret}
+                                    {comp.name} - {comp.siret} - {comp.address}
                                 </option>
                             ))}
                         </select>
