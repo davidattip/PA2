@@ -21,6 +21,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     '/host/view-property',
     '/host/add-availability',
     '/host/edit-availability',
+    '/host/service/host_service',
     '/host/add-property'
   ];
 

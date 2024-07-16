@@ -93,6 +93,9 @@ const HostNavbar = () => {
               <Link href="/host/notifications">
                 <span className="py-4 px-2 text-gray-500 font-semibold hover:text-red-500 transition duration-300 cursor-pointer">Notifications</span>
               </Link>
+              <Link href="/host/service/host_service">
+                <span className="py-4 px-2 text-gray-500 font-semibold hover:text-red-500 transition duration-300 cursor-pointer">Mes Services</span>
+              </Link>
             </div>
           </div>
           <div className="hidden md:flex items-center space-x-3">
@@ -101,9 +104,7 @@ const HostNavbar = () => {
                 Bonjour, {userName}
               </span>
             )}
-            <Link href="/host/register">
-              <span className="py-2 px-2 font-medium text-gray-500 rounded hover:bg-red-500 hover:text-white transition duration-300 cursor-pointer">Register Property</span>
-            </Link>
+            
             <div className="relative">
               <button
                 onClick={toggleProfileMenu}
@@ -155,6 +156,9 @@ const HostNavbar = () => {
           </Link>
           <Link href="/host/notifications">
             <span className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer">Notifications</span>
+          </Link>
+          <Link href="/host/service/host_service">
+            <span className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer">Mes Services</span>
           </Link>
           <Link href="/host/register">
             <span className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer">Register Property</span>
