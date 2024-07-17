@@ -13,6 +13,7 @@ const hostRoutes = require('./routes/hostRoutes');
 const documentRoutes = require('./routes/documentRoutes');
 const propertyRoutes = require('./routes/propertyRoutes');
 const bookingRoutes = require('./routes/bookingRoutes');
+const adminServiceRoutes = require('./routes/adminServiceRoutes');
 
 const contractorRoutes = require('./routes/contractorRoutes');
 const contractorTestRoutes = require('./routes/contractorTestRoutes');
@@ -58,6 +59,8 @@ app.use('/api/host', hostRoutes);
 app.use('/api/property', propertyRoutes);
 app.use('/api/bookings', bookingRoutes);
 app.use('/api/document', documentRoutes);
+
+app.use('/api/admin', adminServiceRoutes);
 
 //contractor
 app.use('/api/contractor', contractorRoutes);

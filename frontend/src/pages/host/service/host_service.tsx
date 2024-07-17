@@ -1,4 +1,3 @@
-// host_service.tsx
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Cookie from 'js-cookie';
@@ -63,12 +62,12 @@ const HostService = () => {
       <nav className="w-1/4 p-4 bg-gray-200 min-h-screen">
         <ul className="space-y-2">
           <li><Link href="/host/dashboard" className="block p-2 rounded hover:bg-gray-300">Tableau de Bord</Link></li>
-          <li><Link href="/host/service" className="block p-2 rounded hover:bg-gray-300">Mes Services</Link></li>
-          <li><Link href="/host/subscription" className="block p-2 rounded hover:bg-gray-300">Mes Abonnements</Link></li>
-          <li><Link href="/host/service-history" className="block p-2 rounded hover:bg-gray-300">Historique des Services</Link></li>
+          <li><Link href="/host/service" className="block p-2 rounded hover:bg-gray-300">Vue d'ensemble des services</Link></li>
+          <li><Link href="/host/subscription" className="block p-2 rounded hover:bg-gray-300">Gestion des abonnements</Link></li>
+          <li><Link href="/host/service-history" className="block p-2 rounded hover:bg-gray-300">Services Ponctuels</Link></li>
           <li><Link href="/host/property-services" className="block p-2 rounded hover:bg-gray-300">Services par Propriété</Link></li>
-          <li><Link href="/host/notifications" className="block p-2 rounded hover:bg-gray-300">Notifications</Link></li>
-          <li><Link href="/host/invoices" className="block p-2 rounded hover:bg-gray-300">Factures</Link></li>
+          <li><Link href="/host/notifications" className="block p-2 rounded hover:bg-gray-300">Notifications et rappels</Link></li>
+          <li><Link href="/host/invoices" className="block p-2 rounded hover:bg-gray-300">Historique et facturation</Link></li>
         </ul>
       </nav>
       <div className="w-3/4 p-6 bg-gray-50">

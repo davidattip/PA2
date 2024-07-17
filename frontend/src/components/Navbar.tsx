@@ -93,6 +93,9 @@ const Navbar = () => {
                   <Link href="/admin_property">
                     <span className="py-4 px-2 text-gray-500 font-semibold hover:text-red-500 transition duration-300 cursor-pointer">Property</span>
                   </Link>
+                  <Link href="/adminService/service">
+                    <span className="py-4 px-2 text-gray-500 font-semibold hover:text-red-500 transition duration-300 cursor-pointer">Service</span>
+                  </Link>
                 </>
               ) : (
                 <>
@@ -115,9 +118,11 @@ const Navbar = () => {
                 Bonjour, {userName}
               </span>
             )}
-            <Link href="/host/register">
-              <span className="py-2 px-2 font-medium text-gray-500 rounded hover:bg-red-500 hover:text-white transition duration-300 cursor-pointer">Mettre mon logement sur PCS</span>
-            </Link>
+            {userType !== 'admin' && (
+              <Link href="/host/register">
+                <span className="py-2 px-2 font-medium text-gray-500 rounded hover:bg-red-500 hover:text-white transition duration-300 cursor-pointer">Mettre mon logement sur PCS</span>
+              </Link>
+            )}
             <div className="relative">
               <button
                 onClick={toggleProfileMenu}
@@ -175,6 +180,9 @@ const Navbar = () => {
               <Link href="/admin_property">
                 <span className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer">Property</span>
               </Link>
+              <Link href="/adminService/service">
+                <span className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer">Service</span>
+              </Link>
             </>
           ) : (
             <>
@@ -189,9 +197,11 @@ const Navbar = () => {
               </Link>
             </>
           )}
-          <Link href="/host/register">
-            <span className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer">Mettre mon logement sur PCS</span>
-          </Link>
+          {userType !== 'admin' && (
+            <Link href="/host/register">
+              <span className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer">Mettre mon logement sur PCS</span>
+            </Link>
+          )}
           {!userName ? (
             <>
               <Link href="/signup">
