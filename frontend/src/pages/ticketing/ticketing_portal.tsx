@@ -9,16 +9,6 @@ const TicketingPortal: React.FC = () => {
     const [errorMessage, setErrorMessage] = useState('');
     const router = useRouter();
 
-    useEffect(() => {
-        const token = Cookie.get('token');
-        if (!token) {
-            // Si l'utilisateur n'est pas connecté, redirigez-le vers la page de sélection de rôle
-            router.push('/ticketing/choose_role');
-        } else {
-            fetchUserDetails(token);
-        }
-    }, [router]);
-
     const fetchUserDetails = async (token: string) => {
         try {
             const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/auth/me`, {
@@ -40,6 +30,16 @@ const TicketingPortal: React.FC = () => {
             router.push('/ticketing/choose_role');
         }
     };
+
+    useEffect(() => {
+        const token = Cookie.get('token');
+        if (!token) {
+            // Si l'utilisateur n'est pas connecté, redirigez-le vers la page de sélection de rôle
+            router.push('/ticketing/choose_role');
+        } else {
+            fetchUserDetails(token);
+        }
+    }, [router, fetchUserDetails]);
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
