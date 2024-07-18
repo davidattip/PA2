@@ -65,16 +65,18 @@ router.post('/login', async (req, res) => {
                 const token = generateUserToken(user);
                 res.json({ accessToken: token, user_type: user.user_type, first_name: user.first_name });
             } else {
-                res.status(400).send('Mot de passe incorrect.');
+                res.status(400).json({ message: 'Mot de passe incorrect.' });
             }
         } else {
-            res.status(404).send("Utilisateur non trouvé.");
+            res.status(404).json({ message: 'Utilisateur non trouvé.' });
         }
     } catch (error) {
         console.error(error);
-        res.status(500).send("Erreur lors de la connexion de l'utilisateur.");
+        res.status(500).json({ message: "Erreur lors de la connexion de l'utilisateur." });
     }
 });
+
+module.exports = router;
 
 // Endpoint pour récupérer les informations de l'utilisateur authentifié
 router.get('/me', authenticateJWT, async (req, res) => {

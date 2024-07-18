@@ -2,12 +2,7 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { authenticateJWT } = require('../middleware/authenticateToken');
-let Contractor;
-try {
-    Contractor = require('../models/Contractor');
-} catch (error) {
-    console.error('Module Contractor not found:', error);
-}
+const Contractor = require('../models/contractor');
 const { isContractor } = require('../middleware/roleMiddleware');
 const generateContractorToken = require('../utils/generateContractorToken');
 

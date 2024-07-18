@@ -33,7 +33,13 @@ app.use(helmet());
 // l'émulateur Android (qui utilise 10.0.2.2 pour accéder à l'hôte)
 
 app.use(cors({
-  origin: ['http://localhost:3000', 'http://127.0.0.1:3000', 'http://10.0.2.2:3000', 'http://92.222.216.216:3000'],
+  origin: ['http://localhost:3000', 'http://127.0.0.1:3000', 'http://10.0.2.2:3000', 'http://paris2a5caretakers.com', 'http://92.222.216.216:3000'],
+  credentials: true
+}));
+
+
+app.options('*', cors({
+  origin: ['http://localhost:3000', 'http://127.0.0.1:3000', 'http://10.0.2.2:3000', 'http://paris2a5caretakers.com', 'http://92.222.216.216:3000'],
   credentials: true
 }));
 
@@ -44,7 +50,7 @@ app.use('/uploads', express.static('uploads'));
 
 // Middleware pour ajouter des en-têtes CORS pour les fichiers statiques
 app.use('/uploads', (req, res, next) => {
-  res.header('Access-Control-Allow-Origin', 'http://localhost:3000, http://127.0.0.1:3000, http://10.0.2.2:3000');
+  res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
   res.header('Access-Control-Allow-Credentials', 'true');
@@ -53,7 +59,7 @@ app.use('/uploads', (req, res, next) => {
 
 app.use('/api/auth', authRoutes);
 app.use('/api/admin', adminRoutes);
-app.use('/api/admin', adminUserRoutes); // Ajoutez cette ligne
+app.use('/api/admin', adminUserRoutes);
 app.use('/api/renter', renterRoutes);
 app.use('/api/host', hostRoutes);
 app.use('/api/property', propertyRoutes);
