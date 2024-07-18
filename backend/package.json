@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node app.js",
-    "dev": "nodemon app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "dotenv -e .env node app.js",
+    "start": "NODE_ENV=production node app.js",
+    "dev-prod": "dotenv -e .env.prod node app.js"
   },
   "keywords": [],
   "author": "",
@@ -27,6 +27,7 @@
     "swiper": "^11.1.4"
   },
   "devDependencies": {
-    "nodemon": "^3.1.0"
+    "nodemon": "^3.1.0",
+    "dotenv-cli": "^7.4.2"
   }
 }

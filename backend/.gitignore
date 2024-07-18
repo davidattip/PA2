@@ -3,6 +3,7 @@
 
 # Fichiers de configuration d'environnement
 .env
+.env.prod
 
 # Fichiers de journalisation
 *.log

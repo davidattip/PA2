@@ -10,7 +10,10 @@ const sequelize = new Sequelize(
     {
         host: process.env.DB_HOST, // Hôte
         port: process.env.DB_PORT, // Port ajouté ici
-        dialect: 'mysql'          // Dialecte
+        dialect: 'mysql',// Dialecte
+        dialectOptions: {
+            connectTimeout: 60000 // Increase the timeout to 60 seconds
+        }
     }
 );
 module.exports = sequelize;

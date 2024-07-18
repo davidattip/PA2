@@ -1,0 +1,44 @@
+Index: backend/models/ServiceType.js
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/backend/models/ServiceType.js b/backend/models/ServiceType.js
+new file mode 100644
+--- /dev/null	(date 1721140894650)
++++ b/backend/models/ServiceType.js	(date 1721140894650)
+@@ -0,0 +1,34 @@
++const { DataTypes } = require('sequelize');
++const sequelize = require('./sequelize');
++
++const ServiceType = sequelize.define('ServiceType', {
++    id: {
++        type: DataTypes.INTEGER,
++        primaryKey: true,
++        autoIncrement: true
++    },
++    name: {
++        type: DataTypes.STRING,
++        allowNull: false
++    },
++    description: {
++        type: DataTypes.TEXT,
++        allowNull: true
++    },
++    price: {
++        type: DataTypes.DECIMAL,
++        allowNull: false
++    },
++    createdAt: {
++        type: DataTypes.DATE,
++        allowNull: true
++    },
++    updatedAt: {
++        type: DataTypes.DATE,
++        allowNull: true
++    }
++}, {
++    timestamps: true
++});
++
++module.exports = ServiceType;

@@ -12,4 +12,3 @@ frontend/postcss.config.js
 # Exclusions pour le backend
 backend/node_modules
 backend/.gitignore
-
