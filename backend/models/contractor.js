@@ -5,7 +5,6 @@ const Contractor = sequelize.define('Contractor', {
     email: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true,
         validate: {
             isEmail: true // Validation pour s'assurer que l'entrée est un email valide
         }
