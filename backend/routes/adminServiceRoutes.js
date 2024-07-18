@@ -63,7 +63,7 @@ router.put('/service-types/:id', authenticateJWT, async (req, res) => {
     await serviceType.save();
     res.status(200).json(serviceType);
   } catch (error) {
-    res.status(500).json({ message: 'Erreur lors de la mise à jour du type de service.' });
+    res.status500.json({ message: 'Erreur lors de la mise à jour du type de service.' });
   }
 });
 
