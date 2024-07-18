@@ -5,6 +5,7 @@ import Footer from '../components/Footer';
 import type { AppProps } from 'next/app';
 import { useRouter } from 'next/router';
 import type { Metadata } from 'next';
+import '../styles/globals.css';
 
 export const metadata: Metadata = {
   title: 'Create Next App',

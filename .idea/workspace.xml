@@ -4,21 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9df5644e-a962-4eb8-8b16-fb29c9e6e51e" name="Changes" comment="ServiceType ajouté">
-      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_16_07_2024,_16_41_[Changes]/shelved.patch" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_16_07_2024__16_41__Changes_.xml" afterDir="false" />
+    <list default="true" id="9df5644e-a962-4eb8-8b16-fb29c9e6e51e" name="Changes" comment="pb metadata app.tsx et layout.tsx">
+      <change beforePath="$PROJECT_DIR$/.idea/dbnavigator.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dbnavigator.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.rsync-exclude" beforeDir="false" afterPath="$PROJECT_DIR$/.rsync-exclude" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/backend/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/models/sequelize.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/models/sequelize.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/node_modules/.package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/backend/node_modules/.package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/backend/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/backend/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/routes/contractorRoutes.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/routes/contractorRoutes.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/.eslintrc.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/.eslintrc.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/.eslintrc.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/.eslintrc.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/.eslintrc.json" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/pages/_app.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/_app.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/pages/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/layout.tsx" afterDir="false" />
     </list>
@@ -95,7 +86,7 @@
       <workItem from="1720920766595" duration="2063000" />
       <workItem from="1721052126960" duration="221000" />
       <workItem from="1721052393955" duration="10281000" />
-      <workItem from="1721238988410" duration="12989000" />
+      <workItem from="1721238988410" duration="16339000" />
     </task>
     <task id="LOCAL-00001" summary="ServiceType ajouté">
       <option name="closed" value="true" />
@@ -105,7 +96,15 @@
       <option name="project" value="LOCAL" />
       <updated>1721140918362</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="pb metadata app.tsx et layout.tsx">
+      <option name="closed" value="true" />
+      <created>1721288764645</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1721288764645</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -137,6 +136,7 @@
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="ServiceType ajouté" />
-    <option name="LAST_COMMIT_MESSAGE" value="ServiceType ajouté" />
+    <MESSAGE value="pb metadata app.tsx et layout.tsx" />
+    <option name="LAST_COMMIT_MESSAGE" value="pb metadata app.tsx et layout.tsx" />
   </component>
 </project>
