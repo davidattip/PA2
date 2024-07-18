@@ -16,6 +16,7 @@ const Navbar = () => {
     const userTypeFromCookie = Cookie.get('user_type');
     const userNameFromCookie = Cookie.get('user_name');
     console.log('User type from cookie:', userTypeFromCookie);
+    console.log('User name from cookie:', userNameFromCookie);
     if (userTypeFromCookie) {
       setUserType(userTypeFromCookie);
     } else {

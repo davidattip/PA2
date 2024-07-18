@@ -37,6 +37,8 @@ export default function Login() {
         Cookie.set('user_type', data.user_type, { expires: 1, secure: true, sameSite: 'lax' });
         Cookie.set('user_name', data.first_name, { expires: 1, secure: true, sameSite: 'lax' });
         console.log('Token stocké:', Cookie.get('token'));
+        console.log('User type stocké:', Cookie.get('user_type'));
+        console.log('User name stocké:', Cookie.get('user_name'));
 
         if (redirectTo) {
           router.push(redirectTo);
