@@ -6,13 +6,14 @@ const router = express.Router();
 
 // Route pour créer un nouveau type de service
 router.post('/service-types', authenticateJWT, async (req, res) => {
-  const { name, description, price } = req.body;
+  const { name, description, price, targetUser } = req.body;
 
   try {
     const serviceType = await ServiceType.create({
       name,
       description,
       price: parseFloat(price),
+      targetUser
     });
     res.status(201).json(serviceType);
   } catch (error) {
@@ -48,7 +49,7 @@ router.get('/service-types/:id', authenticateJWT, async (req, res) => {
 // Route pour mettre à jour un type de service par ID
 router.put('/service-types/:id', authenticateJWT, async (req, res) => {
   const { id } = req.params;
-  const { name, description, price } = req.body;
+  const { name, description, price, targetUser } = req.body;
 
   try {
     const serviceType = await ServiceType.findOne({ where: { id } });
@@ -59,6 +60,7 @@ router.put('/service-types/:id', authenticateJWT, async (req, res) => {
     serviceType.name = name;
     serviceType.description = description;
     serviceType.price = parseFloat(price);
+    serviceType.targetUser = targetUser;
 
     await serviceType.save();
     res.status(200).json(serviceType);

@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('./sequelize');
 
-const ServiceType = sequelize.define('ServiceType', {
+const SubscriptionType = sequelize.define('SubscriptionType', {
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -35,4 +35,4 @@ const ServiceType = sequelize.define('ServiceType', {
     timestamps: true
 });
 
-module.exports = ServiceType;
+module.exports = SubscriptionType;
