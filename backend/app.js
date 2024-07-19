@@ -11,7 +11,6 @@ const authRoutes = require('./routes/authRoutes');
 const adminRoutes = require('./routes/adminRoutes');
 const adminUserRoutes = require('./routes/adminUserRoutes');
 
-
 const adminSubscriptionRoutes = require('./routes/adminSubscriptionRoutes');
 const renterRoutes = require('./routes/renterRoutes');
 const hostRoutes = require('./routes/hostRoutes');
@@ -95,8 +94,6 @@ app.use('/api/companies', contractorCompanyRoutes);
 app.use('/api/contractor', contractorDashboardRoutes);
 app.use('/api/contractor/services', contractorServicesRoutes);
 app.use('/api/admin', adminContractorServiceRoutes);
-
-
 
 app.use('/api/admin/hosts', adminHostRoutes);
 app.use('/api/ticket', ticketRoutes);
