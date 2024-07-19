@@ -4,6 +4,7 @@ const upload = require('../middleware/uploadMiddleware');
 const Property = require('../models/property');
 const Availability = require('../models/availability');
 const Booking = require('../models/booking'); // Importez le modèle Booking
+const { Op } = require('sequelize'); // Importez l'opérateur Op pour les requêtes Sequelize
 
 const router = express.Router();
 
@@ -231,6 +232,24 @@ router.post('/booking', authenticateJWT, async (req, res) => {
   const user_id = req.user.userId; // Récupérez l'ID de l'utilisateur à partir du token
 
   try {
+    // Vérifier les conflits de réservation
+    const conflictingBookings = await Booking.findAll({
+      where: {
+        property_id,
+        start_date: {
+          [Op.lte]: end_date
+        },
+        end_date: {
+          [Op.gte]: start_date
+        }
+      }
+    });
+
+    if (conflictingBookings.length > 0) {
+      return res.status(409).json({ message: 'Cette période est déjà réservée.' });
+    }
+
+    // Créer la réservation si aucun conflit n'est trouvé
     const booking = await Booking.create({
       property_id,
       user_id,
@@ -238,6 +257,7 @@ router.post('/booking', authenticateJWT, async (req, res) => {
       end_date: new Date(end_date),
       total_price: parseFloat(total_price),
     });
+
     res.status(201).json(booking);
   } catch (error) {
     res.status(500).json({ message: 'Erreur lors de la création de la réservation.' });

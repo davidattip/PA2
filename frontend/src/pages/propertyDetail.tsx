@@ -1,7 +1,11 @@
-// pages/propertyDetail.tsx
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Cookie from 'js-cookie';
+import { Calendar, momentLocalizer } from 'react-big-calendar';
+import moment from 'moment';
+import 'react-big-calendar/lib/css/react-big-calendar.css';
+
+const localizer = momentLocalizer(moment);
 
 const PropertyDetail = () => {
   const [property, setProperty] = useState<any>(null);
@@ -9,6 +13,8 @@ const PropertyDetail = () => {
   const [startDate, setStartDate] = useState<string>('');
   const [endDate, setEndDate] = useState<string>('');
   const [totalPrice, setTotalPrice] = useState<number>(0);
+  const [endDateMax, setEndDateMax] = useState<string>('');
+  const [errorMessage, setErrorMessage] = useState<string>('');
   const router = useRouter();
   const { id } = router.query;
 
@@ -30,8 +36,18 @@ const PropertyDetail = () => {
     };
 
     const fetchAvailabilities = async () => {
+      const token = Cookie.get('token');
+      if (!token) {
+        console.error('No token found');
+        return;
+      }
+
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/property/properties/${id}/availabilities`);
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/property/properties/${id}/availabilities`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         if (response.ok) {
           const data = await response.json();
           setAvailabilities(data);
@@ -52,7 +68,7 @@ const PropertyDetail = () => {
 
     const token = Cookie.get('token');
     if (!token) {
-      router.push('/login'); // Rediriger vers la page de connexion si l'utilisateur n'est pas connecté
+      router.push('/login');
       return;
     }
 
@@ -61,9 +77,26 @@ const PropertyDetail = () => {
       return;
     }
 
-    const formattedStartDate = new Date(startDate).toISOString();
-    const formattedEndDate = new Date(endDate).toISOString();
-    const calculatedTotalPrice = property.price_per_night * ((new Date(endDate).getTime() - new Date(startDate).getTime()) / (1000 * 3600 * 24));
+    const selectedStartDate = new Date(startDate);
+    const selectedEndDate = new Date(endDate);
+
+    const isWithinAvailabilities = availabilities.some(availability => {
+      const availabilityStartDate = new Date(availability.start_date);
+      const availabilityEndDate = new Date(availability.end_date);
+      return (
+        selectedStartDate >= availabilityStartDate &&
+        selectedEndDate <= availabilityEndDate
+      );
+    });
+
+    if (!isWithinAvailabilities) {
+      alert('Les dates sélectionnées ne sont pas disponibles.');
+      return;
+    }
+
+    const formattedStartDate = selectedStartDate.toISOString();
+    const formattedEndDate = selectedEndDate.toISOString();
+    const calculatedTotalPrice = property.price_per_night * ((selectedEndDate.getTime() - selectedStartDate.getTime()) / (1000 * 3600 * 24));
 
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/property/booking`, {
@@ -82,6 +115,8 @@ const PropertyDetail = () => {
 
       if (response.ok) {
         alert('Réservation effectuée avec succès!');
+      } else if (response.status === 409) {
+        setErrorMessage('Les dates sélectionnées se chevauchent avec une réservation existante.');
       } else {
         alert('Erreur lors de la réservation.');
       }
@@ -91,9 +126,36 @@ const PropertyDetail = () => {
     }
   };
 
+  useEffect(() => {
+    if (startDate) {
+      const selectedStartDate = new Date(startDate);
+      const availability = availabilities.find(availability => {
+        const availabilityStartDate = new Date(availability.start_date);
+        const availabilityEndDate = new Date(availability.end_date);
+        return (
+          selectedStartDate >= availabilityStartDate &&
+          selectedStartDate <= availabilityEndDate
+        );
+      });
+      if (availability) {
+        setEndDateMax(new Date(availability.end_date).toISOString().split('T')[0]);
+      }
+    } else {
+      setEndDateMax('');
+    }
+  }, [startDate, availabilities]);
+
   if (!property) {
     return <p>Chargement...</p>;
   }
+
+  const events = availabilities.map((availability) => ({
+    id: availability.id,
+    title: '',  // Empty title to hide the text
+    start: new Date(availability.start_date),
+    end: new Date(availability.end_date),
+    allDay: true,
+  }));
 
   return (
     <div className="container mx-auto p-6">
@@ -107,18 +169,18 @@ const PropertyDetail = () => {
           crossOrigin="anonymous"
           src={`${process.env.NEXT_PUBLIC_API_BASE_URL}/${photo}`}
           alt={`Photo de ${property.title}`}
-          className="mt-2 w-full h-auto"
+          className="property-image mt-2 w-full h-auto"
         />
       ))}
 
       <h2 className="text-xl font-semibold mt-4">Disponibilités</h2>
-      <ul>
-        {availabilities.map((availability) => (
-          <li key={availability.id}>
-            Du {new Date(availability.start_date).toLocaleDateString()} au {new Date(availability.end_date).toLocaleDateString()}
-          </li>
-        ))}
-      </ul>
+      <Calendar
+        localizer={localizer}
+        events={events}
+        startAccessor="start"
+        endAccessor="end"
+        style={{ height: 500 }}
+      />
 
       <div className="mt-4">
         <div className="border p-4 rounded-lg shadow-lg">
@@ -133,6 +195,7 @@ const PropertyDetail = () => {
                   type="date"
                   className="w-full border px-3 py-2 rounded"
                   value={startDate}
+                  min={new Date().toISOString().split('T')[0]}  // Minimum date is today
                   onChange={(e) => setStartDate(e.target.value)}
                 />
               </div>
@@ -142,10 +205,13 @@ const PropertyDetail = () => {
                   type="date"
                   className="w-full border px-3 py-2 rounded"
                   value={endDate}
+                  min={startDate || new Date().toISOString().split('T')[0]}  // Minimum date is start date or today
+                  max={endDateMax}  // Maximum date is the end of the availability period
                   onChange={(e) => setEndDate(e.target.value)}
                 />
               </div>
             </div>
+            {errorMessage && <p className="text-red-500 mt-2">{errorMessage}</p>}
             <div className="mt-4">
               <label>Voyageurs</label>
               <select className="w-full border px-3 py-2 rounded">
@@ -182,6 +248,18 @@ const PropertyDetail = () => {
           </div>
         </div>
       </div>
+
+      <style jsx>{`
+        .property-image {
+          width: 100%;
+          height: auto;
+          max-width: 400px;
+          max-height: 400px;
+          object-fit: cover;
+          border-radius: 8px;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+      `}</style>
     </div>
   );
 };
