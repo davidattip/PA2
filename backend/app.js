@@ -18,8 +18,15 @@ const propertyRoutes = require('./routes/propertyRoutes');
 const bookingRoutes = require('./routes/bookingRoutes');
 const adminServiceRoutes = require('./routes/adminServiceRoutes');
 const contractorRoutes = require('./routes/contractorRoutes');
+<<<<<<< Updated upstream
 const contractorTestRoutes = require('./routes/contractorTestRoutes');
 const companyRoutes = require('./routes/companyRoutes');
+=======
+const contractorDashboardRoutes = require('./routes/contractorDashboardRoutes');
+const contractorCompanyRoutes = require('./routes/contractorCompanyRoutes');
+
+
+>>>>>>> Stashed changes
 const adminHostRoutes = require('./routes/adminHostRoutes');
 const ticketRoutes = require('./routes/ticketRoutes');
 const hostSubscriptionRoutes = require('./routes/hostSubscriptionRoutes'); 
@@ -27,15 +34,37 @@ const hostServiceRoutes = require('./routes/hostServiceRoutes');
 
 app.use(helmet());
 
+<<<<<<< Updated upstream
+=======
+//Configurer le serveur backend pour accepter les requêtes de l'émulateur Android :
+// également autoriser les requêtes provenant de
+// l'émulateur Android (qui utilise 10.0.2.2 pour accéder à l'hôte)
+
+>>>>>>> Stashed changes
 app.use(cors({
-  origin: ['http://localhost:3000', 'http://127.0.0.1:3000', 'http://10.0.2.2:3000', 'http://paris2a5caretakers.com', 'http://92.222.216.216:3000'],
+  origin: [
+    'http://localhost:3000',
+    'http://127.0.0.1:3000',
+    'http://10.0.2.2:3000',
+    'https://paris2a5caretakers.com',
+    'http://92.222.216.216:3000',
+    'https://92.222.216.216:3000'
+  ],
   credentials: true
 }));
 
 app.options('*', cors({
-  origin: ['http://localhost:3000', 'http://127.0.0.1:3000', 'http://10.0.2.2:3000', 'http://paris2a5caretakers.com', 'http://92.222.216.216:3000'],
+  origin: [
+    'http://localhost:3000',
+    'http://127.0.0.1:3000',
+    'http://10.0.2.2:3000',
+    'https://paris2a5caretakers.com',
+    'http://92.222.216.216:3000',
+    'https://92.222.216.216:3000'
+  ],
   credentials: true
 }));
+
 
 app.use(express.json());
 
@@ -60,12 +89,21 @@ app.use('/api/document', documentRoutes);
 app.use('/api/admin', adminServiceRoutes);
 app.use('/api/admin', adminSubscriptionRoutes);
 app.use('/api/contractor', contractorRoutes);
+<<<<<<< Updated upstream
 app.use('/api/companies', companyRoutes);
 app.use('/api/contractor-test', contractorTestRoutes);
 app.use('/api/admin/hosts', adminHostRoutes);
 app.use('/api/ticket', ticketRoutes);
 app.use('/api/host', hostSubscriptionRoutes);
 app.use('/api/host', hostServiceRoutes);
+=======
+app.use('/api/companies', contractorCompanyRoutes);
+app.use('/api/contractor', contractorDashboardRoutes);
+
+app.use('/api/admin/hosts', adminHostRoutes);
+app.use('/api/ticket', ticketRoutes);
+
+>>>>>>> Stashed changes
 
 app.use((err, req, res, next) => {
   console.error(err.stack);

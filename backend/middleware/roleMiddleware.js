@@ -1,3 +1,4 @@
+//roleMiddleware.js
 const authenticateJWT = require('./authenticateToken');
 
 // Middleware pour vérifier si l'utilisateur est admin

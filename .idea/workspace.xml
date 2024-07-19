@@ -5,14 +5,23 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9df5644e-a962-4eb8-8b16-fb29c9e6e51e" name="Changes" comment="pb metadata app.tsx et layout.tsx">
+      <change afterPath="$PROJECT_DIR$/backend/routes/contractorDashboardRoutes.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/deploy.sh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/pages/contractor/edit-myservice.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/middleware/roleMiddleware.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/middleware/roleMiddleware.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/models/ServiceType.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/models/ServiceType.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/models/contractor.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/models/contractor.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/models/user.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/models/user.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/node_modules/.package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/backend/node_modules/.package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/node_modules/define-data-property/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/backend/node_modules/define-data-property/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/routes/authRoutes.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/routes/authRoutes.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/routes/companyRoutes.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/routes/contractorCompanyRoutes.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/routes/contractorRoutes.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/routes/contractorRoutes.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/next.config.mjs" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/next.config.mjs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/login.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/login.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/routes/contractorTestRoutes.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/contractor/contractor_test_company.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/contractor/dashboard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/contractor/dashboard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/pages/contractor/login.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/contractor/login.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,6 +35,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="JavaScript File" />
+        <option value="TypeScript File" />
       </list>
     </option>
   </component>
@@ -37,7 +47,7 @@
   </component>
   <component name="PhpWorkspaceProjectConfiguration" interpreter_name="/opt/homebrew/Cellar/php/8.3.0/bin/php" />
   <component name="ProblemsViewState">
-    <option name="selectedTabId" value="ProjectErrors" />
+    <option name="selectedTabId" value="CurrentFile" />
   </component>
   <component name="ProjectId" id="2jDTgz1qsZ1gOjxXekGAZPhH6ul" />
   <component name="ProjectLevelVcsManager">
@@ -87,7 +97,9 @@
       <workItem from="1720920766595" duration="2063000" />
       <workItem from="1721052126960" duration="221000" />
       <workItem from="1721052393955" duration="10281000" />
-      <workItem from="1721238988410" duration="28240000" />
+      <workItem from="1721238988410" duration="39924000" />
+      <workItem from="1721336546440" duration="8306000" />
+      <workItem from="1721348188022" duration="5667000" />
     </task>
     <task id="LOCAL-00001" summary="ServiceType ajouté">
       <option name="closed" value="true" />

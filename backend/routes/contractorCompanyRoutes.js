@@ -1,4 +1,4 @@
-//Ce fichier companyRoutes.js permet de faire une abstraction de la complexité
+//Ce fichier contractorCompanyRoutes.js permet de faire une abstraction de la complexité
 // des appels API et offre une interface simple pour rechercher des entreprises
 // depuis votre frontend en utilisant un simple terme de recherche.
 // Assurez-vous de bien tester ces interactions et de valider la structure de la réponse de l'API SIRENE

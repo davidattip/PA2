@@ -9,6 +9,7 @@ const Contractor = sequelize.define('Contractor', {
             isEmail: true // Validation pour s'assurer que l'entrée est un email valide
         }
     },
+    user_type: DataTypes.STRING, // on enregistre 'contractor' par défault
     password_hash: {
         type: DataTypes.STRING,
         allowNull: false, // Assurez-vous que le mot de passe est toujours fourni

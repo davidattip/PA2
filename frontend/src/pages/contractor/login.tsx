@@ -28,7 +28,8 @@ const ContractorLogin: React.FC = () => {
 
             if (response.ok) {
                 console.log('Login Successful', data);
-                Cookie.set('token', data.accessToken, { expires: 1, secure: true, sameSite: 'lax' });
+                Cookie.set('token', data.token, { expires: 1, secure: true, sameSite: 'lax' });
+
                 router.push('/contractor/dashboard');
             } else {
                 alert(data.message);

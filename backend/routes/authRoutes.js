@@ -76,8 +76,6 @@ router.post('/login', async (req, res) => {
     }
 });
 
-module.exports = router;
-
 // Endpoint pour récupérer les informations de l'utilisateur authentifié
 router.get('/me', authenticateJWT, async (req, res) => {
     try {

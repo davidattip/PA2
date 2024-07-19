@@ -19,9 +19,15 @@ const ServiceType = sequelize.define('ServiceType', {
         type: DataTypes.DECIMAL,
         allowNull: false
     },
+<<<<<<< Updated upstream
     targetUser: {
         type: DataTypes.ENUM('renter', 'host'),
         allowNull: false
+=======
+    chosen_contractor: {
+        type: DataTypes.INTEGER,
+        autoIncrement: true
+>>>>>>> Stashed changes
     },
     createdAt: {
         type: DataTypes.DATE,
