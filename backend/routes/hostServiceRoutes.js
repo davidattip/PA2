@@ -38,7 +38,7 @@ router.post('/buy-service', authenticateJWT, async (req, res) => {
     }
 
     const service = await Service.create({
-      contractor_id: null, // Permettre un contractor par défaut null
+      contractor_id: serviceType.chosen_contractor, // Utiliser chosen_contractor comme contractor_id
       name: serviceType.name,
       price: serviceType.price,
       remunPrest: serviceType.price * 0.8, // Exemple de calcul de la rémunération
