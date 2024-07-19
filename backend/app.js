@@ -20,6 +20,7 @@ const adminServiceRoutes = require('./routes/adminServiceRoutes');
 const contractorRoutes = require('./routes/contractorRoutes');
 const contractorDashboardRoutes = require('./routes/contractorDashboardRoutes');
 const contractorCompanyRoutes = require('./routes/contractorCompanyRoutes');
+const contractorServiceRoutes = require('./routes/contractorServiceRoutes');
 
 const adminHostRoutes = require('./routes/adminHostRoutes');
 const ticketRoutes = require('./routes/ticketRoutes');
@@ -85,6 +86,7 @@ app.use('/api/host', hostSubscriptionRoutes);
 app.use('/api/host', hostServiceRoutes);
 app.use('/api/companies', contractorCompanyRoutes);
 app.use('/api/contractor', contractorDashboardRoutes);
+app.use('/api/admin', contractorServiceRoutes); 
 
 app.use('/api/admin/hosts', adminHostRoutes);
 app.use('/api/ticket', ticketRoutes);
