@@ -1,33 +1,29 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Cookie from 'js-cookie';
-import Link from 'next/link';
+import HostNavMenu from '../../../components/HostNavMenu';
 
-interface Service {
+interface ServiceType {
   id: number;
   name: string;
   description: string;
   price: number;
-  propertyName?: string;
-  status: string;
 }
 
-interface Subscription {
+interface Property {
   id: number;
-  name: string;
-  price: number;
-  description: string;
-  status: string;
+  title: string;
 }
 
 const HostService = () => {
-  const [services, setServices] = useState<Service[]>([]);
-  const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
+  const [serviceTypes, setServiceTypes] = useState<ServiceType[]>([]);
+  const [properties, setProperties] = useState<Property[]>([]);
+  const [selectedProperty, setSelectedProperty] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
-    const fetchServices = async () => {
+    const fetchServicesAndProperties = async () => {
       const token = Cookie.get('token');
       if (!token) {
         router.push('/host/login');
@@ -35,23 +31,64 @@ const HostService = () => {
       }
 
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/host/services`, {
-          headers: {
-            'Authorization': `Bearer ${token}`,
-          },
-        });
-        const data = await response.json();
-        setServices(data.services);
-        setSubscriptions(data.subscriptions);
+        const [serviceResponse, propertyResponse] = await Promise.all([
+          fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/host/services`, {
+            headers: {
+              'Authorization': `Bearer ${token}`,
+            },
+          }),
+          fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/property/properties`, {
+            headers: {
+              'Authorization': `Bearer ${token}`,
+            },
+          }),
+        ]);
+
+        const serviceData = await serviceResponse.json();
+        const propertyData = await propertyResponse.json();
+
+        setServiceTypes(serviceData);
+        setProperties(propertyData);
         setLoading(false);
       } catch (error) {
-        console.error('Error fetching services:', error);
+        console.error('Error fetching data:', error);
         setLoading(false);
       }
     };
 
-    fetchServices();
+    fetchServicesAndProperties();
   }, [router]);
+
+  const handleBuyService = async (serviceTypeId: number) => {
+    const token = Cookie.get('token');
+    if (!token || !selectedProperty) {
+      alert('Veuillez sélectionner une propriété.');
+      return;
+    }
+
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/host/buy-service`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          serviceTypeId,
+          propertyId: selectedProperty,
+        }),
+      });
+
+      if (response.ok) {
+        alert('Service acheté avec succès!');
+      } else {
+        const errorData = await response.json();
+        alert('Échec de l\'achat du service : ' + errorData.message);
+      }
+    } catch (error) {
+      console.error('Error buying service:', error);
+    }
+  };
 
   if (loading) {
     return <p>Loading...</p>;
@@ -59,95 +96,38 @@ const HostService = () => {
 
   return (
     <div className="flex">
-      <nav className="w-1/4 p-4 bg-gray-200 min-h-screen">
-        <ul className="space-y-2">
-          <li><Link href="/host/dashboard" className="block p-2 rounded hover:bg-gray-300">Tableau de Bord</Link></li>
-          <li><Link href="/host/service" className="block p-2 rounded hover:bg-gray-300">Vue d'ensemble des services</Link></li>
-          <li><Link href="/host/subscription" className="block p-2 rounded hover:bg-gray-300">Gestion des abonnements</Link></li>
-          <li><Link href="/host/service-history" className="block p-2 rounded hover:bg-gray-300">Services Ponctuels</Link></li>
-          <li><Link href="/host/property-services" className="block p-2 rounded hover:bg-gray-300">Services par Propriété</Link></li>
-          <li><Link href="/host/notifications" className="block p-2 rounded hover:bg-gray-300">Notifications et rappels</Link></li>
-          <li><Link href="/host/invoices" className="block p-2 rounded hover:bg-gray-300">Historique et facturation</Link></li>
-        </ul>
-      </nav>
+      <HostNavMenu />
       <div className="w-3/4 p-6 bg-gray-50">
-        <h1 className="text-3xl font-bold text-gray-800 mb-4">Mes Services</h1>
-
-        {/* Vue d'ensemble des services */}
-        <section className="mb-8">
-          <h2 className="text-2xl font-semibold text-gray-700 mb-4">Vue d'ensemble des services</h2>
-          <ul>
-            {services.map(service => (
-              <li key={service.id} className="border p-4 rounded bg-white shadow-md mb-4">
-                <p><strong>Nom:</strong> {service.name}</p>
-                <p><strong>Description:</strong> {service.description}</p>
-                <p><strong>Prix:</strong> {service.price} €</p>
-                <p><strong>Statut:</strong> {service.status}</p>
-              </li>
+        <h1 className="text-3xl font-bold text-gray-800 mb-4">Services Ponctuels Disponibles</h1>
+        <div className="mb-4">
+          <label htmlFor="propertySelect" className="block text-gray-700">Sélectionnez une propriété:</label>
+          <select
+            id="propertySelect"
+            className="w-full p-2 border border-gray-300 rounded mt-1"
+            value={selectedProperty || ''}
+            onChange={(e) => setSelectedProperty(Number(e.target.value))}
+          >
+            <option value="" disabled>Choisir une propriété</option>
+            {properties.map((property) => (
+              <option key={property.id} value={property.id}>{property.title}</option>
             ))}
-          </ul>
-        </section>
-
-        {/* Gestion des abonnements */}
-        <section className="mb-8">
-          <h2 className="text-2xl font-semibold text-gray-700 mb-4">Gestion des abonnements</h2>
-          <ul>
-            {subscriptions.map(subscription => (
-              <li key={subscription.id} className="border p-4 rounded bg-white shadow-md mb-4">
-                <p><strong>Nom de l'abonnement:</strong> {subscription.name}</p>
-                <p><strong>Prix:</strong> {subscription.price} € / an</p>
-                <p><strong>Description:</strong> {subscription.description}</p>
-                <p><strong>Statut:</strong> {subscription.status}</p>
-                <div className="mt-2 space-x-2">
-                  <button className="bg-blue-500 text-white font-semibold py-2 px-4 rounded">Modifier</button>
-                  <button className="bg-red-500 text-white font-semibold py-2 px-4 rounded">Annuler</button>
-                  <button className="bg-green-500 text-white font-semibold py-2 px-4 rounded">Renouveler</button>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </section>
-
-        {/* Services ponctuels */}
-        <section className="mb-8">
-          <h2 className="text-2xl font-semibold text-gray-700 mb-4">Services Ponctuels</h2>
-          <ul>
-            {services.map(service => (
-              <li key={service.id} className="border p-4 rounded bg-white shadow-md mb-4">
-                <p><strong>Nom du service:</strong> {service.name}</p>
-                <p><strong>Prix:</strong> {service.price} €</p>
-                <p><strong>Description:</strong> {service.description}</p>
-                <button className="bg-blue-500 text-white font-semibold py-2 px-4 rounded mt-2">Acheter ce service</button>
-              </li>
-            ))}
-          </ul>
-        </section>
-
-        {/* Gestion des services pour les propriétés */}
-        <section className="mb-8">
-          <h2 className="text-2xl font-semibold text-gray-700 mb-4">Services par Propriété</h2>
-          <ul>
-            {services.map(service => (
-              <li key={service.id} className="border p-4 rounded bg-white shadow-md mb-4">
-                <p><strong>Nom de la propriété:</strong> {service.propertyName}</p>
-                <p><strong>Services:</strong> {service.name}</p>
-                <button className="bg-red-500 text-white font-semibold py-2 px-4 rounded mt-2">Supprimer ce service</button>
-              </li>
-            ))}
-          </ul>
-        </section>
-
-        {/* Notifications et rappels */}
-        <section className="mb-8">
-          <h2 className="text-2xl font-semibold text-gray-700 mb-4">Notifications et rappels</h2>
-          <p className="border p-4 rounded bg-white shadow-md">Notifications de renouvellement et alertes de service apparaîtront ici.</p>
-        </section>
-
-        {/* Historique et facturation */}
-        <section className="mb-8">
-          <h2 className="text-2xl font-semibold text-gray-700 mb-4">Historique et facturation</h2>
-          <p className="border p-4 rounded bg-white shadow-md">Historique des transactions et factures téléchargeables apparaîtront ici.</p>
-        </section>
+          </select>
+        </div>
+        <ul>
+          {serviceTypes.map(serviceType => (
+            <li key={serviceType.id} className="border p-4 rounded bg-white shadow-md mb-4">
+              <p><strong>Nom:</strong> {serviceType.name}</p>
+              <p><strong>Description:</strong> {serviceType.description}</p>
+              <p><strong>Prix:</strong> {serviceType.price} €</p>
+              <button
+                onClick={() => handleBuyService(serviceType.id)}
+                className="bg-blue-500 text-white font-semibold py-2 px-4 rounded mt-2"
+              >
+                Acheter ce service
+              </button>
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
   );

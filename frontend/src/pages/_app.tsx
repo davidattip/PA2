@@ -28,6 +28,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     '/host/add-availability',
     '/host/edit-availability',
     '/host/service/host_service',
+    '/host/subscription/hostSubscription',
     '/host/add-property'
   ];
 

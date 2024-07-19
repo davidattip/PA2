@@ -6,6 +6,7 @@ const EditServiceType = () => {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [price, setPrice] = useState('');
+  const [targetUser, setTargetUser] = useState('host');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(true);
   const router = useRouter();
@@ -31,6 +32,7 @@ const EditServiceType = () => {
         setName(data.name);
         setDescription(data.description);
         setPrice(data.price);
+        setTargetUser(data.targetUser);
         setLoading(false);
       } catch (error) {
         console.error('Error fetching service type:', error);
@@ -59,7 +61,7 @@ const EditServiceType = () => {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`,
         },
-        body: JSON.stringify({ name, description, price: parseFloat(price) }),
+        body: JSON.stringify({ name, description, price: parseFloat(price), targetUser }),
       });
 
       if (response.ok) {
@@ -111,6 +113,18 @@ const EditServiceType = () => {
               className="w-full p-2 border border-gray-300 rounded mt-1"
               required
             />
+          </div>
+          <div className="mb-4">
+            <label className="block text-gray-700">Cible</label>
+            <select
+              value={targetUser}
+              onChange={(e) => setTargetUser(e.target.value)}
+              className="w-full p-2 border border-gray-300 rounded mt-1"
+              required
+            >
+              <option value="host">Host</option>
+              <option value="renter">Renter</option>
+            </select>
           </div>
           <div className="flex justify-between">
             <button

@@ -4,7 +4,7 @@ import Cookie from 'js-cookie';
 import Link from 'next/link';
 import AdminSidebar from '../../components/AdminSidebar';
 
-interface ServiceType {
+interface SubscriptionType {
   id: number;
   name: string;
   description: string;
@@ -12,13 +12,13 @@ interface ServiceType {
   targetUser: string;
 }
 
-const ServicePage = () => {
-  const [serviceTypes, setServiceTypes] = useState<ServiceType[]>([]);
+const SubscriptionPage = () => {
+  const [subscriptionTypes, setSubscriptionTypes] = useState<SubscriptionType[]>([]);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
-    const fetchServiceTypes = async () => {
+    const fetchSubscriptionTypes = async () => {
       const token = Cookie.get('token');
       if (!token) {
         router.push('/admin/login');
@@ -26,21 +26,21 @@ const ServicePage = () => {
       }
 
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/admin/service-types`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/admin/subscription-types`, {
           headers: {
             'Authorization': `Bearer ${token}`,
           },
         });
         const data = await response.json();
-        setServiceTypes(data);
+        setSubscriptionTypes(data);
         setLoading(false);
       } catch (error) {
-        console.error('Error fetching service types:', error);
+        console.error('Error fetching subscription types:', error);
         setLoading(false);
       }
     };
 
-    fetchServiceTypes();
+    fetchSubscriptionTypes();
   }, [router]);
 
   const handleDelete = async (id: number) => {
@@ -51,7 +51,7 @@ const ServicePage = () => {
     }
 
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/admin/service-types/${id}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/admin/subscription-types/${id}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -59,12 +59,12 @@ const ServicePage = () => {
       });
 
       if (response.ok) {
-        setServiceTypes(serviceTypes.filter(serviceType => serviceType.id !== id));
+        setSubscriptionTypes(subscriptionTypes.filter(subscriptionType => subscriptionType.id !== id));
       } else {
-        console.error('Failed to delete service type');
+        console.error('Failed to delete subscription type');
       }
     } catch (error) {
-      console.error('Error deleting service type:', error);
+      console.error('Error deleting subscription type:', error);
     }
   };
 
@@ -76,10 +76,10 @@ const ServicePage = () => {
     <div className="flex">
       <AdminSidebar />
       <div className="w-3/4 p-6 bg-gray-50">
-        <h1 className="text-3xl font-bold text-gray-800 mb-4">Gestion des Services</h1>
+        <h1 className="text-3xl font-bold text-gray-800 mb-4">Gestion des Abonnements</h1>
         <div className="mb-4">
-            <Link href="/adminService/addServiceType" legacyBehavior>
-                <a className="bg-green-500 text-white font-semibold py-2 px-4 rounded">Ajouter un Type de Service</a>
+            <Link href="/adminSubscription/addSubscriptionType" legacyBehavior>
+                <a className="bg-green-500 text-white font-semibold py-2 px-4 rounded">Ajouter un Type d'Abonnement</a>
             </Link>
         </div>
         <table className="min-w-full bg-white">
@@ -93,18 +93,18 @@ const ServicePage = () => {
             </tr>
           </thead>
           <tbody>
-            {serviceTypes.map(serviceType => (
-              <tr key={serviceType.id} className="border-t">
-                <td className="py-2 px-4">{serviceType.name}</td>
-                <td className="py-2 px-4">{serviceType.description}</td>
-                <td className="py-2 px-4">{serviceType.price} €</td>
-                <td className="py-2 px-4">{serviceType.targetUser}</td>
+            {subscriptionTypes.map(subscriptionType => (
+              <tr key={subscriptionType.id} className="border-t">
+                <td className="py-2 px-4">{subscriptionType.name}</td>
+                <td className="py-2 px-4">{subscriptionType.description}</td>
+                <td className="py-2 px-4">{subscriptionType.price} €</td>
+                <td className="py-2 px-4">{subscriptionType.targetUser}</td>
                 <td className="py-2 px-4">
-                  <Link href={`/adminService/service/edit/${serviceType.id}`} legacyBehavior>
+                  <Link href={`/adminSubscription/subscription/edit/${subscriptionType.id}`} legacyBehavior>
                     <a className="bg-blue-500 text-white font-semibold py-1 px-3 rounded mr-2">Modifier</a>
                   </Link>
                   <button
-                    onClick={() => handleDelete(serviceType.id)}
+                    onClick={() => handleDelete(subscriptionType.id)}
                     className="bg-red-500 text-white font-semibold py-1 px-3 rounded"
                   >
                     Supprimer
@@ -119,4 +119,4 @@ const ServicePage = () => {
   );
 };
 
-export default ServicePage;
+export default SubscriptionPage;
