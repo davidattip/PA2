@@ -15,6 +15,8 @@ const PropertyDetail = () => {
   const [totalPrice, setTotalPrice] = useState<number>(0);
   const [endDateMax, setEndDateMax] = useState<string>('');
   const [errorMessage, setErrorMessage] = useState<string>('');
+  const [services, setServices] = useState<any[]>([]);
+  const [selectedServices, setSelectedServices] = useState<number[]>([]);
   const router = useRouter();
   const { id } = router.query;
 
@@ -59,8 +61,35 @@ const PropertyDetail = () => {
       }
     };
 
+    const fetchServices = async () => {
+      const token = Cookie.get('token');
+      if (!token) {
+        console.error('No token found');
+        return;
+      }
+
+      try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/admin/service-types`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        if (response.ok) {
+          const data = await response.json();
+          // Filtrer les services pour n'afficher que ceux destinés aux locataires (renter)
+          const renterServices = data.filter((service: any) => service.targetUser === 'renter');
+          setServices(renterServices);
+        } else {
+          console.error('Failed to fetch services');
+        }
+      } catch (error) {
+        console.error('Error fetching services:', error);
+      }
+    };
+
     fetchProperty();
     fetchAvailabilities();
+    fetchServices();
   }, [id]);
 
   const handleBooking = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -110,6 +139,7 @@ const PropertyDetail = () => {
           start_date: formattedStartDate,
           end_date: formattedEndDate,
           total_price: calculatedTotalPrice,
+          services: selectedServices
         }),
       });
 
@@ -145,6 +175,14 @@ const PropertyDetail = () => {
     }
   }, [startDate, availabilities]);
 
+  const handleServiceChange = (serviceId: number) => {
+    setSelectedServices(prevSelectedServices =>
+      prevSelectedServices.includes(serviceId)
+        ? prevSelectedServices.filter(id => id !== serviceId)
+        : [...prevSelectedServices, serviceId]
+    );
+  };
+
   if (!property) {
     return <p>Chargement...</p>;
   }
@@ -163,15 +201,18 @@ const PropertyDetail = () => {
       <p>{property.description}</p>
       <p>Lieu: {property.location}</p>
       <p>Prix par nuit: {property.price_per_night} €</p>
-      {property.photos && property.photos.split(',').map((photo: string, index: number) => (
-        <img
-          key={index}
-          crossOrigin="anonymous"
-          src={`${process.env.NEXT_PUBLIC_API_BASE_URL}/${photo}`}
-          alt={`Photo de ${property.title}`}
-          className="property-image mt-2 w-full h-auto"
-        />
-      ))}
+      <div className="photos-grid">
+        {property.photos && property.photos.split(',').map((photo: string, index: number) => (
+          <div key={index} className="photo-container">
+            <img
+              crossOrigin="anonymous"
+              src={`${process.env.NEXT_PUBLIC_API_BASE_URL}/${photo}`}
+              alt={`Photo de ${property.title}`}
+              className="property-image mt-2 w-full h-auto"
+            />
+          </div>
+        ))}
+      </div>
 
       <h2 className="text-xl font-semibold mt-4">Disponibilités</h2>
       <Calendar
@@ -221,6 +262,23 @@ const PropertyDetail = () => {
                 <option>4 voyageurs</option>
               </select>
             </div>
+            <div className="mt-4">
+              <h3 className="text-lg font-semibold">Sélectionnez des services supplémentaires :</h3>
+              <ul className="mt-2">
+                {services.map(service => (
+                  <li key={service.id} className="flex items-center">
+                    <input
+                      type="checkbox"
+                      id={`service-${service.id}`}
+                      value={service.id}
+                      onChange={() => handleServiceChange(service.id)}
+                      className="mr-2"
+                    />
+                    <label htmlFor={`service-${service.id}`}>{service.name} - {service.price} €</label>
+                  </li>
+                ))}
+              </ul>
+            </div>
             <button className="w-full mt-4 bg-pink-500 text-white py-2 rounded">Réserver</button>
           </form>
           <div className="mt-4">
@@ -258,6 +316,15 @@ const PropertyDetail = () => {
           object-fit: cover;
           border-radius: 8px;
           box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .photos-grid {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 16px;
+        }
+        .photo-container {
+          flex: 1 1 calc(33.333% - 16px);
+          max-width: calc(33.333% - 16px);
         }
       `}</style>
     </div>

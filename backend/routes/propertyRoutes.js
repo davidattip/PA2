@@ -4,6 +4,8 @@ const upload = require('../middleware/uploadMiddleware');
 const Property = require('../models/property');
 const Availability = require('../models/availability');
 const Booking = require('../models/booking'); // Importez le modèle Booking
+const Service = require('../models/service');
+const ServiceType = require('../models/ServiceType');
 const { Op } = require('sequelize'); // Importez l'opérateur Op pour les requêtes Sequelize
 
 const router = express.Router();
@@ -228,7 +230,7 @@ router.get('/availabilities/:id', authenticateJWT, async (req, res) => {
 
 // Nouvelle route pour créer une réservation
 router.post('/booking', authenticateJWT, async (req, res) => {
-  const { property_id, start_date, end_date, total_price } = req.body;
+  const { property_id, start_date, end_date, total_price, services } = req.body;
   const user_id = req.user.userId; // Récupérez l'ID de l'utilisateur à partir du token
 
   try {
@@ -258,8 +260,24 @@ router.post('/booking', authenticateJWT, async (req, res) => {
       total_price: parseFloat(total_price),
     });
 
+    // Ajouter les services sélectionnés
+    for (const serviceTypeId of services) {
+      const serviceType = await ServiceType.findByPk(serviceTypeId);
+      if (serviceType) {
+        await Service.create({
+          contractor_id: serviceType.chosen_contractor,
+          name: serviceType.name,
+          price: serviceType.price,
+          remunPrest: serviceType.price * 0.8,
+          description: serviceType.description,
+          propertyId: property_id
+        });
+      }
+    }
+
     res.status(201).json(booking);
   } catch (error) {
+    console.error('Erreur lors de la création de la réservation:', error); // Ajoutez ce log pour obtenir plus de détails sur l'erreur
     res.status(500).json({ message: 'Erreur lors de la création de la réservation.' });
   }
 });
