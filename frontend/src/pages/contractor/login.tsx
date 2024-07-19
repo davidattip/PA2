@@ -30,7 +30,8 @@ const ContractorLogin: React.FC = () => {
                 console.log('Login Successful', data);
                 Cookie.set('token', data.token, { expires: 1, secure: true, sameSite: 'lax' });
 
-                router.push('/contractor/dashboard');
+                // Modification ici pour rediriger vers la page de modification des services
+                router.push('/contractor/edit-myservice');
             } else {
                 alert(data.message);
             }
@@ -50,7 +51,6 @@ const ContractorLogin: React.FC = () => {
                 </form>
                 <p className="mt-4 text-center">
                     <a href="/contractor/register" className="text-blue-600 hover:underline">Vous n&apos;avez pas de compte ? Inscrivez-vous</a>
-
                 </p>
             </div>
         </div>
