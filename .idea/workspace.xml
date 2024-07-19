@@ -5,11 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9df5644e-a962-4eb8-8b16-fb29c9e6e51e" name="Changes" comment="pb metadata app.tsx et layout.tsx">
-      <change afterPath="$PROJECT_DIR$/backend/routes/contractorServicesRoutes.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/app.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/contractor/edit-myservice.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/contractor/edit-myservice.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/pages/contractor/login.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/pages/contractor/login.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/routes/contractorServicesRoutes.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/routes/contractorServicesRoutes.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -87,7 +85,7 @@
       <workItem from="1721052393955" duration="10281000" />
       <workItem from="1721238988410" duration="39924000" />
       <workItem from="1721336546440" duration="8306000" />
-      <workItem from="1721348188022" duration="10038000" />
+      <workItem from="1721348188022" duration="11806000" />
     </task>
     <task id="LOCAL-00001" summary="ServiceType ajouté">
       <option name="closed" value="true" />
