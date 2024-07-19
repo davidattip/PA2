@@ -30,6 +30,10 @@ Booking.belongsTo(User, { foreignKey: 'user_id' });
 Service.belongsToMany(Booking, { through: 'ServiceBookings', foreignKey: 'service_id' });
 Booking.belongsToMany(Service, { through: 'ServiceBookings', foreignKey: 'booking_id' });
 
+
+
+
+
 module.exports = {
     Host,
     Property,

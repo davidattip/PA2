@@ -4,9 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9df5644e-a962-4eb8-8b16-fb29c9e6e51e" name="Changes" comment="pb metadata app.tsx et layout.tsx">
-      <change beforePath="$PROJECT_DIR$/backend/models/ServiceType.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/models/ServiceType.js" afterDir="false" />
-    </list>
+    <list default="true" id="9df5644e-a962-4eb8-8b16-fb29c9e6e51e" name="Changes" comment="pb metadata app.tsx et layout.tsx" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -83,7 +81,7 @@
       <workItem from="1721052393955" duration="10281000" />
       <workItem from="1721238988410" duration="39924000" />
       <workItem from="1721336546440" duration="8306000" />
-      <workItem from="1721348188022" duration="5754000" />
+      <workItem from="1721348188022" duration="6084000" />
     </task>
     <task id="LOCAL-00001" summary="ServiceType ajouté">
       <option name="closed" value="true" />
