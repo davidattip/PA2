@@ -88,6 +88,7 @@ app.use('/api/host', hostSubscriptionRoutes);
 app.use('/api/host', hostServiceRoutes);
 app.use('/api/companies', contractorCompanyRoutes);
 app.use('/api/contractor', contractorDashboardRoutes);
+app.use('/api/contractor/services', contractorServicesRoutes);
 app.use('/api/admin', adminContractorServiceRoutes);
 
 
