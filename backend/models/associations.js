@@ -31,9 +31,20 @@ Booking.belongsTo(User, { foreignKey: 'user_id' });
 Service.belongsToMany(Booking, { through: 'ServiceBookings', foreignKey: 'service_id' });
 Booking.belongsToMany(Service, { through: 'ServiceBookings', foreignKey: 'booking_id' });
 
-ServiceType.belongsTo(Contractor, { foreignKey: 'chosen_contractor', as: 'Contractor' });
-Contractor.hasMany(ServiceType, { foreignKey: 'chosen_contractor', as: 'ChosenServices' });
+Contractor.belongsTo(ServiceType, {
+    foreignKey: 'serviceTypeId',
+    as: 'ServiceType'
+});
 
+ServiceType.hasMany(Contractor, {
+    foreignKey: 'serviceTypeId',
+    as: 'Contractors'
+});
+
+ServiceType.belongsTo(Contractor, {
+    foreignKey: 'chosen_contractor',
+    as: 'ChosenContractor'
+});
 
 
 module.exports = {
