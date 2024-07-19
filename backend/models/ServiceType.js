@@ -19,15 +19,13 @@ const ServiceType = sequelize.define('ServiceType', {
         type: DataTypes.DECIMAL,
         allowNull: false
     },
-<<<<<<< Updated upstream
     targetUser: {
         type: DataTypes.ENUM('renter', 'host'),
         allowNull: false
-=======
+    },
     chosen_contractor: {
         type: DataTypes.INTEGER,
-        autoIncrement: true
->>>>>>> Stashed changes
+        allowNull: true // Correction ici : 'autoIncrement' a été enlevé, car il n'est généralement pas utilisé sur des champs autres que la clé primaire.
     },
     createdAt: {
         type: DataTypes.DATE,
@@ -38,7 +36,7 @@ const ServiceType = sequelize.define('ServiceType', {
         allowNull: true
     }
 }, {
-    timestamps: true
+    timestamps: true // Cette option doit être dans un objet de configuration séparé, pas directement dans le modèle.
 });
 
 module.exports = ServiceType;

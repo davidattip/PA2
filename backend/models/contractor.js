@@ -9,50 +9,57 @@ const Contractor = sequelize.define('Contractor', {
             isEmail: true // Validation pour s'assurer que l'entrée est un email valide
         }
     },
-    user_type: DataTypes.STRING, // on enregistre 'contractor' par défault
+    user_type: DataTypes.STRING, // 'contractor' par défaut
     password_hash: {
         type: DataTypes.STRING,
-        allowNull: false, // Assurez-vous que le mot de passe est toujours fourni
+        allowNull: false,
         validate: {
-            notEmpty: true, // Assurez-vous que le champ n'est pas vide
+            notEmpty: true
         }
     },
     contact_first_name: {
         type: DataTypes.STRING,
-        allowNull: false, // Validation pour nécessiter un prénom
+        allowNull: false,
         validate: {
-            notEmpty: true // Assure que le champ n'est pas vide
+            notEmpty: true
         }
     },
     contact_last_name: {
         type: DataTypes.STRING,
-        allowNull: false, // Validation pour nécessiter un nom
+        allowNull: false,
         validate: {
-            notEmpty: true // Assure que le champ n'est pas vide
+            notEmpty: true
         }
     },
     company_name: {
         type: DataTypes.STRING,
-        allowNull: false, // Le nom de l'entreprise doit être présent
+        allowNull: false,
         validate: {
-            notEmpty: true // Assure que le champ n'est pas vide
+            notEmpty: true
         }
     },
     siret: {
         type: DataTypes.STRING,
-        allowNull: false, // Le numéro SIRET doit être présent
+        allowNull: false,
         validate: {
-            notEmpty: true, // Assure que le champ n'est pas vide
-            len: [14, 14] // Validation de la longueur du numéro SIRET (14 chiffres en France)
+            notEmpty: true,
+            len: [14, 14] // 14 chiffres pour un SIRET en France
         }
     },
-    address: DataTypes.STRING, // Pas de validation spécifique pour l'adresse
+    address: DataTypes.STRING,
+    serviceTypeId: {
+        type: DataTypes.INTEGER,
+        references: {
+            model: 'ServiceTypes', // Nom du modèle référencé, doit correspondre exactement
+            key: 'id' // Clé dans le modèle ServiceType
+        }
+    },
     createdAt: DataTypes.DATE,
     updatedAt: DataTypes.DATE,
     deletedAt: DataTypes.DATE
 }, {
-    paranoid: true, // Utilisation de 'deletedAt' pour les suppressions logiques
-    timestamps: true // Gère automatiquement les champs 'createdAt' et 'updatedAt'
+    paranoid: true,
+    timestamps: true
 });
 
 module.exports = Contractor;
