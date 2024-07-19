@@ -9,7 +9,9 @@ const helmet = require('helmet');
 
 const authRoutes = require('./routes/authRoutes');
 const adminRoutes = require('./routes/adminRoutes');
-const adminUserRoutes = require('./routes/adminUserRoutes'); 
+const adminUserRoutes = require('./routes/adminUserRoutes');
+
+
 const adminSubscriptionRoutes = require('./routes/adminSubscriptionRoutes');
 const renterRoutes = require('./routes/renterRoutes');
 const hostRoutes = require('./routes/hostRoutes');
@@ -23,7 +25,7 @@ const contractorCompanyRoutes = require('./routes/contractorCompanyRoutes');
 const adminContractorServiceRoutes = require('./routes/adminContractorServiceRoutes');
 const contractorServicesRoutes = require('./routes/contractorServicesRoutes');
 
-
+const adminContractorRoutes = require('./routes/adminContractorRoutes');
 const adminHostRoutes = require('./routes/adminHostRoutes');
 const ticketRoutes = require('./routes/ticketRoutes');
 const hostSubscriptionRoutes = require('./routes/hostSubscriptionRoutes'); 
@@ -74,6 +76,7 @@ app.use('/uploads', (req, res, next) => {
 app.use('/api/auth', authRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/admin', adminUserRoutes);
+app.use('/api/admin', adminContractorRoutes);
 app.use('/api/renter', renterRoutes);
 app.use('/api/host', hostRoutes);
 app.use('/api/property', propertyRoutes);
