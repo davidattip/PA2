@@ -44,7 +44,8 @@ app.use(cors({
     'http://10.0.2.2:3000',
     'https://paris2a5caretakers.com',
     'http://92.222.216.216:3000',
-    'https://92.222.216.216:3000'
+    'https://92.222.216.216:3000',
+    'http://10.33.5.4:3001'//app mobile nation
   ],
   credentials: true
 }));
@@ -56,7 +57,8 @@ app.options('*', cors({
     'http://10.0.2.2:3000',
     'https://paris2a5caretakers.com',
     'http://92.222.216.216:3000',
-    'https://92.222.216.216:3000'
+    'https://92.222.216.216:3000',
+    'http://10.33.5.4:3001' //app mobile nation
   ],
   credentials: true
 }));
